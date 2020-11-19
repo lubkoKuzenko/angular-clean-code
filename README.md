@@ -7,7 +7,7 @@
 - [Introdunction](#introdunction)
 - [Angular Architecture](#angular-architecture)
   - [Project structure](#project-structure)
-  - [Data flow architecture](#data-flow)
+  - [Data flow architecture](#data-flow-architecture)
   - [State management](#state-management)
 - [Angular Forms](#angular-forms)
 - [Angular Routing](#angular-routing)
