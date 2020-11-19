@@ -99,6 +99,10 @@ Facade pattern
 
 ## Angular Forms
 
+**Resources**
+
+- ["Custom Form Validators"](https://codecraft.tv/courses/angular/advanced-topics/basic-custom-validators/)
+
 ```ts
 import {
   ChangeDetectionStrategy,
@@ -150,7 +154,64 @@ export class FormGeneralComponent implements OnInit {
 }
 ```
 
-### Custom Validator
+### Custom FormGroup Validator
+
+```ts
+
+// form.component.ts
+
+import { atLeastOneRequiredValidator } from "./validators.ts";
+
+public form = new FormGroup({
+  programName: new FormGroup(
+    {
+        program: new FormControl(""),
+        switch: new FormControl(""),
+        intervention: new FormControl(""),
+    },
+    { validators: atLeastOneRequiredValidator() },
+  ),
+});
+
+// validators.ts
+import { ValidatorFn, FormGroup, ValidationErrors } from "@angular/forms";
+
+export const atLeastOneRequiredValidator = (): ValidatorFn => {
+    return (group: FormGroup): ValidationErrors => {
+        const control1 = group.controls["program"];
+        const control2 = group.controls["switch"];
+        const control3 = group.controls["intervention"];
+
+        if (control1.value === "" && control2.value === "" && control3.value === "") {
+            return { empty: true };
+        }
+
+        return null;
+    };
+};
+
+```
+
+### Custom FormControl Validator
+
+```ts
+// form.component.ts
+import { ValidatePhone } from "./validators.ts";
+
+public form = new FormGroup({
+  phone: ['', [ValidatePhone]]
+});
+
+// validators.ts
+export const ValidatePhone = (): ValidatorFn => {
+  return (control: AbstractControl): ValidationErrors => {
+    if (control.value && control.value.length != 10) {
+      return { 'phoneNumberInvalid': true };
+    }
+    return null;
+  }
+}
+```
 
 ### Child forms
 
