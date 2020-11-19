@@ -4,19 +4,20 @@
 
 ## Table of Content
 
-- [Introdunction](#introdunction)
+- [Introduction](#Introduction)
 - [Angular Architecture](#angular-architecture)
   - [Project structure](#project-structure)
   - [Data flow architecture](#data-flow-architecture)
     - [Change Detection](#Change-Detection)
   - [State management](#state-management)
 - [Angular Forms](#angular-forms)
+  - [Basic setup](#Basic-setup)
   - [Custom FormGroup Validator](#Custom-FormGroup-Validator)
   - [Custom FormControl Validator](#Custom-FormControl-Validator)
 - [Angular Routing](#angular-routing)
   - [Custom RouteReuseStrategy](#Custom-RouteReuseStrategy)
 
-## Introdunction
+## Introduction
 
 In order to maintain high quality of delivery and prevent technical debt from being created, we had to agree to a series of guidelines and good practices of how to plan, structure and write applications in Angular
 
@@ -99,7 +100,77 @@ The `OnPush` change detection strategy allows us to disable the change detection
 
 ### State management
 
-Facade pattern
+#### Facade Design Pattern
+
+Facade discusses encapsulating a complex subsystem within a single interface object. This reduces the learning curve necessary to successfully leverage the subsystem. It also promotes decoupling the subsystem from its potentially many clients.
+The Facade object should be a fairly simple advocate or facilitator. It should not become an all-knowing oracle or “god” object.
+Here is the good read for Facade design pattern in details
+
+<img src="./assets/example-of-facade-designpattern-in-uml.png" width="100%">
+
+I would recommend following steps to build Angular services using Facade pattern:
+
+- Define all your Angular services as per your business requirement and/or keep adding more as needed.
+- Create a service called “FacadeService” (feel free to use any other name here)
+- Create a Module and provide all Angular services
+
+```ts
+// user.service.ts
+import { Injectable } from "@angular/core";
+
+@Injectable()
+export class UserService {
+  constructor() {}
+
+  getUsers() {
+    return [{ name: "test" }];
+  }
+}
+
+// facade.service.ts
+@Injectable()
+export class FacadeService {
+  // users
+  public users$ = new BehaviorSubject<User[]>([]);
+
+  constructor(public userService: UserService) {}
+
+  public getUsers() {
+    return this.users$.next(this.userService.getUsers());
+  }
+}
+
+// ./containers/users.component.ts
+@Component({
+  templateUrl: "./users.html",
+  styleUrls: ["./users.scss"]
+})
+export class UsersComponent implements OnInit {
+  public users$ = this.facadeService.users$;
+
+  constructor(public facadeService: FacadeService) {}
+
+  public ngOnInit(): void {
+    this.facadeService.getUsers();
+  }
+}
+
+// feature.module.ts
+@NgModule({
+  imports: [CommonModule],
+  declarations: [],
+  providers: [
+    AccountService,
+    DashboardService,
+    LoginService,
+    ProductsService,
+    SignUpService,
+
+    FacadeService
+  ]
+})
+export class FeatureModule {}
+```
 
 <img src="https://miro.medium.com/max/700/0*Piks8Tu6xUYpF4DU" width="100%" height="17px" style="padding: 2px 1rem; background-color: #fff">
 
@@ -111,6 +182,8 @@ Facade pattern
 - ["Custom Form Validation in Angular"](https://www.digitalocean.com/community/tutorials/angular-custom-validation/)
 
 - ["Reactive FormGroup validation with AbstractControl in Angular"](https://ultimatecourses.com/blog/reactive-formgroup-validation-angular-2/)
+
+### Basic setup
 
 ```ts
 import {
