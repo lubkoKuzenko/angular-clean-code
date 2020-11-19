@@ -85,4 +85,61 @@ Facade pattern
 
 ## Angular Forms
 
+### Create form
+
+```ts
+import {
+  ChangeDetectionStrategy,
+  Component,
+  Input,
+  OnInit
+} from "@angular/core";
+import { FormControl, FormGroup, Validators } from "@angular/forms";
+
+@Component({
+  selector: "lib-form",
+  templateUrl: "./form.component.html",
+  styleUrls: ["./form.component.scss"],
+  changeDetection: ChangeDetectionStrategy.OnPush
+})
+export class FormGeneralComponent implements OnInit {
+  public form = new FormGroup({
+    name: new FormControl("", [Validators.required]),
+    description: new FormControl(undefined, [Validators.required]),
+    status: new FormControl(1, [Validators.required])
+  });
+
+  get controls() {
+    return this.form.controls;
+  }
+
+  public ngOnInit() {
+    this.initializeFormValues();
+  }
+
+  // reset form
+  public reset() {
+    this.form.reset();
+  }
+
+  // populate form values
+  public initializeFormValues() {
+    this.form.patchValue({
+      name: "name",
+      description: "description",
+      status: 2
+    });
+  }
+
+  // GET form values
+  public onSubmit() {
+    this.form.getRawValue();
+  }
+}
+```
+
+### Custom Validator
+
+### Child forms
+
 ## Angular Routing
