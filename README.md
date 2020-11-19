@@ -85,8 +85,6 @@ Facade pattern
 
 ## Angular Forms
 
-### Create form
-
 ```ts
 import {
   ChangeDetectionStrategy,
