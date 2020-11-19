@@ -126,7 +126,9 @@ export class UserService {
     return [{ name: "test" }];
   }
 }
+```
 
+```ts
 // facade.service.ts
 @Injectable()
 export class FacadeService {
@@ -139,7 +141,9 @@ export class FacadeService {
     return this.users$.next(this.userService.getUsers());
   }
 }
+```
 
+```ts
 // ./containers/users.component.ts
 @Component({
   templateUrl: "./users.html",
@@ -253,24 +257,29 @@ public form = new FormGroup({
     { validators: atLeastOneRequiredValidator() },
   ),
 });
+```
 
+```ts
 // validators.ts
 import { ValidatorFn, FormGroup, ValidationErrors } from "@angular/forms";
 
 export const atLeastOneRequiredValidator = (): ValidatorFn => {
-    return (group: FormGroup): ValidationErrors => {
-        const control1 = group.controls["program"];
-        const control2 = group.controls["switch"];
-        const control3 = group.controls["intervention"];
+  return (group: FormGroup): ValidationErrors => {
+    const control1 = group.controls["program"];
+    const control2 = group.controls["switch"];
+    const control3 = group.controls["intervention"];
 
-        if (control1.value === "" && control2.value === "" && control3.value === "") {
-            return { empty: true };
-        }
+    if (
+      control1.value === "" &&
+      control2.value === "" &&
+      control3.value === ""
+    ) {
+      return { empty: true };
+    }
 
-        return null;
-    };
+    return null;
+  };
 };
-
 ```
 
 ### Custom FormControl Validator
@@ -282,16 +291,18 @@ import { ValidatePhone } from "./validators.ts";
 public form = new FormGroup({
   phone: ['', [ValidatePhone]]
 });
+```
 
+```ts
 // validators.ts
 export const ValidatePhone = (): ValidatorFn => {
   return (control: AbstractControl): ValidationErrors => {
     if (control.value && control.value.length != 10) {
-      return { 'phoneNumberInvalid': true };
+      return { phoneNumberInvalid: true };
     }
     return null;
-  }
-}
+  };
+};
 ```
 
 ### Child forms
