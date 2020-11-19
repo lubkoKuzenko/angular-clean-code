@@ -11,6 +11,8 @@
     - [Change Detection](#Change-Detection)
   - [State management](#state-management)
 - [Angular Forms](#angular-forms)
+  - [Custom FormGroup Validator](#Custom-FormGroup-Validator)
+  - [Custom FormControl Validator](#Custom-FormControl-Validator)
 - [Angular Routing](#angular-routing)
   - [Custom RouteReuseStrategy](#Custom-RouteReuseStrategy)
 
@@ -217,6 +219,8 @@ export const ValidatePhone = (): ValidatorFn => {
 ```
 
 ### Child forms
+
+<img src="https://www.clipartmax.com/png/middle/341-3416985_png-royalty-free-library-end-frames-illustrations-hd-fancy-line-vector-png.png" width="100%" height="119px" />
 
 ## Angular Routing
 
