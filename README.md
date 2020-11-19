@@ -20,6 +20,8 @@
 
 In order to maintain high quality of delivery and prevent technical debt from being created, we had to agree to a series of guidelines and good practices of how to plan, structure and write applications in Angular
 
+<hr />
+
 ## Angular Architecture
 
 **Resources**
@@ -98,6 +100,8 @@ The `OnPush` change detection strategy allows us to disable the change detection
 ### State management
 
 Facade pattern
+
+<hr />
 
 ## Angular Forms
 
@@ -220,12 +224,7 @@ export const ValidatePhone = (): ValidatorFn => {
 
 ### Child forms
 
-<hr style="border: 0; 
-  height: 1px; 
-  background-image: -webkit-linear-gradient(left, #f0f0f0, #8c8b8b, #f0f0f0);
-  background-image: -moz-linear-gradient(left, #f0f0f0, #8c8b8b, #f0f0f0);
-  background-image: -ms-linear-gradient(left, #f0f0f0, #8c8b8b, #f0f0f0);
-  background-image: -o-linear-gradient(left, #f0f0f0, #8c8b8b, #f0f0f0);" />
+<hr />
 
 ## Angular Routing
 
