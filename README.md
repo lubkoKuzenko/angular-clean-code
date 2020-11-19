@@ -228,6 +228,10 @@ export const ValidatePhone = (): ValidatorFn => {
 
 ## Angular Routing
 
+**Resources**
+
+- ["Angular Component Reuse Strategy"](https://medium.com/@juliapassynkova/angular-2-component-reuse-strategy-9f3ddfab23f5/)
+
 ### Custom RouteReuseStrategy
 
 RouteReuseStrategy decides on whether the router should store the current route when deactivating it or whether the router should restore it when the user re-activates it.
