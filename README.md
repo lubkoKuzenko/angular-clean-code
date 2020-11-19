@@ -8,15 +8,10 @@
 - [Angular Architecture](#angular-architecture)
   - [Project structure](#project-structure)
   - [Data flow architecture](#data-flow-architecture)
+    - [Change Detection](#Change-Detection)
   - [State management](#state-management)
 - [Angular Forms](#angular-forms)
 - [Angular Routing](#angular-routing)
-  - [Introduction](#introduction)
-  - [Table of Content](#table-of-content)
-  - [Network performance](#network-performance)
-    - [Bundling](#bundling)
-- [Conclusion](#conclusion)
-- [Contributing](#contributing)
 
 ## Introdunction
 
@@ -69,6 +64,20 @@ Such architectural approach is intended to keep the number of Containers as smal
 Such an approach to architecture is not only about readability of code and organized data flow. Dummy component are much easier to test. Their state is entirely induced by the Input they are provided with, they cause no side effect and the result of any component action is visible as a proper event being fired.
 
 What is more, such behavior nicely corresponds with performance optimization of Angular’s change detection process. The change detection strategy for dummy components can be set to "onPush" which will trigger the change detection process for the component only when the input properties have been modified. It's an easy and very efficient method of optimizing Angular applications.
+
+#### Change Detection
+
+On each asynchronous event, Angular performs change detection over the entire component tree. Although the code which detects for changes is optimized for [inline-caching](http://mrale.ph/blog/2012/06/03/explaining-js-vms-in-js-inline-caches.html), this still can be a heavy computation in complex applications. A way to improve the performance of the change detection is to not perform it for subtrees which are not supposed to be changed based on the recent actions.
+
+#### `ChangeDetectionStrategy.OnPush`
+
+The `OnPush` change detection strategy allows us to disable the change detection mechanism for subtrees of the component tree. By setting the change detection strategy to any component to the value `ChangeDetectionStrategy.OnPush` will make the change detection perform **only** when the component has received different inputs. Angular will consider inputs as different when it compares them with the previous inputs by reference, and the result of the reference check is `false`. In combination with [immutable data structures](https://facebook.github.io/immutable-js/), `OnPush` can bring great performance implications for such "pure" components.
+
+**Resources**
+
+- ["Angular Application Architecture"](https://bulldogjob.pl/articles/539-scalable-angular-application-architecture)
+- ["Change Detection in Angular"](https://vsavkin.com/change-detection-in-angular-2-4f216b855d4c)
+- ["Everything you need to know about change detection in Angular"](https://blog.angularindepth.com/everything-you-need-to-know-about-change-detection-in-angular-8006c51d206f)
 
 ### State management
 
