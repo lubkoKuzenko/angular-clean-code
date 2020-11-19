@@ -14,9 +14,17 @@
   - [Basic setup](#Basic-setup)
   - [Custom FormGroup Validator](#Custom-FormGroup-Validator)
   - [Custom FormControl Validator](#Custom-FormControl-Validator)
-  - [Child forms](#Child-forms)
 - [Angular Routing](#angular-routing)
   - [Custom RouteReuseStrategy](#Custom-RouteReuseStrategy)
+
+TODO
+
+- tslint.json
+- tsconfig.json
+- Prettier (.prettierrc)
+- ControlValueAccessor
+- Child forms
+- best way to unsubscribe
 
 ## Introduction
 
@@ -305,10 +313,6 @@ export const ValidatePhone = (): ValidatorFn => {
   };
 };
 ```
-
-### Child forms
-
-TODO
 
 <img src="https://miro.medium.com/max/700/0*Piks8Tu6xUYpF4DU" width="100%" height="17px" style="padding: 2px 1rem; background-color: #fff">
 
