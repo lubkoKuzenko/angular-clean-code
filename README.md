@@ -154,20 +154,19 @@ export class UsersComponent implements OnInit {
     this.facadeService.getUsers();
   }
 }
+```
 
+```html
+<!-- ./containers/users.component.html  -->
+{{ users$ | async | json }}
+```
+
+```ts
 // feature.module.ts
 @NgModule({
   imports: [CommonModule],
   declarations: [],
-  providers: [
-    AccountService,
-    DashboardService,
-    LoginService,
-    ProductsService,
-    SignUpService,
-
-    FacadeService
-  ]
+  providers: [UserService, FacadeService]
 })
 export class FeatureModule {}
 ```
