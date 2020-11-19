@@ -220,7 +220,8 @@ export const ValidatePhone = (): ValidatorFn => {
 
 ### Child forms
 
-<img src="https://www.clipartmax.com/png/middle/341-3416985_png-royalty-free-library-end-frames-illustrations-hd-fancy-line-vector-png.png" width="100%" height="119px" />
+<hr style="border-top: 1px solid #8c8b8b;
+	border-bottom: 1px solid #fff;" />
 
 ## Angular Routing
 
