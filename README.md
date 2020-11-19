@@ -145,6 +145,8 @@ export class FormGeneralComponent implements OnInit {
 
 ### Custom RouteReuseStrategy
 
+RouteReuseStrategy decides on whether the router should store the current route when deactivating it or whether the router should restore it when the user re-activates it.
+
 ```ts
 // app.module.ts
 import { RouteReuseStrategy } from "@angular/router";
