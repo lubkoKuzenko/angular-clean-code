@@ -20,7 +20,7 @@
 
 In order to maintain high quality of delivery and prevent technical debt from being created, we had to agree to a series of guidelines and good practices of how to plan, structure and write applications in Angular
 
-<hr />
+<img src="https://miro.medium.com/max/700/0*Piks8Tu6xUYpF4DU" width="100%" height="17px" style="padding: 2px 1rem; background-color: #fff">
 
 ## Angular Architecture
 
@@ -101,7 +101,7 @@ The `OnPush` change detection strategy allows us to disable the change detection
 
 Facade pattern
 
-<hr />
+<img src="https://miro.medium.com/max/700/0*Piks8Tu6xUYpF4DU" width="100%" height="17px" style="padding: 2px 1rem; background-color: #fff">
 
 ## Angular Forms
 
