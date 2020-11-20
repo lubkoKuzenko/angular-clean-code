@@ -42,6 +42,12 @@ In order to maintain high quality of delivery and prevent technical debt from be
 
 ## Configuration
 
+**Resources**
+
+- ["TypeScript Deep Dive: tsconfig.json"](https://basarat.gitbook.io/typescript/project/compilation-context/tsconfig)
+
+- ["tsconfig.json с комментариями"](https://gist.github.com/lubkoKuzenko/b0dfc526a8be2a00f007542960206260)
+
 ### tsconfig.json
 
 The presence of a tsconfig.json file in a directory indicates that the directory is the root of a TypeScript project. The tsconfig.json file specifies the root files and the compiler options required to compile the project.
@@ -102,6 +108,8 @@ The presence of a tsconfig.json file in a directory indicates that the directory
   }
 }
 ```
+
+<img src="https://miro.medium.com/max/700/0*Piks8Tu6xUYpF4DU" width="100%" height="17px" style="padding: 2px 1rem; background-color: #fff">
 
 ## Angular Architecture
 
