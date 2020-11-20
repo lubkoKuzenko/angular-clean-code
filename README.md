@@ -33,10 +33,6 @@
 
 ## TODO
 
-- ControlValueAccessor
-- Child forms
-- nested forms
-- recursive forms(trees)
 - best way to unsubscribe
 
 ## Introduction
