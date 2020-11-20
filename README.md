@@ -21,7 +21,6 @@
 ## TODO
 
 - tslint.json
-- tsconfig.json
 - Prettier (.prettierrc)
 - ControlValueAccessor
 - Child forms
@@ -41,7 +40,9 @@ In order to maintain high quality of delivery and prevent technical debt from be
 
 <img src="https://miro.medium.com/max/700/0*Piks8Tu6xUYpF4DU" width="100%" height="17px" style="padding: 2px 1rem; background-color: #fff">
 
-## tsconfig.json
+## Configuration
+
+### tsconfig.json
 
 The presence of a tsconfig.json file in a directory indicates that the directory is the root of a TypeScript project. The tsconfig.json file specifies the root files and the compiler options required to compile the project.
 
@@ -51,7 +52,7 @@ The presence of a tsconfig.json file in a directory indicates that the directory
   "compilerOptions": {
     // Basic Options
     "target": "es5",                        // Specify ECMAScript target version: 'ES3' (default), 'ES5', 'ES2015', 'ES2016', 'ES2017', or 'ESNEXT'.
-    "module": "commonjs",                 // Specify module code generation: 'commonjs', 'amd', 'system', 'umd' or 'es2015'.
+    "module": "commonjs",                  // Specify module code generation: 'commonjs', 'amd', 'system', 'umd' or 'es2015'.
     "lib": [],                             // Specify library files to be included in the compilation:
     "allowJs": true,                       // Allow JavaScript files to be compiled.
     "checkJs": true,                       // Report errors in .js files.
@@ -98,32 +99,6 @@ The presence of a tsconfig.json file in a directory indicates that the directory
     // Experimental Options
     "experimentalDecorators": true,        // Enables experimental support for ES7 decorators.
     "emitDecoratorMetadata": true          // Enables experimental support for emitting type metadata for decorators.
-  }
-}
-These (and more) compiler options will be discussed later.
-
-TypeScript compiler
-Good IDEs come with built in support for on the fly ts to js compilation. However, if you want to run the TypeScript compiler manually from the command line when using tsconfig.json, you can do it in a few ways:
-
-Just run tsc and it will look for tsconfig.json in the current as well as all parent folders till it finds it.
-
-Run tsc -p ./path-to-project-directory. Of course the path can be absolute or relative to the current directory.
-
-You can even start the TypeScript compiler in watch mode using tsc -w and it will watch your TypeScript project files for changes.
-
-Previous
-Compilation Context
-Next
-Which Files?
-
-Last updated 10 months ago
-Edit on GitHub
-CONTENTS
-Basic
-compilerOptions
-TypeScript compiler
-Search...
-Search Placeholder
   }
 }
 ```
