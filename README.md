@@ -20,10 +20,11 @@
   - [Custom FormControl Validator](#Custom-FormControl-Validator)
 - [Angular Routing](#angular-routing)
   - [Custom RouteReuseStrategy](#Custom-RouteReuseStrategy)
+- [Unit testing](#Unit-testing)
+  - [Karma configuration for CI/CD (bamboo example)](#Unit-testing)
 
 ## TODO
 
-- Prettier (.prettierrc)
 - ControlValueAccessor
 - Child forms
 - nested forms
@@ -54,11 +55,14 @@ In order to maintain high quality of delivery and prevent technical debt from be
 
 - ["Configuring TSLint"](https://palantir.github.io/tslint/usage/configuration/)
 
+- ["Prettier Options"](https://prettier.io/docs/en/options.html/)
+
 ### Configuring tsconfig.json
 
 The presence of a tsconfig.json file in a directory indicates that the directory is the root of a TypeScript project. The tsconfig.json file specifies the root files and the compiler options required to compile the project.
 
 ```ts
+// tsconfig.json
 {
   "compileOnSave": false,
   "compilerOptions": {
@@ -155,8 +159,14 @@ tslint.json configuration files may have JavaScript-style // single-line and /_ 
 An example tslint.json file might look like this:
 
 ```json
+// tslint.json
 {
-  "extends": ["tslint:recommended", "tslint-sonarts", "tslint-angular", "tslint-config-prettier"],
+  "extends": [
+    "tslint:recommended",
+    "tslint-sonarts",
+    "tslint-angular",
+    "tslint-config-prettier"
+  ],
   "rulesDirectory": ["node_modules/codelyzer"],
   "jsRules": {},
   "rules": {
@@ -192,7 +202,17 @@ An example tslint.json file might look like this:
 
 ### Configuring Prettier
 
-todo
+```ts
+// .prettierrc
+printWidth: 120
+tabWidth: 2
+semi: true
+singleQuote: false
+trailingComma: all # other options `es5` or `all`
+bracketSpacing: true
+arrowParens: always # other option "always"
+htmlWhitespaceSensitivity: 'ignore'
+```
 
 <img src="https://miro.medium.com/max/700/0*Piks8Tu6xUYpF4DU" width="100%" height="17px" style="padding: 2px 1rem; background-color: #fff">
 
@@ -556,3 +576,68 @@ export class CustomReuseStrategy implements RouteReuseStrategy {
   }
 }
 ````
+
+<img src="https://miro.medium.com/max/700/0*Piks8Tu6xUYpF4DU" width="100%" height="17px" style="padding: 2px 1rem; background-color: #fff">
+
+## Unit testing
+
+### Karma configuration for CI/CD (bamboo example)
+
+```js
+module.exports = function(config) {
+  config.set({
+    basePath: "",
+    frameworks: ["jasmine", "@angular-devkit/build-angular"],
+    plugins: [
+      require("karma-jasmine"),
+      require("karma-chrome-launcher"),
+      require("karma-bamboo-reporter"),
+      require("karma-jasmine-html-reporter"),
+      require("karma-coverage-istanbul-reporter"),
+      require("@angular-devkit/build-angular/plugins/karma")
+    ],
+    client: {
+      clearContext: false // leave Jasmine Spec Runner output visible in browser
+    },
+    coverageIstanbulReporter: {
+      dir: require("path").join(__dirname, "../../coverage/"),
+      reports: ["html", "lcovonly", "clover"],
+      fixWebpackSourcePaths: true,
+      "report-config": {
+        html: {
+          subdir: "html"
+        },
+        clover: {
+          subdir: "clover"
+        }
+      }
+    },
+    bambooReporter: {
+      filename: "coverage/mocha.json"
+    },
+    reporters: ["progress", "kjhtml", "bamboo"],
+    port: 9876,
+    colors: true,
+    logLevel: config.LOG_INFO,
+    autoWatch: true,
+    // browsers: ["Chrome"], // enable this line locally for testing and debugging
+    browsers: ["ChromeHeadlessNoSandbox"],
+    customLaunchers: {
+      ChromeHeadlessNoSandbox: {
+        base: "ChromeHeadless",
+        flags: ["--no-sandbox"],
+        options: {
+          viewportSize: {
+            width: 1280,
+            height: 1024
+          }
+        }
+      }
+    },
+    singleRun: false,
+    restartOnFileChange: true
+  });
+};
+```
+
+<img src="https://miro.medium.com/max/700/0*Piks8Tu6xUYpF4DU" width="100%" height="17px" style="padding: 2px 1rem; background-color: #fff">
