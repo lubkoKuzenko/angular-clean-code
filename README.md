@@ -156,26 +156,36 @@ An example tslint.json file might look like this:
 
 ```json
 {
-  "extends": "tslint:recommended",
-  "rulesDirectory": ["path/to/custom/rules/directory/", "another/path/"],
+  "extends": ["tslint:recommended", "tslint-sonarts", "tslint-angular", "tslint-config-prettier"],
+  "rulesDirectory": ["node_modules/codelyzer"],
+  "jsRules": {},
   "rules": {
-    "max-line-length": {
-      "options": [120]
-    },
-    "new-parens": true,
-    "no-arg": true,
-    "no-bitwise": true,
-    "no-conditional-assignment": true,
-    "no-consecutive-blank-lines": false,
-    "no-console": {
-      "severity": "warning",
-      "options": ["debug", "info", "log", "time", "timeEnd", "trace"]
-    }
+    "curly": [true, "ignore-same-line"],
+    "max-line-length": [true, 120],
+    "no-console": false,
+    "no-commented-code": false,
+    "object-literal-sort-keys": false,
+    "object-literal-key-quotes": false,
+    "ordered-imports": false,
+    "interface-name": false,
+    "max-classes-per-file": false,
+    "cyclomatic-complexity": [true, 15],
+    "member-ordering": false,
+    "no-invalid-await": false,
+    "no-duplicate-string": [true, 7],
+    "variable-name": [
+      true,
+      "check-format",
+      "allow-leading-underscore",
+      "allow-pascal-case",
+      "allow-snake-case",
+      "ban-keywords"
+    ],
+    "template-banana-in-box": true,
+    "template-no-negated-async": true
   },
-  "jsRules": {
-    "max-line-length": {
-      "options": [120]
-    }
+  "linterOptions": {
+    "exclude": []
   }
 }
 ```
