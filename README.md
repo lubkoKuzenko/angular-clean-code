@@ -11,6 +11,9 @@
   - [Configuring Prettier](#Configuring-Prettier)
 - [Angular Architecture](#angular-architecture)
   - [Project structure](#project-structure)
+    - [AppModule](#project-structure)
+    - [CoreModule](#project-structure)
+    - [SharedModule](#project-structure)
   - [Data flow architecture](#data-flow-architecture)
     - [Change Detection](#Change-Detection)
   - [State management](#state-management)
@@ -34,8 +37,6 @@
 - best way to unsubscribe
 - error handling
 - JWT TokenInterceptor
-- shared module structure
-- CoreModule module structure
 
 ## Introduction
 
@@ -246,11 +247,154 @@ Obviously, it’s not possible to strictly follow this rule in the real world. A
 
 As you can see, there are now three main modules in the project:
 
-- AppModule – the bootstrapping module, responsible for launching the application and combining other modules together
+### AppModule – the bootstrapping module, responsible for launching the application and combining other modules together
 
-- CoreModule – core functionalities, mostly global services, that will be used in the whole application globally. They should not be imported by other application modules
+```ts
+import { NgModule } from "@angular/core";
 
-- SharedModule – usually a set of components or services that will be reused in other application modules, not applied globally. They can be imported by feature modules.
+import { CoreModule } from "./core";
+import { SharedModule } from "./shared";
+
+import { AppRoutingModule } from "./app-routing.module";
+import { AppComponent } from "./app.component";
+
+import { DashboardModule } from "./dashboard/dashboard.module";
+
+@NgModule({
+  declarations: [AppComponent],
+  imports: [
+    CoreModule,
+    SharedModule,
+
+    // features
+    DashboardModule,
+
+    // app
+    AppRoutingModule
+  ],
+  providers: [],
+  bootstrap: [AppComponent]
+})
+export class AppModule {}
+```
+
+### CoreModule – core functionalities, mostly global services, that will be used in the whole application globally. They should not be imported by other application modules
+
+```ts
+import { NgModule, Optional, SkipSelf, ErrorHandler } from "@angular/core";
+import { CommonModule } from "@angular/common";
+import { HttpClientModule, HTTP_INTERCEPTORS } from "@angular/common/http";
+import { TokenInterceptor } from "./http-interceptors/http-token.interceptor";
+import { AppErrorInterceptor } from "./http-interceptors/http-error.interseptor";
+
+import { AppInitService } from "./app-init.service";
+export function initializerFactory(appConfig: AppInitService) {
+  return (): Promise<any> => {
+    return appConfig.load();
+  };
+}
+
+@NgModule({
+  imports: [CommonModule, HttpClientModule],
+  providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: TokenInterceptor,
+      multi: true
+    },
+    {
+      provide: APP_INITIALIZER,
+      useFactory: initializerFactory,
+      deps: [AppInitService],
+      multi: true
+    },
+    {
+      provide: ErrorHandler,
+      useClass: AppErrorInterceptor
+    }
+  ],
+  exports: [HttpClientModule]
+})
+export class CoreModule {
+  constructor(
+    @Optional()
+    @SkipSelf()
+    parentModule: CoreModule
+  ) {
+    if (parentModule) {
+      throw new Error("CoreModule is already loaded. Import only in AppModule");
+    }
+  }
+}
+```
+
+### SharedModule – usually a set of components or services that will be reused in other application modules, not applied globally. They can be imported by feature modules.
+
+Structure of SHARED module:
+
+shared
+
+- modules
+  - primeng.module.ts
+  - material.module.ts
+  - \*.module.ts
+- directives
+  - \*.directive.ts
+  - directives.module
+- pipes
+  - \*.pipe.ts
+  - pipes.module
+- components
+  - \*.component.ts
+  - components.module
+
+```ts
+import { NgModule } from "@angular/core";
+import { CommonModule } from "@angular/common";
+import { FormsModule, ReactiveFormsModule } from "@angular/forms";
+import { BrowserModule } from "@angular/platform-browser";
+import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
+
+import { SharedDirectivesModule } from "./directives/directives.module";
+import { SharedPipesModule } from "./pipes/pipes.module";
+import { SharedComponentsModule } from "./components/components.module";
+
+const SHARED_MODULES = [
+  CommonModule,
+  FormsModule,
+  ReactiveFormsModule,
+
+  SharedDirectivesModule,
+  SharedPipesModule,
+  SharedComponentsModule
+];
+
+@NgModule({
+  providers: [],
+  declarations: [],
+  imports: [...SHARED_MODULES],
+  exports: [...SHARED_MODULES]
+})
+export class SharedModule {}
+```
+
+directives.module.ts, pipes.module.ts, components.module.ts has the same structure:
+
+```ts
+// components.module.ts
+import { CommonModule } from "@angular/common";
+import { NgModule, Type } from "@angular/core";
+import { ReactiveFormsModule } from "@angular/forms";
+
+export const SHARED_COMPONENTS: Array<Type<any>> = [];
+
+@NgModule({
+  imports: [CommonModule, ReactiveFormsModule],
+  declarations: [...SHARED_COMPONENTS],
+  exports: [...SHARED_COMPONENTS]
+})
+export class SharedComponentsModule {}
+```
 
 All remaining modules (so-called feature modules) should be isolated and independent. Such a structure not only allows for clear concerns separation, but is also a convenient starting point for implementing lazy loading functionality, another crucial step in preparing a scalable application architecture.
 
