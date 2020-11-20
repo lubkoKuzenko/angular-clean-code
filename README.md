@@ -17,6 +17,9 @@
   - [Data flow architecture](#data-flow-architecture)
     - [Change Detection](#Change-Detection)
   - [State management](#state-management)
+- [Angular Features](#Angular-Features)
+  - [Directive](#Directive)
+  - [Pipe](#Pipe)
 - [Angular Forms](#angular-forms)
   - [Basic setup](#Basic-setup)
   - [Custom FormGroup Validator](#Custom-FormGroup-Validator)
@@ -25,6 +28,7 @@
   - [Custom RouteReuseStrategy](#Custom-RouteReuseStrategy)
 - [Unit testing](#Unit-testing)
   - [Karma configuration for CI/CD (bamboo example)](#Unit-testing)
+- [JWT Token Interceptor](#JWT-Token-Interceptor)
 
 ## TODO
 
@@ -32,11 +36,7 @@
 - Child forms
 - nested forms
 - recursive forms(trees)
-- pipes
-- directives
 - best way to unsubscribe
-- error handling
-- JWT TokenInterceptor
 
 ## Introduction
 
@@ -520,6 +520,93 @@ export class FeatureModule {}
 
 <img src="https://miro.medium.com/max/700/0*Piks8Tu6xUYpF4DU" width="100%" height="17px" style="padding: 2px 1rem; background-color: #fff">
 
+## Angular Features
+
+### Directive
+
+Directive should be stored in Directives folder of Shared Module.
+
+```ts
+// underline.directive.ts
+import {
+  Directive,
+  ElementRef,
+  HostListener,
+  HostBinding,
+  Renderer2
+} from "@angular/core";
+
+// Annotation section
+@Directive({ selector: "[bbUnderline]" })
+
+/*
+ *element-name: select by element name.
+ *.class: select by class name.
+ *[attribute]: select by attribute name.
+ *[attribute=value]: select by attribute name and value.
+ *:not(sub_selector): select only if the element does not match the sub_selector.
+ *selector1, selector2: select if either selector1 or selector2 matches.
+ */
+export class UnderlineDirective {
+  // @Input() my: boolean;
+  constructor(private el: ElementRef, private renderer: Renderer2) {}
+
+  // HostBinding - will bind property to host element, If a binding changes, HostBinding will update the host element.
+  // @HostBinding('style.backgroundColor')
+  // color = 'yellow';
+
+  // HostListener - will listen to the event emitted by host element, declared with @HostListener.
+  @HostListener("mouseenter")
+  onMouseEnter() {
+    this.hover(true);
+  }
+
+  @HostListener("mouseleave")
+  onMouseLeave() {
+    this.hover(false);
+  }
+
+  hover(shouldUnderline: boolean) {
+    if (shouldUnderline) {
+      this.renderer.setStyle(
+        this.el.nativeElement,
+        "text-decoration",
+        "underline"
+      );
+    } else {
+      this.renderer.setStyle(this.el.nativeElement, "text-decoration", "none");
+    }
+  }
+}
+```
+
+### Pipe
+
+Pipe should be stored in Pipes folder of Shared Module.
+
+```ts
+// reverse.pipe.ts
+// how to use {{text | reverseStr}}
+import { Pipe, PipeTransform } from "@angular/core";
+
+@Pipe({
+  name: "reverseStr"
+})
+export class ReverseStrPipe implements PipeTransform {
+  transform(value: string): string {
+    let newStr = "";
+
+    for (let i = value.length - 1; i >= 0; i--) {
+      newStr += value.charAt(i);
+    }
+
+    return newStr;
+  }
+}
+```
+
+<img src="https://miro.medium.com/max/700/0*Piks8Tu6xUYpF4DU" width="100%" height="17px" style="padding: 2px 1rem; background-color: #fff">
+
 ## Angular Forms
 
 **Resources**
@@ -791,3 +878,58 @@ module.exports = function(config) {
 ```
 
 <img src="https://miro.medium.com/max/700/0*Piks8Tu6xUYpF4DU" width="100%" height="17px" style="padding: 2px 1rem; background-color: #fff">
+
+## JWT Token Interceptor
+
+```ts
+import { Injectable, Injector, ErrorHandler } from "@angular/core";
+import {
+  HttpEvent,
+  HttpInterceptor,
+  HttpHandler,
+  HttpResponse,
+  HttpRequest,
+  HttpErrorResponse
+} from "@angular/common/http";
+import { Observable, of } from "rxjs";
+import { tap } from "rxjs/operators";
+
+@Injectable()
+export class TokenInterceptor implements HttpInterceptor {
+  constructor() {}
+
+  intercept(
+    request: HttpRequest<any>,
+    next: HttpHandler
+  ): Observable<HttpEvent<any>> {
+    request = request.clone({
+      setHeaders: {
+        Authorization: `Bearer token`
+      }
+    });
+
+    return next.handle(request).pipe(
+      tap(
+        (event: HttpEvent<any>) => {
+          this.onSuccess(event);
+        },
+        (error: any) => {
+          this.onError(error);
+        }
+      )
+    );
+  }
+
+  onSuccess(event) {
+    if (event instanceof HttpResponse) {
+      // Intercepting HTTP responses
+    }
+  }
+
+  onError(error) {
+    if (error instanceof HttpErrorResponse) {
+      console.log("%cHttp error message: " + error.message);
+    }
+  }
+}
+```
