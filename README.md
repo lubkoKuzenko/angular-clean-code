@@ -11,9 +11,9 @@
   - [Configuring Prettier](#Configuring-Prettier)
 - [Angular Architecture](#angular-architecture)
   - [Project structure](#project-structure)
-    - [AppModule](#project-structure)
-    - [CoreModule](#project-structure)
-    - [SharedModule](#project-structure)
+    - [AppModule](#AppModule)
+    - [CoreModule](#CoreModule)
+    - [SharedModule](#SharedModule)
   - [Data flow architecture](#data-flow-architecture)
     - [Change Detection](#Change-Detection)
   - [State management](#state-management)
@@ -247,7 +247,9 @@ Obviously, it’s not possible to strictly follow this rule in the real world. A
 
 As you can see, there are now three main modules in the project:
 
-### AppModule – the bootstrapping module, responsible for launching the application and combining other modules together
+#### AppModule
+
+The bootstrapping module, responsible for launching the application and combining other modules together
 
 ```ts
 import { NgModule } from "@angular/core";
@@ -278,7 +280,9 @@ import { DashboardModule } from "./dashboard/dashboard.module";
 export class AppModule {}
 ```
 
-### CoreModule – core functionalities, mostly global services, that will be used in the whole application globally. They should not be imported by other application modules
+#### CoreModule
+
+Core functionalities, mostly global services, that will be used in the whole application globally. They should not be imported by other application modules
 
 ```ts
 import { NgModule, Optional, SkipSelf, ErrorHandler } from "@angular/core";
@@ -328,7 +332,9 @@ export class CoreModule {
 }
 ```
 
-### SharedModule – usually a set of components or services that will be reused in other application modules, not applied globally. They can be imported by feature modules.
+#### SharedModule
+
+Usually a set of components or services that will be reused in other application modules, not applied globally. They can be imported by feature modules.
 
 Structure of SHARED module:
 
