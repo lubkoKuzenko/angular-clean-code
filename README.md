@@ -952,13 +952,15 @@ import 'rxjs/add/operator/takeUntil';
 export class AppComponent implements OnInit, OnDestroy {
   destroy$: Subject<boolean> = new Subject<boolean>();
 
-  constructor() {
+  constructor() {}
+
+  ngOnInit(){
     Observable
-    .interval(250)
-    .takeUntil(this.destroy$)
-    .subscribe(val => {
-      console.log('Current value:', val);
-    });
+      .interval(250)
+      .takeUntil(this.destroy$)
+      .subscribe(val => {
+        console.log('Current value:', val);
+      });
   }
 
   ngOnDestroy() {
