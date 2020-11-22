@@ -933,6 +933,8 @@ export class TokenInterceptor implements HttpInterceptor {
 }
 ```
 
+<img src="https://miro.medium.com/max/700/0*Piks8Tu6xUYpF4DU" width="100%" height="17px" style="padding: 2px 1rem; background-color: #fff">
+
 ## Unsubscribing with takeUntil
 
 The solution is to compose our subscriptions with the takeUntil operator and use a subject that emits a truthy value in the ngOnDestroy lifecycle hook.
