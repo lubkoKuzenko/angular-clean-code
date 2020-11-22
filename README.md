@@ -16,6 +16,8 @@
     - [CoreModule](#CoreModule)
     - [SharedModule](#SharedModule)
   - [Data flow architecture](#data-flow-architecture)
+    - [Container Components](#Container-Components)
+    - [Presentational Components](#Presentational-Components)
     - [Change Detection](#Change-Detection)
   - [State management](#state-management)
 - [Angular Features](#Angular-Features)
@@ -419,18 +421,18 @@ Such an approach to architecture is not only about readability of code and organ
 
 What is more, such behavior nicely corresponds with performance optimization of Angular’s change detection process. The change detection strategy for dummy components can be set to "onPush" which will trigger the change detection process for the component only when the input properties have been modified. It's an easy and very efficient method of optimizing Angular applications.
 
-### Presentational Components
-
-- are purely user interface and concerned with how things look.
-- are not aware about the business logic, or services.
-- receive data via @Inputs, and emit events via @Output.
-
 ### Container Components
 
 - contain all the business logic.
 - pass the data to the Presentational Components, and handle @Output events raised by them.
 - have no UI logic.
 - do have dependencies on other parts of your app, like services, or your state store.
+
+### Presentational Components
+
+- are purely user interface and concerned with how things look.
+- are not aware about the business logic, or services.
+- receive data via @Inputs, and emit events via @Output.
 
 #### Change Detection
 
