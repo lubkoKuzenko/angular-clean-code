@@ -32,7 +32,7 @@
 - [Unit testing](#Unit-testing)
   - [Karma configuration for CI/CD (bamboo example)](#Unit-testing)
 - [JWT Token Interceptor](#JWT-Token-Interceptor)
-- [Unsubscribing with takeUntil](#Unsubscribing-with-takeUntil)
+- [Unsubscribe from Observables](#Unsubscribe-from-Observables)
 
 ## Introduction
 
@@ -937,7 +937,34 @@ export class TokenInterceptor implements HttpInterceptor {
 
 <img src="https://miro.medium.com/max/700/0*Piks8Tu6xUYpF4DU" width="100%" height="17px" style="padding: 2px 1rem; background-color: #fff">
 
-## Unsubscribing with takeUntil
+## Unsubscribe from Observables
+
+### Use Async | Pipe
+
+The async pipe subscribes to an Observable or Promise and returns the latest value it has emitted. When a new value is emitted, the async pipe marks the component to be checked for changes. When the component gets destroyed, the asyncpipe unsubscribes automatically to avoid potential memory leaks.
+Using it in our AppComponent:
+
+```ts
+@Component({
+    ...,
+    template: `
+        <div>
+         Interval: {{observable$ | async}}
+        </div>
+    `
+})
+export class AppComponent implements OnInit {
+    observable$
+    ngOnInit () {
+        this.observable$ = Rx.Observable.interval(1000);
+    }
+}
+```
+
+On instantiation, the AppComponent will create an Observable from the interval method. In the template, the Observable observable$ is piped to the async Pipe. The async pipe will subscribe to the observable$ and display its value in the DOM. async pipe will unsubscribe the observable\$ when the AppComponent is destroyed. async Pipe has ngOnDestroy on its class so it is called when the view is contained in is being destroyed.
+Using the async pipe is a huge advantage if we are using Observables in our components because it will subscribe to them and unsubscribe from them. We will not be bothered about forgetting to unsubscribe from them in ngOnDestroy when the component is being killed off.
+
+### Unsubscribing Declaratively with takeUntil
 
 The solution is to compose our subscriptions with the takeUntil operator and use a subject that emits a truthy value in the ngOnDestroy lifecycle hook.
 
