@@ -30,10 +30,7 @@
 - [Unit testing](#Unit-testing)
   - [Karma configuration for CI/CD (bamboo example)](#Unit-testing)
 - [JWT Token Interceptor](#JWT-Token-Interceptor)
-
-## TODO
-
-- best way to unsubscribe
+- [Unsubscribing with takeUntil](#Unsubscribing-with-takeUntil)
 
 ## Introduction
 
@@ -935,3 +932,38 @@ export class TokenInterceptor implements HttpInterceptor {
   }
 }
 ```
+
+## Unsubscribing with takeUntil
+
+The solution is to compose our subscriptions with the takeUntil operator and use a subject that emits a truthy value in the ngOnDestroy lifecycle hook.
+
+The following snippet does the exact same thing, but this time we unsubscribe declaratively. You’ll notice that an added benefit is that we don’t need to keep references to our subscriptions anymore:
+
+```ts
+
+import { Observable } from 'rxjs/Observable';
+import { Subject } from 'rxjs/Subject';
+import 'rxjs/add/observable/interval';
+import 'rxjs/add/operator/takeUntil';
+
+@Component({ ... })
+export class AppComponent implements OnInit, OnDestroy {
+  destroy$: Subject<boolean> = new Subject<boolean>();
+
+  constructor() {
+    Observable
+    .interval(250)
+    .takeUntil(this.destroy$)
+    .subscribe(val => {
+      console.log('Current value:', val);
+    });
+  }
+
+  ngOnDestroy() {
+    this.destroy$.next(true);
+    // Now let's also unsubscribe from the subject itself:
+    this.destroy$.unsubscribe();
+  }
+```
+
+Note that Using an operator like takeUntil instead of manually unsubscribing will also complete the observable, triggering any completion event on the observable
