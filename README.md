@@ -34,6 +34,10 @@
 - [JWT Token Interceptor](#JWT-Token-Interceptor)
 - [Unsubscribe from Observables](#Unsubscribe-from-Observables)
 
+## TODO
+
+Angular Folder Structure
+
 ## Introduction
 
 In order to maintain high quality of delivery and prevent technical debt from being created, we had to agree to a series of guidelines and good practices of how to plan, structure and write applications in Angular
@@ -339,23 +343,32 @@ Usually a set of components or services that will be reused in other application
 
 Structure of SHARED module:
 
-shared
-
-- modules
-  - primeng.module.ts
-  - material.module.ts
-  - \*.module.ts
-- directives
-  - \*.directive.ts
-  - directives.module
-- pipes
-  - \*.pipe.ts
-  - pipes.module
-- components
-  - \*.component.ts
-  - components.module
+```bash
+├── app
+|  ├── shared
+|  |  ├── modules
+|  |  |  ├── primeng.module.ts
+|  |  |  ├── material.module.ts.
+|  |  |  └── *.module.ts
+|  |  ├── components
+|  |  |  ├── *.component.ts
+|  |  |  └── components.module.ts
+|  |  ├── directives
+|  |  |  ├── *.directive.ts
+|  |  |  └── directives.module.ts
+|  |  └── pipes
+|  |    ├── *.pipe.ts
+|  |    └── pipes.module.ts
+|  └── shared.module.ts
+|
+├── index.html
+├── main.ts
+├── styles.scss
+└── test.ts
+```
 
 ```ts
+// shared.module.ts
 import { NgModule } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
