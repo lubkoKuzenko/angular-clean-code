@@ -289,14 +289,37 @@ export class AppModule {}
 
 Core functionalities, mostly global services, that will be used in the whole application globally. They should not be imported by other application modules
 
+Structure of Core module:
+
+```bash
+├── app
+|  ├── core
+|  |  ├── guards
+|  |  |   └── auth.guard.ts
+|  |  ├── interceptor
+|  |  |   ├── error-interceptor.ts
+|  |  |   └── jwt-interceptor.ts
+|  |  ├── services
+|  |  |   ├── app-init.service.ts
+|  |  |   └── router-reuse.strategy.ts
+|  |  └── core.module.ts
+|  ├── app-routing.module.ts
+|  └── app.module.ts
+├── favicon.ico
+├── index.html
+├── main.ts
+├── styles.scss
+└── test.ts
+```
+
 ```ts
 import { NgModule, Optional, SkipSelf, ErrorHandler } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { HttpClientModule, HTTP_INTERCEPTORS } from "@angular/common/http";
-import { TokenInterceptor } from "./http-interceptors/http-token.interceptor";
-import { AppErrorInterceptor } from "./http-interceptors/http-error.interseptor";
+import { TokenInterceptor } from "./interceptor/jwt-interceptor";
+import { AppErrorInterceptor } from "./interceptor/error-interceptor";
 
-import { AppInitService } from "./app-init.service";
+import { AppInitService } from "./services/app-init.service";
 export function initializerFactory(appConfig: AppInitService) {
   return (): Promise<any> => {
     return appConfig.load();
@@ -360,7 +383,6 @@ Structure of SHARED module:
 |  |    ├── *.pipe.ts
 |  |    └── pipes.module.ts
 |  └── shared.module.ts
-|
 ├── index.html
 ├── main.ts
 ├── styles.scss
