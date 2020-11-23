@@ -15,6 +15,7 @@
     - [AppModule](#AppModule)
     - [CoreModule](#CoreModule)
     - [SharedModule](#SharedModule)
+    - [The Feature Modules](#The-Feature-Modules)
   - [Data flow architecture](#data-flow-architecture)
     - [Container Components](#Container-Components)
     - [Presentational Components](#Presentational-Components)
