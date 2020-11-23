@@ -295,7 +295,7 @@ Structure of Core module:
 ├── app
 |  ├── core
 |  |  ├── guards
-|  |  |   └── auth.guard.ts
+|  |  |   └── module-import-guard.ts
 |  |  ├── interceptor
 |  |  |   ├── error-interceptor.ts
 |  |  |   └── jwt-interceptor.ts
