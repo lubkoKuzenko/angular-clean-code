@@ -667,6 +667,10 @@ export class ReverseStrPipe implements PipeTransform {
 
 - ["Reactive FormGroup validation with AbstractControl in Angular"](https://ultimatecourses.com/blog/reactive-formgroup-validation-angular-2/)
 
+- ["ControlValueAccessor in Angular forms"](https://indepth.dev/posts/1055/never-again-be-confused-when-implementing-controlvalueaccessor-in-angular-forms/)
+
+- ["Using ControlValueAccessor to Create Custom Form Controls in Angular"](https://www.digitalocean.com/community/tutorials/angular-custom-form-control/)
+
 ### Basic setup
 
 ```ts
