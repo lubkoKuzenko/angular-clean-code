@@ -33,6 +33,7 @@
 - [Unit testing](#Unit-testing)
   - [Karma configuration for CI/CD (bamboo example)](#Unit-testing)
 - [JWT Token Interceptor](#JWT-Token-Interceptor)
+- [Angular Dynamic Components](#Angular-Dynamic-Components)
 - [Unsubscribe from Observables](#Unsubscribe-from-Observables)
 
 ## TODO
@@ -980,6 +981,73 @@ export class TokenInterceptor implements HttpInterceptor {
       console.log("%cHttp error message: " + error.message);
     }
   }
+}
+```
+
+<img src="https://miro.medium.com/max/700/0*Piks8Tu6xUYpF4DU" width="100%" height="17px" style="padding: 2px 1rem; background-color: #fff">
+
+## Angular Dynamic Components
+
+Component templates are not always fixed. An application may need to load new components at runtime.
+
+This cookbook shows you how to use ComponentFactoryResolver to add components dynamically.
+
+In the component, we are creating a template element. We are also using the hash symbol (#) to declare a reference variable named `dynamicLoadDevicesComponent`. The template element is the place, or in the Angular world, the container.
+
+```html
+<template #dynamicLoadDevicesComponent></template>
+```
+
+We can get a reference to the template element with the ViewChild decorator that also takes a local variable as a parameter
+
+```ts
+@ViewChild("dynamicLoadDevicesComponent", {read: ViewContainerRef, static: true }) private entry: ViewContainerRef;
+```
+
+Before we proceed to the createComponent() method, we need to add one more service
+
+```ts
+constructor(private resolver: ComponentFactoryResolver) {}
+```
+
+The `ComponentFactoryResolver` service exposes one primary method, `resolveComponentFactory`.
+The `resolveComponentFactory()` method takes a component and returns a `ComponentFactory`.
+You can think of `ComponentFactory` as an object that knows how to create a component.
+As you can see the `ComponentFactory` exposes the `create()` method that will be used by the container ( ViewContainerRef ) internally.
+
+```ts
+private createComponent() {
+  this.entry.clear();
+  const factory = this.resolver.resolveComponentFactory(RedDeviceComponent);
+  this.componentRef = this.entry.createComponent(factory);
+}
+```
+
+Let’s explain what is happening piece by piece.
+
+```ts
+this.entry.clear();
+```
+
+Every time we need to create the component we need to remove the previous view, otherwise, it will append more components to the container. (not required if you need multiple components)
+
+```ts
+const factory = this.resolver.resolveComponentFactory(RedDeviceComponent);
+```
+
+Every time we need to create the component we need to remove the previous view, otherwise, it will append more components to the container. (not required if you need multiple components)
+
+```ts
+this.componentRef = this.entry.createComponent(factory);
+```
+
+The resolveComponentFactory() method takes a component and returns the recipe for how to create a component.
+
+And don’t forget to destroy the component
+
+```ts
+public ngOnDestroy() {
+  this.componentRef.destroy();
 }
 ```
 
