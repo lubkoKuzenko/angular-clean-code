@@ -36,7 +36,8 @@
 - [JWT Token Interceptor](#JWT-Token-Interceptor)
 - [Angular Dynamic Components](#Angular-Dynamic-Components)
 - [Unsubscribe from Observables](#Unsubscribe-from-Observables)
-- [Performance](#Performance) -[Webpack Bundle Analyzer](#Webpack-Bundle-Analyzer)
+- [Performance](#Performance)
+  - [Webpack Bundle Analyzer](#Webpack-Bundle-Analyzer)
 
 ## TODO
 
