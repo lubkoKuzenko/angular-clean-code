@@ -990,7 +990,7 @@ export class TokenInterceptor implements HttpInterceptor {
 
 Component templates are not always fixed. An application may need to load new components at runtime.
 
-This cookbook shows you how to use ComponentFactoryResolver to add components dynamically.
+This cookbook shows you how to use `ComponentFactoryResolver` to add components dynamically.
 
 In the component, we are creating a template element. We are also using the hash symbol (#) to declare a reference variable named `dynamicLoadDevicesComponent`. The template element is the place, or in the Angular world, the container.
 
