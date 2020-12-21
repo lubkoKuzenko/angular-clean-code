@@ -36,6 +36,7 @@
 - [JWT Token Interceptor](#JWT-Token-Interceptor)
 - [Angular Dynamic Components](#Angular-Dynamic-Components)
 - [Unsubscribe from Observables](#Unsubscribe-from-Observables)
+- [Performance](#Performance) -[Webpack Bundle Analyzer](#Webpack-Bundle-Analyzer)
 
 ## TODO
 
@@ -1218,3 +1219,51 @@ export class AppComponent implements OnInit, OnDestroy {
 ```
 
 Note that Using an operator like takeUntil instead of manually unsubscribing will also complete the observable, triggering any completion event on the observable
+
+<img src="https://miro.medium.com/max/700/0*Piks8Tu6xUYpF4DU" width="100%" height="17px" style="padding: 2px 1rem; background-color: #fff">
+
+## Performance
+
+**Resources**
+
+- ["Performance Analysis with webpack Bundle Analyzer"](https://www.digitalocean.com/community/tutorials/angular-angular-webpack-bundle-analyzer/)
+
+Web performance is possibly one of the most important parts to take into account for a modern web application. The thing is, it’s easier than ever to add third party modules and tools to our projects, but this can come with a huge performance tradeoff.
+
+This becomes even more difficult the larger a project becomes, therefore, this article looks at how to use webpack Bundle Analyzer with Angular to help visualize where code in the final bundle comes from.
+
+### Webpack Bundle Analyzer
+
+Let’s install the webpack-bundle-analyzer plugin:
+
+```npm
+$ npm i webpack-bundle-analyzer -D
+```
+
+Building with stats.json:
+
+The Angular CLI gives us the ability to build with a `stats.json` out of the box. This allows us to pass this to our bundle analyzer and start the process.
+
+We can add a new script to `package.json` to add this functionality:
+
+```ts
+"scripts": {
+  "build:stats": "ng build --stats-json",
+  "analyze": "webpack-bundle-analyzer dist/AngularBundleAnalyser/stats.json"
+}
+```
+
+Now we can run npm run build:stats to generate a stats.json file inside of the dist folder! Let’s do that:
+
+```ts
+$ npm run build:stats
+```
+
+Run the analyzer with the following command:
+
+```ts
+$ npm run analyze
+```
+
+Result:
+<img src="./assets/webpack-bundle-analysis-2.png" width="960px" />
