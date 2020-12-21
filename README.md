@@ -234,6 +234,7 @@ htmlWhitespaceSensitivity: 'ignore'
 - ["Everything you need to know about change detection in Angular"](https://blog.angularindepth.com/everything-you-need-to-know-about-change-detection-in-angular-8006c51d206f)
 - ["Angular File Structure and Best Practices"](https://medium.com/@shijin_nath/angular-right-file-structure-and-best-practices-that-help-to-scale-2020-52ce8d967df5)
 - ["How to define a highly scalable folder structure for your Angular project"](https://itnext.io/choosing-a-highly-scalable-folder-structure-in-angular-d987de65ec7)
+- ["Component Communication in Angular"](https://www.digitalocean.com/community/tutorials/angular-component-communication)
 
 ### What is a scalable architecture?
 
