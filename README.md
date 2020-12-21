@@ -28,6 +28,7 @@
   - [Basic setup](#Basic-setup)
   - [Custom FormGroup Validator](#Custom-FormGroup-Validator)
   - [Custom FormControl Validator](#Custom-FormControl-Validator)
+  - [ControlValueAccessor](#ControlValueAccessor)
 - [Angular Routing](#angular-routing)
   - [Custom RouteReuseStrategy](#Custom-RouteReuseStrategy)
 - [Unit testing](#Unit-testing)
@@ -783,6 +784,102 @@ export const ValidatePhone = (): ValidatorFn => {
     return null;
   };
 };
+```
+
+<img src="https://miro.medium.com/max/700/0*Piks8Tu6xUYpF4DU" width="100%" height="17px" style="padding: 2px 1rem; background-color: #fff">
+
+### ControlValueAccessor
+
+When creating forms in Angular, sometimes you want to have an input that isn’t a standard text input, select, or checkbox. By implementing the `ControlValueAccessor` interface and registering the component as a `NG_VALUE_ACCESSOR`, you can integrate your custom form control seamlessly into template driven or reactive forms just as if it were a native input!
+
+Any component or directive can be turned into `ControlValueAccessor` by implementing the ControlValueAccessor interface and registering itself as an `NG_VALUE_ACCESSOR` provider.
+
+```ts
+interface ControlValueAccessor {
+  writeValue(obj: any): void
+  registerOnChange(fn: any): void
+  registerOnTouched(fn: any): void
+  setDisabledState(fn: any): void
+  ...
+}
+```
+
+Write a value to the input - `writeValue`
+
+Register a function to tell Angular when the value of the input changes - `registerOnChange`
+
+Register a function to tell Angular when the input has been touched - `registerOnTouched`
+
+Disable the input - `setDisabledState`
+
+These four things make up the `ControlValueAccessor` interface, the bridge between a form control and a native element or custom input component. Once our component implements that interface, we need to tell Angular about it by providing it as a `NG_VALUE_ACCESSOR` so that it can be used.
+
+Here is the diagram that demonstrates an interaction:
+
+<img src="./assets//1_wvjxZqL4ZZVGmsh3VFV2Ew.jpeg" width="684" />
+
+#### Implementing custom value accessor
+
+Implementing a custom value accessor is not difficult. It requires 2 simple steps:
+
+- registering a NG_VALUE_ACCESSOR provider
+- implementing ControlValueAccessor interface methods
+
+`NG_VALUE_ACCESSOR` provider specifies a class that implements `ControlValueAccessor` interface and is used by Angular to setup synchronization with formControl. It’s usually the class of the component or directive that registers the provider. All form directives inject value accessors using the token `NG_VALUE_ACCESSOR` and then select a suitable accessor. If there is an accessor which is not built-in or `DefaultValueAccessor` it is selected. Otherwise Angular picks the default accessor if it’s provided. And there can be no more than one custom accessor defined for an element.
+
+So let’s first define the provider:
+
+```ts
+
+export const VALUE_ACCESSOR: Provider = [
+  {
+    provide: NG_VALUE_ACCESSOR,
+    useExisting: forwardRef(() => CustomFormComponent),
+    multi: true,
+  }
+];
+
+@Component({
+  selector: '',
+  providers: [...VALUE_ACCESSOR],
+  ...
+})
+export class CustomFormComponent implements ControlValueAccessor {...}
+```
+
+Once we defined a provider let’s implement ControlValueAccessor interface:
+
+```ts
+export class CustomFormComponent implements ControlValueAccessor {
+  // Allow the input to be disabled, and when it is make it somewhat transparent.
+  @Input() disabled = false;
+
+  dataPropery: boolean[] = Array(5).fill(false);
+  // Function to call when the rating changes.
+  onChange = (rating: number) => {};
+  // Function to call when the input is touched (when a star is clicked).
+  onTouched = () => {};
+  // Allows Angular to update the model (rating).
+  // Update the model and changes needed for the view here.
+  writeValue(rating: number): void {
+    this.dataPropery = this.dataPropery.map((_, i) => rating > i);
+    this.onChange(this.value);
+  }
+  // Allows Angular to register a function to call when the model (rating) changes.
+  // Save the function as a property to call later here.
+  registerOnChange(fn: (rating: number) => void): void {
+    this.onChange = fn;
+  }
+  // Allows Angular to register a function to call when the input has been touched.
+  // Save the function as a property to call later here.
+  registerOnTouched(fn: () => void): void {
+    this.onTouched = fn;
+  }
+  // Allows Angular to disable the input.
+  setDisabledState(isDisabled: boolean): void {
+    this.disabled = isDisabled;
+  }
+}
 ```
 
 <img src="https://miro.medium.com/max/700/0*Piks8Tu6xUYpF4DU" width="100%" height="17px" style="padding: 2px 1rem; background-color: #fff">
