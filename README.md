@@ -822,8 +822,8 @@ Here is the diagram that demonstrates an interaction:
 
 Implementing a custom value accessor is not difficult. It requires 2 simple steps:
 
-- registering a NG_VALUE_ACCESSOR provider
-- implementing ControlValueAccessor interface methods
+- registering a `NG_VALUE_ACCESSOR` provider
+- implementing `ControlValueAccessor` interface methods
 
 `NG_VALUE_ACCESSOR` provider specifies a class that implements `ControlValueAccessor` interface and is used by Angular to setup synchronization with formControl. It’s usually the class of the component or directive that registers the provider. All form directives inject value accessors using the token `NG_VALUE_ACCESSOR` and then select a suitable accessor. If there is an accessor which is not built-in or `DefaultValueAccessor` it is selected. Otherwise Angular picks the default accessor if it’s provided. And there can be no more than one custom accessor defined for an element.
 
