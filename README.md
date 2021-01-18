@@ -782,7 +782,7 @@ export class NestedFormComponent {
 ```
 
 ```html
-<!-- parent-form.componnet.html -->
+<!-- parent-form.component.html -->
 <div class="row">
   <div class="col-6">
     <label>General:</label>
