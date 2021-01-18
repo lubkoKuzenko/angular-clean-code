@@ -730,6 +730,23 @@ export class FormGeneralComponent implements OnInit {
 
 ### Nested Forms
 
+The best approach is to create a stateful parent component and many children stateless components.
+
+Parent component needs to be dedicated for particular form. Child components can be reused everywhere many times.
+
+#### Parent component rules:
+   - stateful
+   - creates and holds form definition
+   - emits form state (value, valid, pristine) on every form change
+   - holds custom validation logic
+
+#### Children components rules:
+   - stateless
+   - receives form parts (nested FormGroups) from parent
+   - no custom validation logic
+
+In above scenario children components are "reusable views" without any validation logic. It will always comes from parent.
+
 #### Parent component
 
 ```ts
