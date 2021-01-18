@@ -7,7 +7,7 @@
 - [Introduction](#Introduction)
 - [Repo](#Repo)
 - [Configuration](#Configuration)
-  - [Configuring tsconfig.json](#Configuring-tsconfig.json)
+  - [Configuring tsconfig.json](#Configuring-tsconfigjson)
   - [Configuring TSLint](#Configuring-TSLint)
   - [Configuring Prettier](#Configuring-Prettier)
 - [Angular Architecture](#angular-architecture)
