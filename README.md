@@ -26,6 +26,7 @@
   - [Pipe](#Pipe)
 - [Angular Forms](#angular-forms)
   - [Basic setup](#Basic-setup)
+  - [Nested Forms](#Nested-Forms)
   - [Custom FormGroup Validator](#Custom-FormGroup-Validator)
   - [Custom FormControl Validator](#Custom-FormControl-Validator)
   - [ControlValueAccessor](#ControlValueAccessor)
@@ -725,6 +726,106 @@ export class FormGeneralComponent implements OnInit {
     this.form.getRawValue();
   }
 }
+```
+
+### Nested Forms
+
+#### Parent component
+
+```ts
+// parent-form.componnet.ts
+import { Component, ChangeDetectionStrategy } from "@angular/core";
+import { FormGroup } from "@angular/forms";
+
+@Component({
+  selector: "bb-nested-form",
+  templateUrl: "./nested-form.component.html",
+  styleUrls: ["./nested-form.component.scss"],
+  changeDetection: ChangeDetectionStrategy.OnPush
+})
+export class NestedFormComponent {
+  public form = new FormGroup({
+    general: new FormGroup({})
+  });
+
+  get controls() {
+    return this.form.controls;
+  }
+
+  public onSubmit() {
+    if (this.form.valid) {
+      const formValue = this.form.getRawValue();
+      console.log(formValue);
+    }
+  }
+}
+```
+
+```html
+<!-- parent-form.componnet.html -->
+<div class="row">
+  <div class="col-6">
+    <label>General:</label>
+    <bb-form-general [parentForm]="controls.general"></bb-form-general>
+  </div>
+</div>
+
+<button (click)="onSubmit()">Submit form</button>
+```
+
+#### Child component
+
+```ts
+// child-form.component
+import {
+  Component,
+  OnInit,
+  Input,
+  ChangeDetectionStrategy
+} from "@angular/core";
+import { FormGroup, FormControl, Validators } from "@angular/forms";
+import { FormsService } from "../../../services/forms.service";
+
+@Component({
+  selector: "bb-form-general",
+  templateUrl: "./form-general.component.html",
+  styleUrls: ["./form-general.component.scss"],
+  changeDetection: ChangeDetectionStrategy.OnPush
+})
+export class FormGeneralComponent implements OnInit {
+  @Input() public parentForm!: FormGroup;
+
+  public form = new FormGroup({
+    name: new FormControl("", [Validators.required]),
+    description: new FormControl(undefined, [Validators.required])
+  });
+
+  get controls() {
+    return this.form.controls;
+  }
+
+  constructor(public formsService: FormsService) {}
+
+  public ngOnInit() {
+    this.formsService.addGroupToParentForm(this.parentForm, this.form);
+  }
+}
+```
+
+```html
+<ng-container [formGroup]="form">
+  <div class="row">
+    <div class="col-12">
+      <label>Name</label>
+      <input type="text" formControlName="name" />
+    </div>
+
+    <div class="col-12">
+      <label>Description</label>
+      <textarea type="text" formControlName="description"></textarea>
+    </div>
+  </div>
+</ng-container>
 ```
 
 ### Custom FormGroup Validator
