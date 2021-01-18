@@ -53,7 +53,7 @@ In order to maintain high quality of delivery and prevent technical debt from be
 
 ## Repo
 
-Repo with Code: https://github.com/lubkoKuzenko/ng10-start
+Repo with Code: https://github.com/lubkoKuzenko/ng-start
 <img src="https://miro.medium.com/max/700/0*Piks8Tu6xUYpF4DU" width="100%" height="17px" style="padding: 2px 1rem; background-color: #fff">
 
 ## Configuration
