@@ -16,9 +16,10 @@
     - [CoreModule](#CoreModule)
     - [SharedModule](#SharedModule)
     - [The Feature Modules](#The-Feature-Modules)
+      - [Container Components](#Container-Components)
+      - [Presentational Components](#Presentational-Components)
+      - [Page Components](#Page Components)
   - [Data flow architecture](#data-flow-architecture)
-    - [Container Components](#Container-Components)
-    - [Presentational Components](#Presentational-Components)
     - [Change Detection](#Change-Detection)
   - [State management](#state-management)
 - [Angular Features](#Angular-Features)
@@ -40,10 +41,6 @@
 - [Unsubscribe from Observables](#Unsubscribe-from-Observables)
 - [Performance](#Performance)
   - [Webpack Bundle Analyzer](#Webpack-Bundle-Analyzer)
-
-## TODO
-
-Angular Folder Structure
 
 ## Introduction
 
@@ -460,6 +457,67 @@ Domain feature modules rarely have providers, but when they do, the lifetime of 
 
 When you need the service in other modules as well, it probably belongs in the CoreModule’ service’s declaration instead.
 
+Structure of `Feature` module:
+
+```bash
+├── app
+|  ├── @core
+|  ├── @shared
+|  ├── feature_one
+|  |   ├── components
+|  |   |   ├── component 1
+|  |   |   ├── component 2
+|  |   |   ├── component 3
+|  |   |   └── components.module.ts
+|  |   ├── containers
+|  |   |   ├── container 1
+|  |   |   ├── container 2
+|  |   |   ├── container 3
+|  |   |   └── containers.module.ts
+|  |   ├── page
+|  |   |   ├── page
+|  |   |   └── page.module.ts
+|  |   ├── feature_one-routing.module.ts
+|  |   └── feature_one.module.ts
+|  ├── feature_two
+|  └── feature_three
+├── index.html
+├── main.ts
+├── styles.scss
+└── test.ts
+```
+
+To give an overview, the Page Component has Container components as children. Then each Container component has Presentational components as children (Pages -> Containers -> Views).
+
+#### Presentational Components
+
+Presentational components are UI components that comprise the visual elements. They are dumb components that accept data from outside and triggers events for actions like button click. These custom components are typically a composition of UI elements, from libraries like `ng-bootstrap` or `Angular Material` created for business functionality.
+
+We can unit test these View components easily to test the actions and visualization of data since they don’t have any direct dependencies with services or external states.
+
+- are purely user interface and concerned with how things look.
+- are not aware about the business logic, or services.
+- receive data via @Inputs, and emit events via @Output.
+
+#### Container Components
+
+Container components are the components that bind, Presentational components, services, and state management together to deliver business functionality.
+
+The Container components use the services to fetch data from backend and bind them to the Presentational components. They also listen to the events coming from Presentational components and update the state of each Presentational components and communicates with the backend.
+
+Container components are the hub of connecting things, dealing with business logic, delegating the presentation to View components.
+
+- contain all the business logic.
+- pass the data to the Presentational Components, and handle @Output events raised by them.
+- have no UI logic.
+- do have dependencies on other parts of your app, like services, or your state store.
+
+#### Page Components
+
+Page components are the components that define the layout of a page based on URL paths. For instance, you can compose a page component with a header, footer, and an area in the middle. So basically, you can define a Page component for each parent route. Inside each Page component, you can place your Container components. In some instances, you can place Presentational components directly inside the Page components, when the view components don’t need any dynamic behavior.
+
+By using Page components, it will help the Container components to know less bout the fixed layout of a page and focus more on dynamic component placement based on business logic. It will also help to reduce the depth of Container components to reuse the layout across different routes.
+
 ### Data flow architecture
 
 Let's start with data flow. Angular 2+, unlike its predecessor, prefers a one way data flow. This kind of approach is much easier to maintain and follow than two-way data binding. It is more obvious what is the source of data in a given module and how the change is propagated through the system. In Angular, data flows from top to bottom. From the parent component to the child component and from the component to the template.
@@ -475,19 +533,6 @@ Such architectural approach is intended to keep the number of Containers as smal
 Such an approach to architecture is not only about readability of code and organized data flow. Dummy component are much easier to test. Their state is entirely induced by the Input they are provided with, they cause no side effect and the result of any component action is visible as a proper event being fired.
 
 What is more, such behavior nicely corresponds with performance optimization of Angular’s change detection process. The change detection strategy for dummy components can be set to "onPush" which will trigger the change detection process for the component only when the input properties have been modified. It's an easy and very efficient method of optimizing Angular applications.
-
-### Container Components
-
-- contain all the business logic.
-- pass the data to the Presentational Components, and handle @Output events raised by them.
-- have no UI logic.
-- do have dependencies on other parts of your app, like services, or your state store.
-
-### Presentational Components
-
-- are purely user interface and concerned with how things look.
-- are not aware about the business logic, or services.
-- receive data via @Inputs, and emit events via @Output.
 
 ### Change Detection
 
