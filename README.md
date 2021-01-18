@@ -833,7 +833,7 @@ export class FormGeneralComponent implements OnInit {
 ```
 
 ```html
-<ng-container [formGroup]="form">
+<form [formGroup]="form">
   <div class="row">
     <div class="col-12">
       <label>Name</label>
@@ -845,7 +845,7 @@ export class FormGeneralComponent implements OnInit {
       <textarea type="text" formControlName="description"></textarea>
     </div>
   </div>
-</ng-container>
+</form>
 ```
 
 #### Form service
@@ -868,7 +868,95 @@ export class FormsService {
 
 ### Dynamic Forms
 
-todo
+```ts
+// dynamic-form.component.ts
+import { Component } from "@angular/core";
+import { FormGroup, FormArray, FormControl, Validators } from "@angular/forms";
+
+@Component({
+  selector: "bb-dynamic-form",
+  templateUrl: "./dynamic-form.component.html",
+  styleUrls: ["./dynamic-form.component.scss"],
+})
+export class DynamicFormComponent {
+  public form: FormGroup = new FormGroup({
+    userName: new FormControl("", [Validators.required]),
+    timeRanges: new FormArray([]),
+  });
+
+  get controls() {
+    return this.form.controls;
+  }
+
+  get timeRangeControls() {
+    return this.form.get("timeRanges") as FormArray;
+  }
+
+  public addNewTimeRange() {
+    this.timeRangeControls.push(this.singleRange());
+  }
+
+  public deleteTimeRange(i: number) {
+    this.timeRangeControls.removeAt(i);
+  }
+
+  private singleRange() {
+    return new FormGroup({
+      startDate: new FormControl("", [Validators.required]),
+      endDate: new FormControl("", [Validators.required]),
+    });
+  }
+
+  public onSubmit() {
+    console.log(this.form.getRawValue());
+  }
+}
+```
+
+```html
+<form [formGroup]="form" novalidate>
+  <div class="row">
+    <div class="col-12">
+      <label>User Name</label>
+      <input type="text" formControlName="userName" />
+      <l9-validation-message [control]="controls.userName"></l9-validation-message>
+    </div>
+
+    <div class="col-12">
+      <h4>Time Ranges</h4>
+      <ng-container formArrayName="timeRanges">
+        <div *ngFor="let _ of timeRangeControls.controls; let i = index" class="row">
+          <ng-container [formGroupName]="i">
+            <!-- Start Date -->
+            <div class="col-5">
+              <label>Start Date</label>
+              <input type="date" formControlName="startDate" />
+              <l9-validation-message [control]="timeRangeControls.at(i).get('startDate')"></l9-validation-message>
+            </div>
+
+            <!-- End Date -->
+            <div class="col-5">
+              <label>End Date</label>
+              <input type="date" formControlName="endDate" />
+              <l9-validation-message [control]="timeRangeControls.at(i).get('endDate')"></l9-validation-message>
+            </div>
+
+            <div class="col-2">
+              <button (click)="deleteTimeRange(i)">-</button>
+            </div>
+          </ng-container>
+        </div>
+
+        <div class="col-12">
+          <button (click)="addNewTimeRange()">+</button>
+        </div>
+      </ng-container>
+    </div>
+  </div>
+</form>
+
+<button (click)="onSubmit()">Submit form</button>
+```
 
 ### Custom FormGroup Validator
 
