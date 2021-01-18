@@ -20,7 +20,7 @@
       - [Presentational Components](#Presentational-Components)
       - [Page Components](#Page-Components)
   - [Data flow architecture](#data-flow-architecture)
-    - [Change Detection](#Change-Detection)
+  - [Change Detection](#Change-Detection)
   - [State management](#state-management)
 - [Angular Features](#Angular-Features)
   - [Directive](#Directive)
