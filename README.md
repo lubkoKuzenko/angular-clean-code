@@ -18,7 +18,7 @@
     - [The Feature Modules](#The-Feature-Modules)
       - [Container Components](#Container-Components)
       - [Presentational Components](#Presentational-Components)
-      - [Page Components](#Page Components)
+      - [Page Components](#Page-Components)
   - [Data flow architecture](#data-flow-architecture)
     - [Change Detection](#Change-Detection)
   - [State management](#state-management)
