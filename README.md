@@ -258,7 +258,7 @@ Application modules are clearly visible in the file tree, as separate directorie
 
 Obviously, it’s not possible to strictly follow this rule in the real world. At least some services and components have to be reused across the whole application. Therefore, some parts of application functionality are stored in "Core" and "Shared" modules. Now our application structure looks like this:
 
-<img src="./assets/content_2.png" width="521" height="331" style="background-color: #ffffff; padding: 2rem">
+<img src="./assets/imports.png" width="521" height="331" style="background-color: #ffffff; padding: 2rem">
 
 As you can see, there are now three main modules in the project:
 
