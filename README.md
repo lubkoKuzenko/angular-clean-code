@@ -10,6 +10,7 @@
   - [Configuring tsconfig.json](#Configuring-tsconfigjson)
   - [Configuring TSLint](#Configuring-TSLint)
   - [Configuring HTMLHint](#Configuring-HTMLHint)
+  - [Configuring stylelint](#Configuring-stylelint)
   - [Configuring Prettier](#Configuring-Prettier)
 - [Angular Architecture](#angular-architecture)
   - [Project structure](#project-structure)
@@ -67,6 +68,12 @@ Repo with Code: https://github.com/lubkoKuzenko/ng-start
 - ["Configuring TSLint"](https://palantir.github.io/tslint/usage/configuration/)
 
 - ["Configuring HTMLHint"](https://github.com/htmlhint/HTMLHint/)
+
+- ["List of HTMLHint rules"](https://github.com/htmlhint/HTMLHint/blob/master/docs/user-guide/list-rules.md/)
+
+- ["Configuring stylelint"](https://github.com/stylelint/stylelint/)
+
+- ["List of stylelint rules"](https://github.com/stylelint/stylelint/blob/master/docs/user-guide/rules/list.md/)
 
 - ["Prettier Options"](https://prettier.io/docs/en/options.html/)
 
@@ -234,53 +241,31 @@ npm install --save-dev htmlhint
 ```npm 
 "lint": "ng lint && htmlhint \"src\" --config .htmlhintrc",
 ```
+4) Configure rules based on rules list: https://github.com/htmlhint/HTMLHint/blob/master/docs/user-guide/list-rules.md
 
-List of rules:
+### Configuring stylelint
 
-#### Doctype and Head
+1) Install stylelint
 
-- `doctype-first`: Doctype must be declared first.
-- `doctype-html5`: Invalid doctype.
-- `head-script-disabled`: The `<script>` tag cannot be used in a tag.
-- `style-disabled`: `<style>` tags cannot be used.
-- `title-require`: `<title>` must be present in tag.
+```npm
+npm install --save-dev stylelint stylelint-config-standard
+```
 
-#### Attributes
+2) Create a .htmlhintrc configuration file in the root of your project:
 
-- `attr-lowercase`: All attribute names must be in lowercase.
-- `attr-no-duplication`: Elements cannot have duplicate attributes.
-- `attr-no-unnecessary-whitespace`: No spaces between attribute names and values.
-- `attr-unsafe-chars`: Attribute values cannot contain unsafe chars.
-- `attr-value-double-quotes`: Attribute values must be in double quotes.
-- `attr-value-not-empty`: All attributes must have values.
-- `alt-require`: The alt attribute of an element must be present and alt attribute of area[href] and input[type=image] must have a value.
-- `input-requires-label`: All [ input ] tags must have a corresponding [ label ] tag.
+```.stylelintrc
+{
+  "extends": "stylelint-config-standard"
+}
+```
 
-#### Tags
+3) Run HTMLHint on, for example, all the HTML files in your project:
 
-- `tags-check`: Allowing specify rules for any tag and validate that
-- `tag-pair`: Tag must be paired.
-- `tag-self-close`: Empty tags must be self closed.
-- `tagname-lowercase`: All html element names must be in lowercase.
-- `empty-tag-not-self-closed`: The empty tag should not be closed by self.
-- `src-not-empty`: The src attribute of an img(script,link) must have a value.
-- `href-abs-or-rel`: An href attribute must be either absolute or relative.
+```npm 
+"lint": "ng lint && stylelint \"src/**/*.scss\" --syntax scss",
+```
+4) Configure rules based on rules list: https://github.com/stylelint/stylelint/blob/master/docs/user-guide/rules/list.md
 
-#### Id
-
-- `id-class-ad-disabled`: The id and class attributes cannot use the ad keyword, it will be blocked by adblock software.
-- `id-class-value`: The id and class attribute values must meet the specified rules.
-- `id-unique`: The value of id attributes must be unique.
-
-#### Inline
-
-- `inline-script-disabled`: Inline script cannot be use.
-- `inline-style-disabled`: Inline style cannot be use.
-
-#### Formatting
-
-- `space-tab-mixed-disabled`: Do not mix tabs and spaces for indentation.
-- `spec-char-escape`: Special characters must be escaped.
 
 ### Configuring Prettier
 
