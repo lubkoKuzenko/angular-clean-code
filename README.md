@@ -66,6 +66,8 @@ Repo with Code: https://github.com/lubkoKuzenko/ng-start
 
 - ["Configuring TSLint"](https://palantir.github.io/tslint/usage/configuration/)
 
+- ["Configuring HTMLHint"](https://github.com/htmlhint/HTMLHint/)
+
 - ["Prettier Options"](https://prettier.io/docs/en/options.html/)
 
 ### Configuring tsconfig.json
