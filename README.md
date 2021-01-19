@@ -231,7 +231,9 @@ npm install --save-dev htmlhint
 
 3) Run HTMLHint on, for example, all the HTML files in your project:
 
+```npm 
 "lint": "ng lint && htmlhint \"src\" --config .htmlhintrc",
+```
 
 List of rules:
 
