@@ -9,6 +9,7 @@
 - [Configuration](#Configuration)
   - [Configuring tsconfig.json](#Configuring-tsconfigjson)
   - [Configuring TSLint](#Configuring-TSLint)
+  - [Configuring HTMLHint](#Configuring-HTMLHint)
   - [Configuring Prettier](#Configuring-Prettier)
 - [Angular Architecture](#angular-architecture)
   - [Project structure](#project-structure)
@@ -209,6 +210,73 @@ An example tslint.json file might look like this:
   }
 }
 ```
+
+### Configuring HTMLHint
+
+1) Install htmlhint
+
+```npm
+npm install --save-dev htmlhint
+```
+
+2) Create a .htmlhintrc configuration file in the root of your project:
+
+```.htmlhintrc
+{
+  "attr-value-not-empty": false
+}
+```
+
+3) Run HTMLHint on, for example, all the HTML files in your project:
+
+"lint": "ng lint && htmlhint \"src\" --config .htmlhintrc",
+
+List of rules:
+
+#### Doctype and Head
+
+- `doctype-first`: Doctype must be declared first.
+- `doctype-html5`: Invalid doctype.
+- `head-script-disabled`: The `<script>` tag cannot be used in a tag.
+- `style-disabled`: `<style>` tags cannot be used.
+- `title-require`: `<title>` must be present in tag.
+
+#### Attributes
+
+- `attr-lowercase`: All attribute names must be in lowercase.
+- `attr-no-duplication`: Elements cannot have duplicate attributes.
+- `attr-no-unnecessary-whitespace`: No spaces between attribute names and values.
+- `attr-unsafe-chars`: Attribute values cannot contain unsafe chars.
+- `attr-value-double-quotes`: Attribute values must be in double quotes.
+- `attr-value-not-empty`: All attributes must have values.
+- `alt-require`: The alt attribute of an element must be present and alt attribute of area[href] and input[type=image] must have a value.
+- `input-requires-label`: All [ input ] tags must have a corresponding [ label ] tag.
+
+#### Tags
+
+- `tags-check`: Allowing specify rules for any tag and validate that
+- `tag-pair`: Tag must be paired.
+- `tag-self-close`: Empty tags must be self closed.
+- `tagname-lowercase`: All html element names must be in lowercase.
+- `empty-tag-not-self-closed`: The empty tag should not be closed by self.
+- `src-not-empty`: The src attribute of an img(script,link) must have a value.
+- `href-abs-or-rel`: An href attribute must be either absolute or relative.
+
+#### Id
+
+- `id-class-ad-disabled`: The id and class attributes cannot use the ad keyword, it will be blocked by adblock software.
+- `id-class-value`: The id and class attribute values must meet the specified rules.
+- `id-unique`: The value of id attributes must be unique.
+
+#### Inline
+
+- `inline-script-disabled`: Inline script cannot be use.
+- `inline-style-disabled`: Inline style cannot be use.
+
+#### Formatting
+
+- `space-tab-mixed-disabled`: Do not mix tabs and spaces for indentation.
+- `spec-char-escape`: Special characters must be escaped.
 
 ### Configuring Prettier
 
