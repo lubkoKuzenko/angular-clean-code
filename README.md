@@ -38,11 +38,17 @@
   - [Custom RouteReuseStrategy](#Custom-RouteReuseStrategy)
 - [Unit testing](#Unit-testing)
   - [Karma configuration for CI/CD (bamboo example)](#Unit-testing)
+  - [Testing Forms](#Testing-Forms)
+  - [How to test OnPush components](#how-to-test-onpush-components)
 - [JWT Token Interceptor](#JWT-Token-Interceptor)
 - [Angular Dynamic Components](#Angular-Dynamic-Components)
 - [Unsubscribe from Observables](#Unsubscribe-from-Observables)
 - [Performance](#Performance)
   - [Webpack Bundle Analyzer](#Webpack-Bundle-Analyzer)
+
+## TODO
+- [How to test OnPush components]
+https://medium.com/@juliapassynkova/how-to-test-onpush-components-c9b39871fe1e
 
 ## Introduction
 
@@ -1306,6 +1312,10 @@ export class CustomReuseStrategy implements RouteReuseStrategy {
 
 ## Unit testing
 
+**Resources**
+
+- ["How to test OnPush components"](https://medium.com/@juliapassynkova/how-to-test-onpush-components-c9b39871fe1e/)
+
 ### Karma configuration for CI/CD (bamboo example)
 
 ```js
@@ -1364,6 +1374,78 @@ module.exports = function(config) {
   });
 };
 ```
+
+### Testing Forms
+https://www.telerik.com/blogs/testing-dynamic-forms-in-angular
+
+### How to test OnPush components
+
+Angular `ChangeDetectionStrategy.OnPush` is a suggested way to improve the performance of Angular applications. When a component’s `changeDetection` is `OnPush` only input ref change and output’s call will trigger the change detection mechanism for the component and all its children. However, Angular has a defect that affects testing of such components. This post shows how `TestBed.overrideComponent` helps to overcome this defect.
+
+#### Component code
+Here is a simple component with ChangeDetectionStrategy.OnPush
+
+```ts
+@Component({
+  selector: 'test',
+  template: `test id = <span>{{id}}</span>`,
+  changeDetection: ChangeDetectionStrategy.OnPush
+})
+export class TestComponent {
+  @Input() id: number;
+}
+```
+
+```ts
+import {Component} from '@angular/core';
+import {TestBed, ComponentFixture, async} from '@angular/core/testing';
+import {TestComponent} from 'app/app.component';
+
+describe('TestComponent', () => {
+  let fixture: ComponentFixture<TestComponent>, comp: TestComponent, element: HTMLElement;
+
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      declarations: [TestComponent]
+    });
+  }));
+
+  beforeEach(() => {
+    fixture = TestBed.createComponent(TestComponent);
+    comp = fixture.componentInstance;
+    element = fixture.debugElement.nativeElement;
+  });
+
+  it('can modify the id option', async(() => {
+    comp.id = 1;
+    fixture.detectChanges();
+
+    comp.id = 2;
+    fixture.detectChanges();
+
+    expect(fixture.nativeElement
+      .querySelector('span').textContent).toContain(2);
+  }));
+});
+```
+
+It fails due to a defect in Angular that fixture.detectChanges() works ONLY the first time with ChangeDetectionStrategy.OnPush and karma reports
+
+#### The solution
+
+Angular `TestBed` provides a way to override a component metadata with `overrideComponent`. Therefore, we can override `OnPush` with Default change detection just for testing and hooray test works!
+
+```ts
+TestBed.overrideComponent(TestComponent, {
+  set: new Component({
+    selector: 'test',
+    template: `test id = <span>{{id}}</span>`,
+    changeDetection: ChangeDetectionStrategy.Default
+  })
+});
+```
+
+
 
 <img src="https://miro.medium.com/max/700/0*Piks8Tu6xUYpF4DU" width="100%" height="17px" style="padding: 2px 1rem; background-color: #fff">
 
