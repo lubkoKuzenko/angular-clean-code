@@ -1312,9 +1312,13 @@ export class CustomReuseStrategy implements RouteReuseStrategy {
 
 ## Unit testing
 
+Tests are vital when programming because they help detect issues within your codebase that otherwise would have been missed. Writing proper tests reduces the overhead of manually testing functionality in the view or otherwise.
+
 **Resources**
 
 - ["How to test OnPush components"](https://medium.com/@juliapassynkova/how-to-test-onpush-components-c9b39871fe1e/)
+
+- ["Testing Dynamic Forms in Angular"](https://www.telerik.com/blogs/testing-dynamic-forms-in-angular/)
 
 ### Karma configuration for CI/CD (bamboo example)
 
@@ -1376,7 +1380,113 @@ module.exports = function(config) {
 ```
 
 ### Testing Forms
-https://www.telerik.com/blogs/testing-dynamic-forms-in-angular
+
+The first step is to set up the test bed for the component. Angular already provides a boilerplate for testing the component, and we’ll simply extend that:
+
+```ts
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+    import { ReactiveFormsModule } from '@angular/forms';
+    import { DynamicFormComponent } from './dynamic-form.component';
+    
+    describe('DynamicFormComponent', () => {
+      let component: DynamicFormComponent;
+      let fixture: ComponentFixture<DynamicFormComponent>;
+    
+      beforeEach(async(() => {
+        TestBed.configureTestingModule({
+          declarations: [ DynamicFormComponent ],
+          imports: [ ReactiveFormsModule ],
+        })
+        .compileComponents();
+      }));
+    
+      beforeEach(() => {
+        fixture = TestBed.createComponent(DynamicFormComponent);
+        component = fixture.componentInstance;
+        fixture.detectChanges();
+      });
+    
+      it('should create', () => {
+        expect(component).toBeTruthy();
+      });
+    });
+```
+
+#### We’ll be testing our form using the following cases:
+
+1) `Form rendering`: here, we’ll check if the component generates the correct input elements when provided a formConfig array.
+2) `Form validity`: we’ll check that the form returns the correct validity state
+3) `Input validity`: we’ll check if the component responds to input in the view template
+4) `Input errors`: we’ll test for errors on the required input elements.
+
+#### Form Rendering
+For this test, we’ll we’ll test that the component renders the correct elements.
+
+```ts
+it('should render input elements', () => {
+  const compiled = fixture.debugElement.nativeElement;
+  const addressInput = compiled.querySelector('input[id="address"]');
+  const nameInput = compiled.querySelector('input[id="name"]');
+
+  expect(addressInput).toBeTruthy();
+  expect(nameInput).toBeTruthy();
+});
+```
+#### Form validity
+For this test, we’ll check for the validity state of the form after updating the values of the input elements. For this test, we’ll update the values of the form property directly without accessing the view.
+
+```ts
+it('should test form validity', () => {
+  const form = component.form;
+  expect(form.valid).toBeFalsy();
+
+  const nameInput = form.controls.name;
+  nameInput.setValue('John Peter');
+
+  expect(form.valid).toBeTruthy();
+})
+```
+
+For this test, we’re checking if the form responds to the changes in the control elements. When creating the elements, we specified that the name element is required. This means the initial validity state of the form should be `INVALID`, and the valid property of the form should be false.
+
+Next, we update the value of the name input using the `setValue` method of the form control, and then we check the validity state of the form. After providing the required input of the form, we expect the form should be valid.
+
+#### Input validity
+Next we’ll check the validity of the input elements. The name input is required, and we should test that the input acts accordingly. Open the spec file and add the spec below to the test suite:
+
+```ts
+it('should test input validity', () => {
+  const nameInput = component.form.controls.name;
+  const addressInput = component.form.controls.address;
+
+  expect(nameInput.valid).toBeFalsy();
+  expect(addressInput.valid).toBeTruthy();
+
+  nameInput.setValue('John Peter');
+  expect(nameInput.valid).toBeTruthy();
+})
+```
+
+In this spec, we are checking the validity state of each control and also checking for updates after a value is provided.
+
+Since the name input is required, we expect its initial state to be invalid. The address isn’t required so it should be always be valid. Next, we update the value of the name input, and then we test if the valid property has been updated.
+
+#### Input errors
+
+In this spec, we’ll be testing that the form controls contain the appropriate errors; the name control has been set as a required input. We used the `Validators` class to validate the input. The form control has an errors property which contains details about the errors on the input using key-value pairs.
+
+```ts
+it('should test input errors', () => {
+  const nameInput = component.form.controls.name;
+  expect(nameInput.errors.required).toBeTruthy();
+
+  nameInput.setValue('John Peter');
+  expect(nameInput.errors).toBeNull();
+});
+```
+First, we get the name form control from the form form group property. We expect the initial errors object to contain a required property, as the input’s value is empty. Next, we update the value of the input, which means the input shouldn’t contain any errors, which means the errors property should be null.
+
+If all tests are passing, it means we’ve successfully created a form. 
 
 ### How to test OnPush components
 
@@ -1444,8 +1554,6 @@ TestBed.overrideComponent(TestComponent, {
   })
 });
 ```
-
-
 
 <img src="https://miro.medium.com/max/700/0*Piks8Tu6xUYpF4DU" width="100%" height="17px" style="padding: 2px 1rem; background-color: #fff">
 
