@@ -46,10 +46,6 @@
 - [Performance](#Performance)
   - [Webpack Bundle Analyzer](#Webpack-Bundle-Analyzer)
 
-## TODO
-- [How to test OnPush components]
-https://medium.com/@juliapassynkova/how-to-test-onpush-components-c9b39871fe1e
-
 ## Introduction
 
 In order to maintain high quality of delivery and prevent technical debt from being created, we had to agree to a series of guidelines and good practices of how to plan, structure and write applications in Angular
