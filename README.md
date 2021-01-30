@@ -1601,19 +1601,19 @@ The Error Handler module is the entry point for the global Error Handler. It is 
 Since we as the developers don’t know where and when such an error could occur, it is important to catch all occurring errors at a central location
 
 A client error should contain:
-- name (ie: ReferenceError).
-- message (ie: X is not defined).
+- name (ie: `ReferenceError`).
+- message (ie: `X is not defined`).
 
-And in most modern browsers: fileName, lineNumber and columnNumber where the error happened, and stack (last X functions called before the error).
+And in most modern browsers: `fileName`, `lineNumber` and `columnNumber` where the error happened, and stack (last X functions called before the error).
 
 #### The Server Errors
 
 It is clear that the error is coming from the back end, there is a need to take care of the error handling for every single request to the back end. Again, it is better to handle these errors in a centralized location so that the user is presented with consistent error messages and also to avoid forgetting to intercept errors.
 
 A server error might contain:
-- status (or code): Code status starting with 4 (4xx…).
-- name: The name of the error (ie: HttpErrorResponse).
-- message: Explanation message (ie: Http failure response for…).
+- `status` (or code): Code status starting with 4 (4xx…).
+- `name`: The name of the error (ie: `HttpErrorResponse`).
+- `message`: Explanation message (ie: Http failure response for…).
 
 ```ts
 @NgModule({
