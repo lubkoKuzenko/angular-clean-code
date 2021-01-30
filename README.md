@@ -40,6 +40,10 @@
   - [Karma configuration for CI/CD (bamboo example)](#Unit-testing)
   - [Testing Forms](#Testing-Forms)
   - [How to test OnPush components](#how-to-test-onpush-components)
+- [Error Handling](#Error-Handling)
+  - [Errors, Exceptions & CallStack](#Errors-Exceptions-CallStack)
+  - [Error Handler Module](#Error-Handler-Module)
+  - [404 Error](#404-Error)
 - [JWT Token Interceptor](#JWT-Token-Interceptor)
 - [Angular Dynamic Components](#Angular-Dynamic-Components)
 - [Unsubscribe from Observables](#Unsubscribe-from-Observables)
@@ -1550,6 +1554,89 @@ TestBed.overrideComponent(TestComponent, {
   })
 });
 ```
+
+<img src="https://miro.medium.com/max/700/0*Piks8Tu6xUYpF4DU" width="100%" height="17px" style="padding: 2px 1rem; background-color: #fff">
+
+## Error Handling
+
+Learn how to automatically catch all errors in a web application written in Angular and process them accordingly
+
+**Resources**
+
+- ["Global Error Handling in Angular"](https://pkief.medium.com/global-error-handling-in-angular-ea395ce174b1)
+
+- ["Error Handling & Angular"](https://medium.com/@aleixsuau/error-handling-angular-859d529fa53a)
+
+### Errors, Exceptions & CallStack
+
+When an Error happens, an Exception is thrown at the current point of execution and it will remove (unwind) every function of the CallStack until the exception is handled by a try/catch block. Then, the control will continue from the statement right after the catch block.
+
+`If no try/catch block is found, the Exception will remove all the functions of the CallStack, crashing completely our app`.
+
+```ts
+
+fireError() {
+  const shthppns = r; // r is not defined === ReferenceError
+  console.log("I won't be logged");
+}
+
+fireErrorWithNet() {
+  try {
+    const shthppns = r; // r is not defined === ReferenceError
+  } catch (error) {
+    console.log('> Error is handled: ', error.name);
+  }
+  console.log('> And Control continues from this statement');
+}
+```
+
+As you can see in the code, the try/catch block prevents the app from crashing and lets the program continue right below the catch.
+
+### Error Handler Module
+
+The Error Handler module is the entry point for the global Error Handler. It is part of the `core` module and registers two `providers`. The first one is responsible for the general error handling, which catches all errors occurring within our application. The second provider is an HTTP interceptor, which is called for every interaction with the back end. The multi property must always be set to `true` in this case, since the `HTTP_INTERCEPTORS` injection token can potentially be assigned to several classes.
+
+```ts
+@NgModule({
+  declarations: [],
+  imports: [CommonModule],
+  providers: [
+    { 
+      // processes all errors
+      provide: ErrorHandler, 
+      useClass: GlobalErrorHandler 
+    },
+    { 
+      // interceptor for HTTP errors
+      provide: HTTP_INTERCEPTORS, 
+      useClass: HttpErrorInterceptor, 
+      multi: true
+    }
+  ]
+})
+export class ErrorHandlerModule {}
+```
+
+#### The Client Errors
+
+Since we as the developers don’t know where and when such an error could occur, it is important to catch all occurring errors at a central location
+
+A client error should contain:
+- name (ie: ReferenceError).
+- message (ie: X is not defined).
+
+And in most modern browsers: fileName, lineNumber and columnNumber where the error happened, and stack (last X functions called before the error).
+
+#### The Server Errors
+
+It is clear that the error is coming from the back end, there is a need to take care of the error handling for every single request to the back end. Again, it is better to handle these errors in a centralized location so that the user is presented with consistent error messages and also to avoid forgetting to intercept errors.
+
+A server error might contain:
+- status (or code): Code status starting with 4 (4xx…).
+- name: The name of the error (ie: HttpErrorResponse).
+- message: Explanation message (ie: Http failure response for…).
+
+
 
 <img src="https://miro.medium.com/max/700/0*Piks8Tu6xUYpF4DU" width="100%" height="17px" style="padding: 2px 1rem; background-color: #fff">
 
