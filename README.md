@@ -1596,6 +1596,25 @@ As you can see in the code, the try/catch block prevents the app from crashing a
 
 The Error Handler module is the entry point for the global Error Handler. It is part of the `core` module and registers two `providers`. The first one is responsible for the general error handling, which catches all errors occurring within our application. The second provider is an HTTP interceptor, which is called for every interaction with the back end. The multi property must always be set to `true` in this case, since the `HTTP_INTERCEPTORS` injection token can potentially be assigned to several classes.
 
+#### The Client Errors
+
+Since we as the developers don’t know where and when such an error could occur, it is important to catch all occurring errors at a central location
+
+A client error should contain:
+- name (ie: ReferenceError).
+- message (ie: X is not defined).
+
+And in most modern browsers: fileName, lineNumber and columnNumber where the error happened, and stack (last X functions called before the error).
+
+#### The Server Errors
+
+It is clear that the error is coming from the back end, there is a need to take care of the error handling for every single request to the back end. Again, it is better to handle these errors in a centralized location so that the user is presented with consistent error messages and also to avoid forgetting to intercept errors.
+
+A server error might contain:
+- status (or code): Code status starting with 4 (4xx…).
+- name: The name of the error (ie: HttpErrorResponse).
+- message: Explanation message (ie: Http failure response for…).
+
 ```ts
 @NgModule({
   declarations: [],
@@ -1616,26 +1635,6 @@ The Error Handler module is the entry point for the global Error Handler. It is 
 })
 export class ErrorHandlerModule {}
 ```
-
-#### The Client Errors
-
-Since we as the developers don’t know where and when such an error could occur, it is important to catch all occurring errors at a central location
-
-A client error should contain:
-- name (ie: ReferenceError).
-- message (ie: X is not defined).
-
-And in most modern browsers: fileName, lineNumber and columnNumber where the error happened, and stack (last X functions called before the error).
-
-#### The Server Errors
-
-It is clear that the error is coming from the back end, there is a need to take care of the error handling for every single request to the back end. Again, it is better to handle these errors in a centralized location so that the user is presented with consistent error messages and also to avoid forgetting to intercept errors.
-
-A server error might contain:
-- status (or code): Code status starting with 4 (4xx…).
-- name: The name of the error (ie: HttpErrorResponse).
-- message: Explanation message (ie: Http failure response for…).
-
 
 
 <img src="https://miro.medium.com/max/700/0*Piks8Tu6xUYpF4DU" width="100%" height="17px" style="padding: 2px 1rem; background-color: #fff">
