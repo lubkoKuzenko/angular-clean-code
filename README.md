@@ -42,7 +42,7 @@
   - [How to test OnPush components](#how-to-test-onpush-components)
 - [Error Handling](#Error-Handling)
   - [Errors, Exceptions & CallStack](#errors-exceptions--callstack)
-  - [Error Handler Module](#Error-Handler-Module)
+  - [Global Error Handler](#Global-Error-Handler)
   - [404 Error](#404-Error)
 - [JWT Token Interceptor](#JWT-Token-Interceptor)
 - [Angular Dynamic Components](#Angular-Dynamic-Components)
@@ -1592,10 +1592,6 @@ fireErrorWithNet() {
 
 As you can see in the code, the try/catch block prevents the app from crashing and lets the program continue right below the catch.
 
-### Error Handler Module
-
-The Error Handler module is the entry point for the global Error Handler. It is part of the `core` module and registers two `providers`. The first one is responsible for the general error handling, which catches all errors occurring within our application. The second provider is an HTTP interceptor, which is called for every interaction with the back end. The multi property must always be set to `true` in this case, since the `HTTP_INTERCEPTORS` injection token can potentially be assigned to several classes.
-
 #### The Client Errors
 
 Since we as the developers don’t know where and when such an error could occur, it is important to catch all occurring errors at a central location
@@ -1615,26 +1611,103 @@ A server error might contain:
 - `name`: The name of the error (ie: `HttpErrorResponse`).
 - `message`: Explanation message (ie: Http failure response for…).
 
-#### ErrorHandlerModule
+
+### Global Error Handler
+
+By default, Angular comes with its own `ErrorHandler` that intercepts all the Errors that happen in our app and logs them to the console, preventing the app from crashing.
+We can modify this default behavior by creating a new class that implements the `ErrorHandler`
+Inside the `ErrorHandler`, we can check which kind of error it is
+
 ```ts
-@NgModule({
-  declarations: [],
-  imports: [CommonModule],
-  providers: [
-    { 
-      // processes all errors
-      provide: ErrorHandler, 
-      useClass: GlobalErrorHandler 
-    },
-    { 
-      // interceptor for HTTP errors
-      provide: HTTP_INTERCEPTORS, 
-      useClass: HttpErrorInterceptor, 
-      multi: true
+// global-error-handler.ts
+import { ErrorHandler, Injectable, Injector } from "@angular/core";
+import { HttpErrorResponse } from "@angular/common/http";
+import { environment } from "@env/environment";
+
+@Injectable()
+export class GlobalErrorHandler implements ErrorHandler {
+  constructor(private injector: Injector) {}
+
+  handleError(error: Error | HttpErrorResponse) {
+    if (error instanceof HttpErrorResponse) {
+      // Server error happened
+      this.handleServerError(error);
+    } else {
+      // Client Error Happend
+      this.handleClientError(error);
     }
+  }
+
+  // Customize the default server error handler here if needed
+  private handleServerError(error: HttpErrorResponse) {
+    if (!navigator.onLine) {
+      // No Internet connection
+      alert("No Internet Connection");
+    }
+
+    if (!environment.production) {
+      // Http Error
+      // Show notification to the user
+      console.error("Request error", error);
+      alert(`${error.status} - ${error.message}`);
+    }
+  }
+
+  private handleClientError(error: Error) {
+    console.error(error);
+  }
+}
+```
+
+Because the best Error is the one that never happens, we could improve our error handling using an `HttpInterceptor` that would intercept all the server calls and retry them X times before throw an Error
+
+```ts
+// http-error.interceptor.ts
+import { Injectable } from "@angular/core";
+import { HttpEvent, HttpInterceptor, HttpHandler, HttpRequest } from "@angular/common/http";
+import { Observable } from "rxjs";
+import { finalize, retry } from "rxjs/operators";
+
+import { LoaderService } from "@core/services/loader.service";
+
+@Injectable({
+  providedIn: "root",
+})
+export class HttpErrorInterceptor implements HttpInterceptor {
+  constructor(public loaderService: LoaderService) {}
+
+  intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+    this.loaderService.display(true);
+    // If the call fails, retry until 2 times before throwing an error
+    return next.handle(request).pipe(
+      retry(2),
+      finalize(() => {
+        this.loaderService.display(false);
+      }),
+    );
+  }
+}
+```
+
+For Error Handling we need to register two `providers`. The first one is responsible for the general error handling, which catches all errors occurring within our application. The second provider is an HTTP interceptor, which is called for every interaction with the back end. The multi property must always be set to `true` in this case, since the `HTTP_INTERCEPTORS` injection token can potentially be assigned to several classes.
+
+```ts
+// core.module.ts
+@NgModule({
+  imports: [ ... ],
+  declarations: [ ... ],
+  providers: [
+    {
+      provide: ErrorHandler,
+      useClass: GlobalErrorHandler,
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: HttpErrorInterceptor,
+      multi: true,
+    },
   ]
 })
-export class ErrorHandlerModule {}
 ```
 
 
