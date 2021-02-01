@@ -1615,6 +1615,7 @@ A server error might contain:
 - `name`: The name of the error (ie: `HttpErrorResponse`).
 - `message`: Explanation message (ie: Http failure response for…).
 
+#### ErrorHandlerModule
 ```ts
 @NgModule({
   declarations: [],
@@ -1668,28 +1669,7 @@ export class TokenInterceptor implements HttpInterceptor {
       }
     });
 
-    return next.handle(request).pipe(
-      tap(
-        (event: HttpEvent<any>) => {
-          this.onSuccess(event);
-        },
-        (error: any) => {
-          this.onError(error);
-        }
-      )
-    );
-  }
-
-  onSuccess(event) {
-    if (event instanceof HttpResponse) {
-      // Intercepting HTTP responses
-    }
-  }
-
-  onError(error) {
-    if (error instanceof HttpErrorResponse) {
-      console.log("%cHttp error message: " + error.message);
-    }
+    return next.handle(request);
   }
 }
 ```
