@@ -43,7 +43,6 @@
 - [Error Handling](#Error-Handling)
   - [Errors, Exceptions & CallStack](#errors-exceptions--callstack)
   - [Global Error Handler](#Global-Error-Handler)
-  - [404 Error](#404-Error)
 - [JWT Token Interceptor](#JWT-Token-Interceptor)
 - [Angular Dynamic Components](#Angular-Dynamic-Components)
 - [Unsubscribe from Observables](#Unsubscribe-from-Observables)
