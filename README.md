@@ -1974,7 +1974,7 @@ docker build . -t dockerngstart .
 This command will look for a docker file in the current directory and create the image with tag `dockerngstart`. with `-t` command you can specify the tag for the image the default convention is `<DockerHubUsername>/<ImageName>`.
 
 run `docker images` command to list all the docker images in your machine
-<img src="./assets/docker images.png" width="100%" height="176px" />
+<img src="./assets/docker images.png" width="100%" />
 
 ### Running a container
 
