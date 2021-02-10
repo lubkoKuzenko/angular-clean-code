@@ -1885,10 +1885,15 @@ Note that Using an operator like takeUntil instead of manually unsubscribing wil
 
 ## Containerizing Angular using Docker
 
+`Docker` is a popular virtualization tool that replicates a specific operating environment on top of a host OS. Each environment is called a container
+
+A `container` uses an image of a preconfigured operating system optimized for a specific task. When a Docker image is launched, it exists in a container. For example, multiple containers may run the same image at the same time on a single host operating system
+
 **Resources**
 
 - ["Build and run Angular application in a Docker container"](https://wkrzywiec.medium.com/build-and-run-angular-application-in-a-docker-container-b65dbbc50be8/)
 - ["Containerizing Angular application for production using Docker"](https://dev.to/usmslm102/containerizing-angular-application-for-production-using-docker-3mhi/)
+- [" To List / Start / Stop Docker Containers"](https://phoenixnap.com/kb/how-to-list-start-stop-docker-containers/)
 
 ### Pre-requisites
  - ["Install Docker for Desktop"](https://www.docker.com/products/docker-desktop)
@@ -1981,6 +1986,8 @@ You can run the docker image using the below command
 docker run --name dockerngstart-container -it -p 8000:80 dockerngstart
 ```
 
+A container may be running, but you may not be able to interact with it. To start the container in interactive mode, use the `–i` and `–t` options
+
 Navigate to your browser with `http://localhost:8000`
 
 ### Review docker images
@@ -1995,6 +2002,52 @@ docker images
 
 ```ts
 docker rmi <IMAGE ID>
+```
+
+### List Docker Containers
+To list all running Docker containers, enter the following into a terminal window
+
+```ts
+docker ps
+```
+To list all containers, both running and stopped, add `–a` 
+
+```ts
+docker ps -a
+```
+
+### Start Docker Container
+The main command to launch or start a single or multiple stopped Docker containers is docker start:
+
+```ts
+docker start [options] container_id 
+```
+
+To create a new container from an image and start it, use `docker run`
+
+```ts
+docker run [options] image [command] [argument] 
+```
+
+### Stop Docker Container
+
+By default, you get a 10 second grace period. The stop command instructs the container to stop services after that period. Use the --time option to define a different grace period expressed in seconds
+
+```ts
+docker stop [option] container_id
+
+docker stop --time=20 container_id
+```
+
+To immediately kill a docker container without waiting for the grace period to end use:
+
+```ts
+docker kill [option] container_id
+```
+
+To stop all running containers, enter the following:
+```ts
+docker stop $(docker ps –a –q)
 ```
 
 <img src="https://miro.medium.com/max/700/0*Piks8Tu6xUYpF4DU" width="100%" height="17px" style="padding: 2px 1rem; background-color: #fff">
