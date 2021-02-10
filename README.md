@@ -1888,6 +1888,7 @@ Note that Using an operator like takeUntil instead of manually unsubscribing wil
 **Resources**
 
 - ["Build and run Angular application in a Docker container"](https://wkrzywiec.medium.com/build-and-run-angular-application-in-a-docker-container-b65dbbc50be8/)
+- ["Containerizing Angular application for production using Docker"](https://dev.to/usmslm102/containerizing-angular-application-for-production-using-docker-3mhi/)
 
 ### Pre-requisites
  - ["Install Docker for Desktop"](https://www.docker.com/products/docker-desktop)
