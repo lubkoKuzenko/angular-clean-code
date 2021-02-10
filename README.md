@@ -1895,7 +1895,7 @@ A `container` uses an image of a preconfigured operating system optimized for a 
 - ["Containerizing Angular application for production using Docker"](https://dev.to/usmslm102/containerizing-angular-application-for-production-using-docker-3mhi/)
 - [" To List / Start / Stop Docker Containers"](https://phoenixnap.com/kb/how-to-list-start-stop-docker-containers/)
 
-### Pre-requisites
+**Pre-requisites**
  - ["Install Docker for Desktop"](https://www.docker.com/products/docker-desktop)
 
 ### Creating Docker file
