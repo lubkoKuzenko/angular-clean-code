@@ -306,7 +306,7 @@ npm install --save-dev htmlhint
 3) Run HTMLHint on, for example, all the HTML files in your project:
 
 ```npm 
-"lint": "ng lint && htmlhint \"src\" --config .htmlhintrc",
+"lint:html": "npx htmlhint \"src\" --config .htmlhintrc",
 ```
 4) Configure rules based on rules list: https://github.com/htmlhint/HTMLHint/blob/master/docs/user-guide/list-rules.md
 
@@ -329,7 +329,7 @@ npm install --save-dev stylelint stylelint-config-standard
 3) Run HTMLHint on, for example, all the HTML files in your project:
 
 ```npm 
-"lint": "ng lint && stylelint \"src/**/*.scss\" --syntax scss",
+ "lint:scss": "npx stylelint \"src/**/*.scss\" --syntax scss",
 ```
 4) Configure rules based on rules list: https://github.com/stylelint/stylelint/blob/master/docs/user-guide/rules/list.md
 
