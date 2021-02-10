@@ -1897,6 +1897,22 @@ Note that Using an operator like takeUntil instead of manually unsubscribing wil
 
 Then create a new file called `Dockerfile` that will be located in the project’s `root` folder. It should have these following lines:
 
+#### Complete Dockerfile
+
+```dockerfile
+### STAGE 1: Build ###
+FROM node:12.20-alpine3.10 AS build
+WORKDIR /app
+COPY package.json package-lock.json ./
+RUN npm install
+COPY . .
+RUN npm run build:prod
+
+### STAGE 2: Run ###
+FROM nginx:1.17.1-alpine
+COPY --from=build /app/dist/ngx-levi9 /usr/share/nginx/html
+```
+
 #### STAGE 1: Build
 
 ```ts
@@ -1941,22 +1957,6 @@ COPY --from=build /app/dist/ngx-levi9 /usr/share/nginx/html
 ```
 
 This is the final command of our docker file. This will copy the compiled angular app from builder stage path `/app/dist/ngx-levi9` to `nginx` container
-
-#### Complete Dockerfile
-
-```dockerfile
-### STAGE 1: Build ###
-FROM node:12.20-alpine3.10 AS build
-WORKDIR /app
-COPY package.json package-lock.json ./
-RUN npm install
-COPY . .
-RUN npm run build:prod
-
-### STAGE 2: Run ###
-FROM nginx:1.17.1-alpine
-COPY --from=build /app/dist/ngx-levi9 /usr/share/nginx/html
-```
 
 ### Creating docker ignore file
 When `COPY . .` command execute it will copy all the files in the host directory to the container working directory. if we want to ignore some folder like `.git` or `node_modules` we can define these folders in `.dockerignore` file
