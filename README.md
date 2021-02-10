@@ -8,7 +8,7 @@
 - [Repo](#Repo)
 - [Configuration](#Configuration)
   - [Configuring tsconfig.json](#Configuring-tsconfigjson)
-  - [Configuring Angular ESLint](#Configuring-TSLint)
+  - [Configuring Angular ESLint](#Configuring-Angular-ESLint)
   - [Configuring HTMLHint](#Configuring-HTMLHint)
   - [Configuring stylelint](#Configuring-stylelint)
   - [Configuring Prettier](#Configuring-Prettier)
