@@ -46,6 +46,7 @@
 - [JWT Token Interceptor](#JWT-Token-Interceptor)
 - [Angular Dynamic Components](#Angular-Dynamic-Components)
 - [Unsubscribe from Observables](#Unsubscribe-from-Observables)
+- [Containerizing Angular using Docker](#Containerizing-Angular-using-Docker)
 - [Performance](#Performance)
   - [Webpack Bundle Analyzer](#Webpack-Bundle-Analyzer)
 
@@ -1878,6 +1879,111 @@ export class AppComponent implements OnInit, OnDestroy {
 ```
 
 Note that Using an operator like takeUntil instead of manually unsubscribing will also complete the observable, triggering any completion event on the observable
+
+<img src="https://miro.medium.com/max/700/0*Piks8Tu6xUYpF4DU" width="100%" height="17px" style="padding: 2px 1rem; background-color: #fff">
+
+
+## Containerizing Angular using Docker
+
+**Resources**
+
+- ["Build and run Angular application in a Docker container"](https://wkrzywiec.medium.com/build-and-run-angular-application-in-a-docker-container-b65dbbc50be8/)
+
+### Pre-requisites
+ - ["Install Docker for Desktop"](https://www.docker.com/products/docker-desktop)
+
+### Creating Docker file
+
+Then create a new file called `Dockerfile` that will be located in the project’s `root` folder. It should have these following lines:
+
+#### STAGE 1: Build
+
+```ts
+FROM node:12.20-alpine3.10 As build
+```
+This line will tell the docker to pull the node image with tag `12.20-alpine3.10` if the images don't exist. We are also giving a friendly name `build` to this image so we can refer it later.
+
+```ts
+WORKDIR /app
+```
+This `WORKDIR` command will create the working directory in our docker image. going forward any command will be run in the context of this directory.
+
+```ts
+COPY package.json package-lock.json ./
+```
+This `COPY` command will copy `package.json` and `package-lock.json` from our current directory to the root of our working directory inside a container which is `/app`.
+
+```ts
+RUN npm install
+```
+This RUN command will restore node_modules define in our package.json
+
+```ts
+COPY . .
+```
+This `COPY` command copies all the files from our current directory to the container working directory. this will copy all our source files
+
+```ts
+RUN npm run build:prod
+```
+This command will build our angular project in production mode and create production ready files in dist/appName folder
+
+#### STAGE 2: Run
+
+```ts
+FROM nginx:1.17.1-alpine
+```
+This line will create a second stage `nginx` container where we will copy the compiled output from our build stage
+
+```ts
+COPY --from=build /app/dist/ngx-levi9 /usr/share/nginx/html
+```
+
+This is the final command of our docker file. This will copy the compiled angular app from builder stage path `/app/dist/ngx-levi9` to `nginx` container
+
+#### Complete Dockerfile
+
+```dockerfile
+### STAGE 1: Build ###
+FROM node:12.20-alpine3.10 AS build
+WORKDIR /app
+COPY package.json package-lock.json ./
+RUN npm install
+COPY . .
+RUN npm run build:prod
+
+### STAGE 2: Run ###
+FROM nginx:1.17.1-alpine
+COPY --from=build /app/dist/ngx-levi9 /usr/share/nginx/html
+```
+
+### Creating docker ignore file
+When `COPY . .` command execute it will copy all the files in the host directory to the container working directory. if we want to ignore some folder like `.git` or `node_modules` we can define these folders in `.dockerignore` file
+  ```ts
+  .git
+  node_modules
+  ```
+
+### Building a docker image
+Navigate the project folder in command prompt and run the below command to build the image
+
+```npm
+docker build . -t dockerngstart .
+```
+This command will look for a docker file in the current directory and create the image with tag `dockerngstart`. with `-t` command you can specify the tag for the image the default convention is `<DockerHubUsername>/<ImageName>`.
+
+run `docker images` command to list all the docker images in your machine
+<img src="./assets/docker images.png" width="100%" height="176px" />
+
+### Running a container
+
+You can run the docker image using the below command
+
+```npm
+docker run --name dockerngstart-container -it -p 8000:80 dockerngstart
+```
+
+Navigate to your browser with `http://localhost:8000`
 
 <img src="https://miro.medium.com/max/700/0*Piks8Tu6xUYpF4DU" width="100%" height="17px" style="padding: 2px 1rem; background-color: #fff">
 
