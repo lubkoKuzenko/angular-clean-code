@@ -8,7 +8,7 @@
 - [Repo](#Repo)
 - [Configuration](#Configuration)
   - [Configuring tsconfig.json](#Configuring-tsconfigjson)
-  - [Configuring TSLint](#Configuring-TSLint)
+  - [Configuring Angular ESLint](#Configuring-TSLint)
   - [Configuring HTMLHint](#Configuring-HTMLHint)
   - [Configuring stylelint](#Configuring-stylelint)
   - [Configuring Prettier](#Configuring-Prettier)
@@ -69,9 +69,7 @@ Repo with Code: https://github.com/lubkoKuzenko/ng-start
 
 - ["tsconfig.json с комментариями"](https://gist.github.com/lubkoKuzenko/b0dfc526a8be2a00f007542960206260)
 
-- ["TSLint core rules"](https://palantir.github.io/tslint/rules/)
-
-- ["Configuring TSLint"](https://palantir.github.io/tslint/usage/configuration/)
+- ["Angular ESLint"](https://github.com/angular-eslint/angular-eslint#migrating-from-codelyzer-and-tslint/)
 
 - ["Configuring HTMLHint"](https://github.com/htmlhint/HTMLHint/)
 
@@ -145,85 +143,148 @@ The presence of a tsconfig.json file in a directory indicates that the directory
 }
 ```
 
-### Configuring TSLint
+### Configuring Angular ESLint
 
-tslint.json or tslint.yaml files can have the following fields specified:
-
-- extends?: string | string[]: The name of a built-in configuration preset (see built-in presets below), or a path or array of paths to other configuration files which are extended by this configuration. This value is handled using node module resolution semantics. For example, a value of "tslint-config" would tell TSLint to try and load the main file of a module named “tslint-config” as a configuration file. Specific files inside node modules can also be specified, eg. "tslint-config/path/to/submodule". Relative paths to JSON files or JS modules are also supported, e.g. "./tslint-config".
-
-- rulesDirectory?: string | string[]: A path to a directory or an array of paths to directories of custom rules. These values are handled using node module resolution semantics, if an index.js is placed in your rules directory. We fallback to use relative or absolute paths, if the module can’t be resolved. If you want to avoid module resolution you can directly use a relative or absolute path (e.g. with ./).
-
-- rules?: { [name: string]: RuleSetting }: A map of rule names to their configuration settings.
-
-  - These rules are applied to .ts and .tsx files.
-  - Each rule is associated with an object containing:
-
-    - options?: any: An array of values that are specific to a rule.
-    - severity?: "default" | "error" | "warning" | "off": Severity level.
-    - Level “error” will cause exit code 2.
-
-  - Legacy: An array may be specified instead of the above object, and is equivalent to setting the rule with the default severity if the first value in the array is true, with configuration parameters in the remainder of the array.
-
-    - "no-empty": [true, "allow-empty-catch"] is strictly equivalent to "no-empty": { "options": ['allow-empty-catch'], "severity": 'default' }
-
-  - Legacy: A boolean value may be specified instead of the above object, and is equivalent to setting no options with default severity.
-  - Any rules specified in this block will override those configured in any base configuration being extended.
-
-    Check out the full rules list here.
-
-  - jsRules?: any | boolean: Same format as rules or explicit true to copy all rule configurations for JS-compatible rules from rules. These rules are applied to .js and .jsx files.
-
-  - defaultSeverity?: "error" | "warning" | "off": The severity level that is applied to rules in this config file as well as rules in any inherited config files which have their severity set to “default”. If undefined, “error” is used as the defaultSeverity.
-
-  - linterOptions?: { exclude?: string[] }:
-    exclude: string[]: An array of globs. Any file matching these globs will not be linted. All exclude patterns are relative to the configuration file they were specified in.
-
-  - format: string: Default lint formatter
-
-tslint.json configuration files may have JavaScript-style // single-line and /_ multi-line _/ comments in them (even though this is technically invalid JSON)
-
-An example tslint.json file might look like this:
-
-```json
-// tslint.json
+Create file `.eslintrc` in root folder
+```ts
 {
-  "extends": [
-    "tslint:recommended",
-    "tslint-sonarts",
-    "tslint-angular",
-    "tslint-config-prettier"
-  ],
-  "rulesDirectory": ["node_modules/codelyzer"],
-  "jsRules": {},
-  "rules": {
-    "curly": [true, "ignore-same-line"],
-    "max-line-length": [true, 120],
-    "no-console": false,
-    "no-commented-code": false,
-    "object-literal-sort-keys": false,
-    "object-literal-key-quotes": false,
-    "ordered-imports": false,
-    "interface-name": false,
-    "max-classes-per-file": false,
-    "cyclomatic-complexity": [true, 15],
-    "member-ordering": false,
-    "no-invalid-await": false,
-    "no-duplicate-string": [true, 7],
-    "variable-name": [
-      true,
-      "check-format",
-      "allow-leading-underscore",
-      "allow-pascal-case",
-      "allow-snake-case",
-      "ban-keywords"
-    ],
-    "template-banana-in-box": true,
-    "template-no-negated-async": true
+  "env": {
+    "browser": true,
+    "es6": true,
+    "node": true
   },
-  "linterOptions": {
-    "exclude": []
+  "extends": ["prettier", "prettier/@typescript-eslint"],
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "project": "tsconfig.json",
+    "sourceType": "module"
+  },
+  "plugins": [
+    "eslint-plugin-import",
+    "@angular-eslint/eslint-plugin",
+    "@typescript-eslint",
+    "@typescript-eslint/tslint"
+  ],
+  "rules": {
+    "@angular-eslint/directive-selector": ["error", { "type": "attribute", "prefix": "bb", "style": "camelCase" }],
+    "@angular-eslint/component-selector": ["error", { "type": "element", "prefix": "bb", "style": "kebab-case" }],
+    "@angular-eslint/component-class-suffix": "error",
+    "@angular-eslint/directive-class-suffix": "error",
+    "@angular-eslint/no-input-rename": "error",
+    "@angular-eslint/no-output-on-prefix": "error",
+    "@angular-eslint/no-output-rename": "error",
+    "@angular-eslint/use-pipe-transform-interface": "error",
+    "@typescript-eslint/consistent-type-definitions": "error",
+    "@typescript-eslint/dot-notation": "off",
+    "@typescript-eslint/explicit-member-accessibility": [
+      "off",
+      {
+        "accessibility": "explicit"
+      }
+    ],
+    "@typescript-eslint/member-ordering": "error",
+    "@typescript-eslint/naming-convention": "error",
+    "@typescript-eslint/no-empty-function": "off",
+    "@typescript-eslint/no-empty-interface": "error",
+    "@typescript-eslint/no-inferrable-types": [
+      "error",
+      {
+        "ignoreParameters": true
+      }
+    ],
+    "@typescript-eslint/no-misused-new": "error",
+    "@typescript-eslint/no-non-null-assertion": "error",
+    "@typescript-eslint/no-unused-expressions": "error",
+    "@typescript-eslint/prefer-function-type": "error",
+    "@typescript-eslint/quotes": ["error", "double"],
+    "@typescript-eslint/tslint/config": [
+      "error",
+      {
+        "rules": {
+          "whitespace": true
+        }
+      }
+    ],
+    "@typescript-eslint/unified-signatures": "error",
+    "arrow-body-style": "error",
+    "constructor-super": "error",
+    "eqeqeq": ["error", "smart"],
+    "guard-for-in": "error",
+    "id-blacklist": "off",
+    "id-match": "off",
+    "import/no-deprecated": "warn",
+    "no-bitwise": "error",
+    "no-caller": "error",
+    "no-console": [
+      "error",
+      {
+        "allow": [
+          "log",
+          "dirxml",
+          "warn",
+          "error",
+          "dir",
+          "timeLog",
+          "assert",
+          "clear",
+          "count",
+          "countReset",
+          "group",
+          "groupCollapsed",
+          "groupEnd",
+          "table",
+          "Console",
+          "markTimeline",
+          "profile",
+          "profileEnd",
+          "timeline",
+          "timelineEnd",
+          "timeStamp",
+          "context"
+        ]
+      }
+    ],
+    "no-debugger": "error",
+    "no-empty": "off",
+    "no-eval": "error",
+    "no-fallthrough": "error",
+    "no-new-wrappers": "error",
+    "no-restricted-imports": [
+      "error",
+      {
+        "paths": ["rxjs/Rx"],
+        "patterns": ["rxjs/(?!operators|testing)"]
+      }
+    ],
+    "no-shadow": [
+      "error",
+      {
+        "hoist": "all"
+      }
+    ],
+    "no-throw-literal": "error",
+    "no-undef-init": "error",
+    "no-underscore-dangle": "off",
+    "no-unused-labels": "error",
+    "no-var": "error",
+    "prefer-const": "error",
+    "radix": "error",
+    "spaced-comment": [
+      "error",
+      "always",
+      {
+        "markers": ["/"]
+      }
+    ],
+    "indent": "off"
   }
 }
+```
+
+Add command to script section of `package.json`
+
+```ts
+ "lint:ts": "eslint --color -c .eslintrc --ext .ts .",
 ```
 
 ### Configuring HTMLHint
