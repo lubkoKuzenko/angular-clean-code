@@ -12,6 +12,7 @@
   - [Configuring HTMLHint](#Configuring-HTMLHint)
   - [Configuring stylelint](#Configuring-stylelint)
   - [Configuring Prettier](#Configuring-Prettier)
+  - [Configuring Proxy for API Calls](#Configuring-Proxy-for-api-calls)
 - [Angular Architecture](#angular-architecture)
   - [Project structure](#project-structure)
     - [AppModule](#AppModule)
@@ -80,6 +81,10 @@ Repo with Code: https://github.com/lubkoKuzenko/ng-start
 - ["List of stylelint rules"](https://github.com/stylelint/stylelint/blob/master/docs/user-guide/rules/list.md/)
 
 - ["Prettier Options"](https://prettier.io/docs/en/options.html/)
+
+- ["Configure a proxy for your API calls with Angular CLI"](https://juristr.com/blog/2016/11/configure-proxy-api-angular-cli/)
+
+- ["Setup a Proxy for API Calls for Your Angular CLI App"](https://medium.com/better-programming/setup-a-proxy-for-api-calls-for-your-angular-cli-app-6566c02a8c4d/)
 
 ### Configuring tsconfig.json
 
@@ -347,6 +352,54 @@ bracketSpacing: true
 arrowParens: always # other option "always"
 htmlWhitespaceSensitivity: 'ignore'
 ```
+
+### Configuring Proxy for API Calls
+
+When we develop an Angular app which needs a back end to persist data, the back end is often served on another port of localhost. For example, the URL to the front end Angular app is `http://localhost:4200`, while the URL to the back end server is `http://localhost:3000`. In this case, if we make an HTTP request from the front end app to the back end server, it is a cross-domain request and we need to do some extra work to make it happen
+
+#### Configuring your Angular CLI dev-server proxy
+
+Angular CLI uses `webpack-dev-server` as the development server. The `webpack-dev-server` makes use of the powerful `http-proxy-middleware` package which allows us to send API requests on the same domain when we have a separate API back end development server
+
+<img src="./assets/ngdevserver-proxy.png" width="100%" />
+
+Create a file called `proxy.conf.json` next to our project’s `package.json`
+
+Add the following contents to the newly created `proxy.conf.json` file:
+
+  ```json
+  {
+    "/folder/sub-folder/*": {
+      "target": "http://localhost:1100",
+      "secure": false,
+      "pathRewrite": {
+        "^/folder/sub-folder/": "/new-folder/"
+      },
+      "changeOrigin": true,
+      "logLevel": "debug"
+    }
+  }
+  ```
+
+Edit the `package.json` file’s start script to be:
+  ```npm 
+  "start": "ng serve --proxy-config proxy.conf.json",
+  ```
+Relaunch the `npm start` process to make our changes effective
+
+`/folder/sub-folder/*` - path says: When I see this path inside my angular app I want to do something with it. The * character indicates that everything that follows the sub-folder will be included.
+
+`target` - "http://localhost:1100" for the path above make target URL the host/source, therefore in the background we will have.
+
+`pathRewrite` - { "^/folder/sub-folder/": "/new-folder/" }, Now let's say that you want to test your app locally, the url http://localhost:1100/folder/sub-folder/ may contain an invalid path: /folder/sub-folder/. You want to change that path to a correct one which is http://localhost:1100/new-folder/, therefore the pathRewrite will become useful. It will exclude the path in the app(left side) and include the newly written one (right side)
+
+`secure` - represents wether we are using http or https. If https is used in the target attribute then set secure attribute to true otherwise set it to false
+
+`changeOrigin` - option is only necessary if your host target is not the current environment, for example: localhost. If you want to change the host to www.something.com which would be the target in the proxy then set the changeOrigin attribute to "true":
+
+`logLevel` - attribute specifies wether the developer wants to display proxying on his terminal/cmd, hence he would use the "debug" value as shown in the image
+
+
 
 <img src="https://miro.medium.com/max/700/0*Piks8Tu6xUYpF4DU" width="100%" height="17px" style="padding: 2px 1rem; background-color: #fff">
 
