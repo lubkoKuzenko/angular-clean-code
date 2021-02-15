@@ -363,9 +363,9 @@ Angular CLI uses `webpack-dev-server` as the development server. The `webpack-de
 
 <img src="./assets/ngdevserver-proxy.png" width="100%" />
 
-Create a file called `proxy.conf.json` next to our project’s `package.json`
+1) Create a file called `proxy.conf.json` next to our project’s `package.json`
 
-Add the following contents to the newly created `proxy.conf.json` file:
+2) Add the following contents to the newly created `proxy.conf.json` file:
 
   ```json
   {
@@ -381,11 +381,13 @@ Add the following contents to the newly created `proxy.conf.json` file:
   }
   ```
 
-Edit the `package.json` file’s start script to be:
+3) Edit the `package.json` file’s start script to be:
   ```npm 
   "start": "ng serve --proxy-config proxy.conf.json",
   ```
-Relaunch the `npm start` process to make our changes effective
+4) Relaunch the `npm start` process to make our changes effective
+
+#### Options: 
 
 `/folder/sub-folder/*` - path says: When I see this path inside my angular app I want to do something with it. The * character indicates that everything that follows the sub-folder will be included.
 
