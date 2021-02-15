@@ -12,7 +12,7 @@
   - [Configuring HTMLHint](#Configuring-HTMLHint)
   - [Configuring stylelint](#Configuring-stylelint)
   - [Configuring Prettier](#Configuring-Prettier)
-  - [Configuring Proxy for API Calls](#Configuring-Proxy-for-api-calls)
+  - [Configuring Proxy for API Calls](#configuring-proxy-for-api-calls)
 - [Angular Architecture](#angular-architecture)
   - [Project structure](#project-structure)
     - [AppModule](#AppModule)
