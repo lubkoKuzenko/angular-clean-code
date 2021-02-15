@@ -357,8 +357,6 @@ htmlWhitespaceSensitivity: 'ignore'
 
 When we develop an Angular app which needs a back end to persist data, the back end is often served on another port of localhost. For example, the URL to the front end Angular app is `http://localhost:4200`, while the URL to the back end server is `http://localhost:3000`. In this case, if we make an HTTP request from the front end app to the back end server, it is a cross-domain request and we need to do some extra work to make it happen
 
-#### Configuring your Angular CLI dev-server proxy
-
 Angular CLI uses `webpack-dev-server` as the development server. The `webpack-dev-server` makes use of the powerful `http-proxy-middleware` package which allows us to send API requests on the same domain when we have a separate API back end development server
 
 <img src="./assets/ngdevserver-proxy.png" width="100%" />
