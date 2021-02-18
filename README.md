@@ -13,7 +13,7 @@
   - [Configuring stylelint](#Configuring-stylelint)
   - [Configuring Prettier](#Configuring-Prettier)
   - [Configuring Proxy for API Calls](#configuring-proxy-for-api-calls)
-  - [Configuring Karma for CI/CD (bamboo example)](#Unit-testing)
+  - [Configuring Karma for CI/CD (bamboo example)](#karma-configuration-for-cicd-bamboo-example)
 - [Angular Architecture](#angular-architecture)
   - [Project structure](#project-structure)
     - [AppModule](#AppModule)
