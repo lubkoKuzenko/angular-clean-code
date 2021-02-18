@@ -13,6 +13,7 @@
   - [Configuring stylelint](#Configuring-stylelint)
   - [Configuring Prettier](#Configuring-Prettier)
   - [Configuring Proxy for API Calls](#configuring-proxy-for-api-calls)
+  - [Configuring Karma for CI/CD (bamboo example)](#Unit-testing)
 - [Angular Architecture](#angular-architecture)
   - [Project structure](#project-structure)
     - [AppModule](#AppModule)
@@ -35,11 +36,10 @@
   - [Custom FormGroup Validator](#Custom-FormGroup-Validator)
   - [Custom FormControl Validator](#Custom-FormControl-Validator)
   - [ControlValueAccessor](#ControlValueAccessor)
+  - [Testing Forms](#Testing-Forms)
 - [Angular Routing](#angular-routing)
   - [Custom RouteReuseStrategy](#Custom-RouteReuseStrategy)
 - [Unit testing](#Unit-testing)
-  - [Karma configuration for CI/CD (bamboo example)](#Unit-testing)
-  - [Testing Forms](#Testing-Forms)
   - [How to test OnPush components](#how-to-test-onpush-components)
 - [Error Handling](#Error-Handling)
   - [Errors, Exceptions & CallStack](#errors-exceptions--callstack)
@@ -399,7 +399,64 @@ Angular CLI uses `webpack-dev-server` as the development server. The `webpack-de
 
 `logLevel` - attribute specifies wether the developer wants to display proxying on his terminal/cmd, hence he would use the "debug" value as shown in the image
 
+### Karma configuration for CI/CD (bamboo example)
 
+```js
+module.exports = function(config) {
+  config.set({
+    basePath: "",
+    frameworks: ["jasmine", "@angular-devkit/build-angular"],
+    plugins: [
+      require("karma-jasmine"),
+      require("karma-chrome-launcher"),
+      require("karma-bamboo-reporter"),
+      require("karma-jasmine-html-reporter"),
+      require("karma-coverage-istanbul-reporter"),
+      require("@angular-devkit/build-angular/plugins/karma")
+    ],
+    client: {
+      clearContext: false // leave Jasmine Spec Runner output visible in browser
+    },
+    coverageIstanbulReporter: {
+      dir: require("path").join(__dirname, "../../coverage/"),
+      reports: ["html", "lcovonly", "clover"],
+      fixWebpackSourcePaths: true,
+      "report-config": {
+        html: {
+          subdir: "html"
+        },
+        clover: {
+          subdir: "clover"
+        }
+      }
+    },
+    bambooReporter: {
+      filename: "coverage/mocha.json"
+    },
+    reporters: ["progress", "kjhtml", "bamboo"],
+    port: 9876,
+    colors: true,
+    logLevel: config.LOG_INFO,
+    autoWatch: true,
+    // browsers: ["Chrome"], // enable this line locally for testing and debugging
+    browsers: ["ChromeHeadlessNoSandbox"],
+    customLaunchers: {
+      ChromeHeadlessNoSandbox: {
+        base: "ChromeHeadless",
+        flags: ["--no-sandbox"],
+        options: {
+          viewportSize: {
+            width: 1280,
+            height: 1024
+          }
+        }
+      }
+    },
+    singleRun: false,
+    restartOnFileChange: true
+  });
+};
+```
 
 <img src="https://miro.medium.com/max/700/0*Piks8Tu6xUYpF4DU" width="100%" height="17px" style="padding: 2px 1rem; background-color: #fff">
 
@@ -899,6 +956,8 @@ export class ReverseStrPipe implements PipeTransform {
 
 - ["Using ControlValueAccessor to Create Custom Form Controls in Angular"](https://www.digitalocean.com/community/tutorials/angular-custom-form-control/)
 
+- ["Testing Dynamic Forms in Angular"](https://www.telerik.com/blogs/testing-dynamic-forms-in-angular/)
+
 ### Basic setup
 
 ```ts
@@ -1343,155 +1402,6 @@ export class CustomFormComponent implements ControlValueAccessor {
 }
 ```
 
-<img src="https://miro.medium.com/max/700/0*Piks8Tu6xUYpF4DU" width="100%" height="17px" style="padding: 2px 1rem; background-color: #fff">
-
-## Angular Routing
-
-**Resources**
-
-- ["Angular Component Reuse Strategy"](https://medium.com/@juliapassynkova/angular-2-component-reuse-strategy-9f3ddfab23f5/)
-
-### Custom RouteReuseStrategy
-
-RouteReuseStrategy decides on whether the router should store the current route when deactivating it or whether the router should restore it when the user re-activates it.
-
-```ts
-// app.module.ts
-import { RouteReuseStrategy } from "@angular/router";
-import { CustomReuseStrategy } from "./router-reuse.strategy.ts";
-
-@NgModule({
-  declarations: [],
-  imports: [],
-  providers: [{ provide: RouteReuseStrategy, useClass: CustomReuseStrategy }],
-  bootstrap: [AppComponent]
-})
-export class AppModule {}
-```
-
-````ts
-// router-reuse.strategy.ts
-import { Injectable } from "@angular/core";
-import {
-  RouteReuseStrategy,
-  ActivatedRouteSnapshot,
-  DetachedRouteHandle
-} from "@angular/router";
-/**
- * Based on Angular `DefaultRouteReuseStrategy`.
- * Reuses routes as long as their route config is the same OR until future route data has pattribute `noReuse: true`
- *
- * @example ```json
- *   {
- *       path: "overview",
- *       component: OverviewComponent,
- *        data: {
- *            noReuse: true,
- *        },
- *    },
- * ```
- */
-@Injectable()
-export class CustomReuseStrategy implements RouteReuseStrategy {
-  public shouldDetach(route: ActivatedRouteSnapshot): boolean {
-    return false;
-  }
-
-  public store(
-    route: ActivatedRouteSnapshot,
-    detachedTree: DetachedRouteHandle
-  ): void {}
-
-  public shouldAttach(route: ActivatedRouteSnapshot): boolean {
-    return false;
-  }
-
-  public retrieve(route: ActivatedRouteSnapshot): DetachedRouteHandle | null {
-    return null;
-  }
-
-  public shouldReuseRoute(
-    future: ActivatedRouteSnapshot,
-    curr: ActivatedRouteSnapshot
-  ): boolean {
-    if (future.data && Boolean(future.data.noReuse)) {
-      return !future.data.noReuse;
-    }
-    return future.routeConfig === curr.routeConfig;
-  }
-}
-````
-
-<img src="https://miro.medium.com/max/700/0*Piks8Tu6xUYpF4DU" width="100%" height="17px" style="padding: 2px 1rem; background-color: #fff">
-
-## Unit testing
-
-Tests are vital when programming because they help detect issues within your codebase that otherwise would have been missed. Writing proper tests reduces the overhead of manually testing functionality in the view or otherwise.
-
-**Resources**
-
-- ["How to test OnPush components"](https://medium.com/@juliapassynkova/how-to-test-onpush-components-c9b39871fe1e/)
-
-- ["Testing Dynamic Forms in Angular"](https://www.telerik.com/blogs/testing-dynamic-forms-in-angular/)
-
-### Karma configuration for CI/CD (bamboo example)
-
-```js
-module.exports = function(config) {
-  config.set({
-    basePath: "",
-    frameworks: ["jasmine", "@angular-devkit/build-angular"],
-    plugins: [
-      require("karma-jasmine"),
-      require("karma-chrome-launcher"),
-      require("karma-bamboo-reporter"),
-      require("karma-jasmine-html-reporter"),
-      require("karma-coverage-istanbul-reporter"),
-      require("@angular-devkit/build-angular/plugins/karma")
-    ],
-    client: {
-      clearContext: false // leave Jasmine Spec Runner output visible in browser
-    },
-    coverageIstanbulReporter: {
-      dir: require("path").join(__dirname, "../../coverage/"),
-      reports: ["html", "lcovonly", "clover"],
-      fixWebpackSourcePaths: true,
-      "report-config": {
-        html: {
-          subdir: "html"
-        },
-        clover: {
-          subdir: "clover"
-        }
-      }
-    },
-    bambooReporter: {
-      filename: "coverage/mocha.json"
-    },
-    reporters: ["progress", "kjhtml", "bamboo"],
-    port: 9876,
-    colors: true,
-    logLevel: config.LOG_INFO,
-    autoWatch: true,
-    // browsers: ["Chrome"], // enable this line locally for testing and debugging
-    browsers: ["ChromeHeadlessNoSandbox"],
-    customLaunchers: {
-      ChromeHeadlessNoSandbox: {
-        base: "ChromeHeadless",
-        flags: ["--no-sandbox"],
-        options: {
-          viewportSize: {
-            width: 1280,
-            height: 1024
-          }
-        }
-      }
-    },
-    singleRun: false,
-    restartOnFileChange: true
-  });
-};
-```
 
 ### Testing Forms
 
@@ -1601,6 +1511,95 @@ it('should test input errors', () => {
 First, we get the name form control from the form form group property. We expect the initial errors object to contain a required property, as the input’s value is empty. Next, we update the value of the input, which means the input shouldn’t contain any errors, which means the errors property should be null.
 
 If all tests are passing, it means we’ve successfully created a form. 
+
+<img src="https://miro.medium.com/max/700/0*Piks8Tu6xUYpF4DU" width="100%" height="17px" style="padding: 2px 1rem; background-color: #fff">
+
+## Angular Routing
+
+**Resources**
+
+- ["Angular Component Reuse Strategy"](https://medium.com/@juliapassynkova/angular-2-component-reuse-strategy-9f3ddfab23f5/)
+
+### Custom RouteReuseStrategy
+
+RouteReuseStrategy decides on whether the router should store the current route when deactivating it or whether the router should restore it when the user re-activates it.
+
+```ts
+// app.module.ts
+import { RouteReuseStrategy } from "@angular/router";
+import { CustomReuseStrategy } from "./router-reuse.strategy.ts";
+
+@NgModule({
+  declarations: [],
+  imports: [],
+  providers: [{ provide: RouteReuseStrategy, useClass: CustomReuseStrategy }],
+  bootstrap: [AppComponent]
+})
+export class AppModule {}
+```
+
+````ts
+// router-reuse.strategy.ts
+import { Injectable } from "@angular/core";
+import {
+  RouteReuseStrategy,
+  ActivatedRouteSnapshot,
+  DetachedRouteHandle
+} from "@angular/router";
+/**
+ * Based on Angular `DefaultRouteReuseStrategy`.
+ * Reuses routes as long as their route config is the same OR until future route data has pattribute `noReuse: true`
+ *
+ * @example ```json
+ *   {
+ *       path: "overview",
+ *       component: OverviewComponent,
+ *        data: {
+ *            noReuse: true,
+ *        },
+ *    },
+ * ```
+ */
+@Injectable()
+export class CustomReuseStrategy implements RouteReuseStrategy {
+  public shouldDetach(route: ActivatedRouteSnapshot): boolean {
+    return false;
+  }
+
+  public store(
+    route: ActivatedRouteSnapshot,
+    detachedTree: DetachedRouteHandle
+  ): void {}
+
+  public shouldAttach(route: ActivatedRouteSnapshot): boolean {
+    return false;
+  }
+
+  public retrieve(route: ActivatedRouteSnapshot): DetachedRouteHandle | null {
+    return null;
+  }
+
+  public shouldReuseRoute(
+    future: ActivatedRouteSnapshot,
+    curr: ActivatedRouteSnapshot
+  ): boolean {
+    if (future.data && Boolean(future.data.noReuse)) {
+      return !future.data.noReuse;
+    }
+    return future.routeConfig === curr.routeConfig;
+  }
+}
+````
+
+<img src="https://miro.medium.com/max/700/0*Piks8Tu6xUYpF4DU" width="100%" height="17px" style="padding: 2px 1rem; background-color: #fff">
+
+## Unit testing
+
+Tests are vital when programming because they help detect issues within your codebase that otherwise would have been missed. Writing proper tests reduces the overhead of manually testing functionality in the view or otherwise.
+
+**Resources**
+
+- ["How to test OnPush components"](https://medium.com/@juliapassynkova/how-to-test-onpush-components-c9b39871fe1e/)
 
 ### How to test OnPush components
 
