@@ -14,6 +14,7 @@
   - [Configuring Prettier](#Configuring-Prettier)
   - [Configuring Proxy for API Calls](#configuring-proxy-for-api-calls)
   - [Configuring Karma for CI/CD (bamboo example)](#karma-configuration-for-cicd-bamboo-example)
+  - [Configuring Karma for CI/CD (azure example)](#karma-configuration-for-cicd-azure-example)
 - [Angular Architecture](#angular-architecture)
   - [Project structure](#project-structure)
     - [AppModule](#AppModule)
@@ -454,6 +455,60 @@ module.exports = function(config) {
     },
     singleRun: false,
     restartOnFileChange: true
+  });
+};
+```
+
+### Configuring Karma for CI/CD (azure example)
+```ts
+module.exports = function(config) {
+  config.set({
+    basePath: '',
+    frameworks: ['jasmine', '@angular-devkit/build-angular'],
+    plugins: [
+      require('karma-jasmine'),
+      require('karma-chrome-launcher'),
+      require('karma-trx-reporter'),
+      require('karma-jasmine-html-reporter'),
+      require('karma-coverage-istanbul-reporter'),
+      require('@angular-devkit/build-angular/plugins/karma'),
+      require('karma-spec-reporter')
+    ],
+    client: {
+      clearContext: false // leave Jasmine Spec Runner output visible in browser
+    },
+    coverageIstanbulReporter: {
+      dir: 'test-results/coverage',
+      reports: ['html', 'lcovonly', 'text-summary', 'cobertura'],
+      fixWebpackSourcePaths: true
+    },
+    reporters: ['progress', 'kjhtml', 'trx', 'spec', 'coverage-istanbul'],
+    port: 9876,
+    colors: true,
+    logLevel: config.LOG_INFO,
+    autoWatch: true,
+    browsers: ['Chrome'],
+    customLaunchers: {
+      ChromeDebugging: {
+        base: 'Chrome',
+        flags: ['--remote-debugging-port=9222']
+      },
+      ChromeHeadlessNoSandbox: {
+        base: 'Chrome',
+        flags: [
+          '--no-sandbox',
+          '--disable-setuid-sandbox',
+          '--headless',
+          '--disable-gpu',
+          '--remote-debugging-port=9222'
+        ]
+      }
+    },
+    singleRun: false,
+    trxReporter: {
+      outputFile: 'test-results/test-results.trx',
+      shortTestName: false
+    }
   });
 };
 ```
