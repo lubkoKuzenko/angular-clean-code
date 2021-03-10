@@ -47,6 +47,7 @@
   - [Global Error Handler](#Global-Error-Handler)
 - [JWT Token Interceptor](#JWT-Token-Interceptor)
 - [Angular Dynamic Components](#Angular-Dynamic-Components)
+- [Dynamic Importing 3rd-party Libraries](#Angular-Dynamic-Components)
 - [Unsubscribe from Observables](#Unsubscribe-from-Observables)
 - [Containerizing Angular using Docker](#Containerizing-Angular-using-Docker)
 - [Performance](#Performance)
@@ -1964,11 +1965,6 @@ Every time we need to create the component we need to remove the previous view, 
 
 ```ts
 const factory = this.resolver.resolveComponentFactory(RedDeviceComponent);
-```
-
-Every time we need to create the component we need to remove the previous view, otherwise, it will append more components to the container. (not required if you need multiple components)
-
-```ts
 this.componentRef = this.entry.createComponent(factory);
 ```
 
@@ -1981,6 +1977,12 @@ public ngOnDestroy() {
   this.componentRef.destroy();
 }
 ```
+
+<img src="https://miro.medium.com/max/700/0*Piks8Tu6xUYpF4DU" width="100%" height="17px" style="padding: 2px 1rem; background-color: #fff">
+
+## Dynamic Importing 3rd-party Libraries
+
+todo
 
 <img src="https://miro.medium.com/max/700/0*Piks8Tu6xUYpF4DU" width="100%" height="17px" style="padding: 2px 1rem; background-color: #fff">
 
