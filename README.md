@@ -47,7 +47,7 @@
   - [Global Error Handler](#Global-Error-Handler)
 - [JWT Token Interceptor](#JWT-Token-Interceptor)
 - [Angular Dynamic Components](#Angular-Dynamic-Components)
-- [Dynamic Importing 3rd-party Libraries](#Angular-Dynamic-Components)
+- [Dynamic Importing 3rd-party Libraries](#dynamic-importing-3rd-party-libraries)
 - [Unsubscribe from Observables](#Unsubscribe-from-Observables)
 - [Containerizing Angular using Docker](#Containerizing-Angular-using-Docker)
 - [Performance](#Performance)
@@ -1982,7 +1982,59 @@ public ngOnDestroy() {
 
 ## Dynamic Importing 3rd-party Libraries
 
-todo
+#### Use import()
+`import()` is a new feature of `ECMAScript`. It loads a script dynamically in runtime. In the future, all modern browsers support it natively. But today, its support is not enough.
+
+### Preparation: Edit tsconfig.json
+
+Also, `TypeScript` has support for dynamic `import()`, but it is enabled only in some module types
+```json
+{
+  "compileOnSave": false,
+  "compilerOptions": {
+    "baseUrl": "./",
+    "outDir": "./dist/out-tsc",
+    "sourceMap": true,
+    "declaration": false,
+    "module": "esnext",
+    "moduleResolution": "node",
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "importHelpers": true,
+    "target": "es5",
+    "typeRoots": [
+      "node_modules/@types"
+    ],
+    "lib": [
+      "es2018",
+      "dom"
+    ]
+  }
+}
+```
+
+#### Migrate to dynamic import()
+
+Call import() in the TypeScript code simply like following:
+```ts
+const importChart = normalizeCommonJSImport(import(/* webpackChunkName: "chart" */ "chart.js"));
+```
+
+`normalizeCommonJSImport` is a utility function for compatibility between `CommonJS` module and `ES modules` and for strict-typing.
+
+```ts
+export function normalizeCommonJSImport<T>(importPromise: Promise<T>): Promise<T> {
+  // CommonJS's `module.exports` is wrapped as `default` in ESModule.
+  return importPromise.then((m: any) => (m.default || m) as T);
+}
+```
+
+In this case, TypeScript’s `import()` returns `Promise<typeof Chart>` as well as `import * as Chart from ‘chart.js’`. This is a problem because `chart.js` is a `CommonJS` module. Without any helpers,default doesn’t exist in the result of `import()` . So we have to mark it as any temporary and remark default as the original type. This is a small hack for correct typing.
+
+As the result, you can see separated bundles like below. `chart.<hash>.js` is not marked as `[initial]`; it means this bundle is loaded lazily and doesn’t affect initial bootstrapping.
+
+<img src="./assets/1_FY_MPUG_xp4BXeWVfZaTXg.png" width="100%" />
+
 
 <img src="https://miro.medium.com/max/700/0*Piks8Tu6xUYpF4DU" width="100%" height="17px" style="padding: 2px 1rem; background-color: #fff">
 
