@@ -1982,6 +1982,10 @@ public ngOnDestroy() {
 
 ## Dynamic Importing 3rd-party Libraries
 
+**Resources**
+
+- ["Angular: Dynamic Importing Large Libraries"](https://medium.com/lacolaco-blog/angular-dynamic-importing-large-libraries-8ec079603d0/)
+
 #### Use import()
 `import()` is a new feature of `ECMAScript`. It loads a script dynamically in runtime. In the future, all modern browsers support it natively. But today, its support is not enough.
 
