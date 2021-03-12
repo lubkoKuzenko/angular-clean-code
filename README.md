@@ -827,6 +827,8 @@ What is more, such behavior nicely corresponds with performance optimization of 
 
 ### Change Detection
 
+<img src="./assets/0_LHWjj-bxWhxjMYiG.gif" />
+
 On each asynchronous event, Angular performs change detection over the entire component tree. Although the code which detects for changes is optimized for [inline-caching](http://mrale.ph/blog/2012/06/03/explaining-js-vms-in-js-inline-caches.html), this still can be a heavy computation in complex applications. A way to improve the performance of the change detection is to not perform it for subtrees which are not supposed to be changed based on the recent actions.
 
 #### `ChangeDetectionStrategy.OnPush`
