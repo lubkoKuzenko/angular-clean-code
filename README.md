@@ -527,6 +527,7 @@ module.exports = function(config) {
 - ["How to define a highly scalable folder structure for your Angular project"](https://itnext.io/choosing-a-highly-scalable-folder-structure-in-angular-d987de65ec7)
 - ["Component Communication in Angular"](https://www.digitalocean.com/community/tutorials/angular-component-communication)
 - ["Designing Scalable Angular Apps: Pages, Containers and Views"](https://blog.bitsrc.io/designing-scalable-angular-apps-pages-containers-and-views-ac9cd83afa2d)
+- ["The Last Guide For Angular Change Detection You'll Ever Need"](https://www.mokkapps.de/blog/the-last-guide-for-angular-change-detection-you-will-ever-need/)
 
 ### What is a scalable architecture?
 
