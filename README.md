@@ -847,7 +847,7 @@ Angular provides two strategies to run change detections:
   <img src="./assets/cd-cycle.gif" />
 
 - OnPush
-  We can switch to the ChangeDetectionStrategy.OnPush change detection strategy by adding the changeDetection property to the component decorator metadata
+  We can switch to the `ChangeDetectionStrategy.OnPush` change detection strategy by adding the changeDetection property to the component decorator metadata
 
   <img src="./assets/0_LHWjj-bxWhxjMYiG.gif" />
 
