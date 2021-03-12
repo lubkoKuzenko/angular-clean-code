@@ -998,7 +998,11 @@ export class UnderlineDirective {
 
 ### Pipe
 
-Pipe should be stored in Pipes folder of Shared Module.
+A pipe takes in data as input and transforms it to a desired output.
+
+A `pure pipe` is only called when Angular detects a change in the value or the parameters passed to a pipe. For example, any changes to a primitive input value (String, Number, Boolean, Symbol) or a changed object reference (Date, Array, Function, Object). 
+
+An `impure pipe` is called for every change detection cycle no matter whether the value or parameters changes. i.e, An impure pipe is called often, as often as every keystroke or mouse-move.
 
 ```ts
 // reverse.pipe.ts
