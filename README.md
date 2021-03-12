@@ -25,8 +25,8 @@
       - [Presentational Components](#Presentational-Components)
       - [Page Components](#Page-Components)
   - [Data flow architecture](#data-flow-architecture)
-  - [Change Detection](#Change-Detection)
-  - [State management](#state-management)
+- [Change Detection](#Change-Detection)
+- [State management](#state-management)
 - [Angular Features](#Angular-Features)
   - [Directive](#Directive)
   - [Pipe](#Pipe)
@@ -521,13 +521,10 @@ module.exports = function(config) {
 **Resources**
 
 - ["Angular Application Architecture"](https://bulldogjob.pl/articles/539-scalable-angular-application-architecture)
-- ["Change Detection in Angular"](https://vsavkin.com/change-detection-in-angular-2-4f216b855d4c)
-- ["Everything you need to know about change detection in Angular"](https://blog.angularindepth.com/everything-you-need-to-know-about-change-detection-in-angular-8006c51d206f)
 - ["Angular File Structure and Best Practices"](https://medium.com/@shijin_nath/angular-right-file-structure-and-best-practices-that-help-to-scale-2020-52ce8d967df5)
 - ["How to define a highly scalable folder structure for your Angular project"](https://itnext.io/choosing-a-highly-scalable-folder-structure-in-angular-d987de65ec7)
 - ["Component Communication in Angular"](https://www.digitalocean.com/community/tutorials/angular-component-communication)
 - ["Designing Scalable Angular Apps: Pages, Containers and Views"](https://blog.bitsrc.io/designing-scalable-angular-apps-pages-containers-and-views-ac9cd83afa2d)
-- ["The Last Guide For Angular Change Detection You'll Ever Need"](https://www.mokkapps.de/blog/the-last-guide-for-angular-change-detection-you-will-ever-need/)
 
 ### What is a scalable architecture?
 
@@ -826,7 +823,14 @@ Such an approach to architecture is not only about readability of code and organ
 
 What is more, such behavior nicely corresponds with performance optimization of Angular’s change detection process. The change detection strategy for dummy components can be set to "onPush" which will trigger the change detection process for the component only when the input properties have been modified. It's an easy and very efficient method of optimizing Angular applications.
 
-### Change Detection
+## Change Detection
+
+**Resources**
+
+- ["Change Detection in Angular"](https://vsavkin.com/change-detection-in-angular-2-4f216b855d4c)
+- ["Everything you need to know about change detection in Angular"](https://blog.angularindepth.com/everything-you-need-to-know-about-change-detection-in-angular-8006c51d206f)
+- ["The Last Guide For Angular Change Detection You'll Ever Need"](https://www.mokkapps.de/blog/the-last-guide-for-angular-change-detection-you-will-ever-need/)
+
 This mechanism of syncing the HTML with our data is called `Change Detection`
 
 #### How Change Detection Works
@@ -853,9 +857,9 @@ Angular provides two strategies to run change detections:
 
   The `OnPush` change detection strategy allows us to disable the change detection mechanism for subtrees of the component tree. By setting the change detection strategy to any component to the value `ChangeDetectionStrategy.OnPush` will make the change detection perform **only** when the component has received different inputs. Angular will consider inputs as different when it compares them with the previous inputs by reference, and the result of the reference check is `false`. In combination with [immutable data structures](https://facebook.github.io/immutable-js/), `OnPush` can bring great performance implications for such "pure" components.
 
-### State management
+## State management
 
-#### Facade Design Pattern
+### Facade Design Pattern
 
 Facade discusses encapsulating a complex subsystem within a single interface object. This reduces the learning curve necessary to successfully leverage the subsystem. It also promotes decoupling the subsystem from its potentially many clients.
 The Facade object should be a fairly simple advocate or facilitator. It should not become an all-knowing oracle or “god” object.
