@@ -1610,6 +1610,132 @@ If all tests are passing, it means we’ve successfully created a form.
 
 `Route Resolver` allows you to get data before navigating to the new route.
 
+### Basic Implementation
+
+```ts
+import { Injectable } from '@angular/core';
+import { Resolve } from '@angular/router';
+
+import { Observable, of } from 'rxjs';
+import { delay } from 'rxjs/operators';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class NewsResolver implements Resolve<Observable<string>> {
+  resolve(): Observable<string> {
+    return of('Resolver').pipe(delay(1000));
+  }
+}
+```
+
+### Configuring Routes
+
+```ts
+{
+  path: 'top',
+  component: Component,
+  resolve: { message: NewsResolver }
+}
+```
+
+### Accessing the Resolved Data in the Component
+In the component, you can access the resolved `data` using the data property of `ActivatedRoute’s` snapshot object
+
+```ts
+import { ActivatedRoute } from '@angular/router';
+
+@Component({ ... })
+...
+constructor(private route: ActivatedRoute) {}
+
+ngOnInit(): void {
+  console.log(this.route.snapshot.data);
+}
+```
+### Resolving Data from an API
+
+First, add the `HttpClientModule` to `app.module.ts`
+
+Then, create a new service:
+
+```ts
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class NewsService {
+  constructor(private http: HttpClient) { }
+
+  getTopPosts() {
+    return this.http.get("https://hacker-news.firebaseio.com/v0/topstories.json");
+  }
+}
+```
+
+And now you can replace the string code in `NewsResolver` with `NewsService`
+
+```ts
+import { Injectable } from '@angular/core';
+import { Resolve } from '@angular/router';
+import { Observable } from 'rxjs';
+
+import { NewsService } from './news.service';
+
+export class NewsResolver implements Resolve<any> {
+  constructor(private newsService: NewsService) {}
+
+  resolve(): Observable<any> {
+    return this.newsService.getTopPosts();
+  }
+}
+```
+#### Accessing Route Parameters
+
+```ts
+import { Injectable } from '@angular/core';
+import { Resolve, ActivatedRouteSnapshot } from '@angular/router';
+import { Observable } from 'rxjs';
+
+import { NewsService } from './news.service';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class PostResolver implements Resolve<any> {
+  constructor(private newsService: NewsService) {}
+
+  resolve(route: ActivatedRouteSnapshot): Observable<any> {
+    return this.newsService.getPost(route.paramMap.get('id'));
+  }
+}
+```
+
+#### Handling Errors
+
+```ts
+import { Injectable } from '@angular/core';
+import { Resolve } from '@angular/router';
+
+import { Observable, of } from 'rxjs';
+import { catchError } from 'rxjs/operators';
+
+import { NewsService } from './news.service';
+
+@Injectable()
+export class NewsResolver implements Resolve<any> {
+  constructor(private newsService: NewsService) {}
+
+  resolve(): Observable<any> {
+    return this.newsService.getTopPosts().pipe(catchError(() => {
+      return of('data not available at this time');
+    }));
+  }
+}
+```
+
 ### Custom RouteReuseStrategy
 
 RouteReuseStrategy decides on whether the router should store the current route when deactivating it or whether the router should restore it when the user re-activates it.
