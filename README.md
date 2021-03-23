@@ -39,6 +39,7 @@
   - [ControlValueAccessor](#ControlValueAccessor)
   - [Testing Forms](#Testing-Forms)
 - [Angular Routing](#angular-routing)
+  - [Route Resolvers](#Route-Resolvers)
   - [Custom RouteReuseStrategy](#Custom-RouteReuseStrategy)
 - [Unit testing](#Unit-testing)
   - [How to test OnPush components](#how-to-test-onpush-components)
@@ -1603,6 +1604,11 @@ If all tests are passing, it means we’ve successfully created a form.
 **Resources**
 
 - ["Angular Component Reuse Strategy"](https://medium.com/@juliapassynkova/angular-2-component-reuse-strategy-9f3ddfab23f5/)
+- ["How To Use Route Resolvers in Angular"](https://www.digitalocean.com/community/tutorials/angular-route-resolvers)
+
+### Route Resolvers
+
+`Route Resolver` allows you to get data before navigating to the new route.
 
 ### Custom RouteReuseStrategy
 
