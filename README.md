@@ -39,6 +39,7 @@
   - [ControlValueAccessor](#ControlValueAccessor)
   - [Testing Forms](#Testing-Forms)
 - [Angular Routing](#angular-routing)
+  - [Componentless Route](#Componentless-Route)
   - [Route Resolvers](#Route-Resolvers)
   - [Custom RouteReuseStrategy](#Custom-RouteReuseStrategy)
 - [Unit testing](#Unit-testing)
@@ -1605,6 +1606,65 @@ If all tests are passing, it means we’ve successfully created a form.
 
 - ["Angular Component Reuse Strategy"](https://medium.com/@juliapassynkova/angular-2-component-reuse-strategy-9f3ddfab23f5/)
 - ["How To Use Route Resolvers in Angular"](https://www.digitalocean.com/community/tutorials/angular-route-resolvers)
+- ["Componentless Route"](https://netbasal.com/implementing-auth-guard-with-componentless-route-in-angular-b50a21f3bd77)
+
+### Componentless Route
+
+`Componentless routes` are useful when the same configuration apply to all child routes.
+
+For example guards, resolvers, params, etc.,
+
+```ts
+const routes: Routes = [
+  {
+    path: '',
+    component: HomeComponent,
+  },
+  {
+    path: '',
+    canActivateChild: [AuthGuard],
+    resolve: {
+      token: TokenNeededForBothMessagsAndContacts
+    },
+    children: [
+      {
+        path: 'todos',
+        component: TodosComponent
+      },
+      {
+        path: 'blog',
+        component: BlogComponent
+      }
+    ]
+  }
+]
+```
+
+And that’s how it looks with lazy-load routes:
+
+```ts
+const routes : Routes = [
+  {
+    path: '',
+    pathMatch: 'full',
+    loadChildren: './home/home.module#HomeModule'
+  },
+  {
+    path: '',
+    canActivateChild: [AuthGuard],
+    children: [
+      {
+        path: 'about',
+        loadChildren: './about/about.module#AboutModule'
+      },
+      {
+        path: 'posts',
+        loadChildren: './posts-page/posts-page.module#PostsPageModule'
+      },
+    ]
+  }
+]
+```
 
 ### Route Resolvers
 
