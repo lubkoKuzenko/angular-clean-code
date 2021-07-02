@@ -889,9 +889,11 @@ By using Page components, it will help the Container components to know less bou
 
 ### Data flow architecture
 
-Let's start with data flow. Angular 2+, unlike its predecessor, prefers a one way data flow. This kind of approach is much easier to maintain and follow than two-way data binding. It is more obvious what is the source of data in a given module and how the change is propagated through the system. In Angular, data flows from top to bottom. From the parent component to the child component and from the component to the template.
+In modern SPA frameworks, everything is a component. They are the main building blocks for creating and controlling user interfaces. Angular (and other modern frameworks) will organize components in a hierarchical tree, which means that components can have a parent and children. Let’s imagine that our components communicate with each other with no rules. Any one of them would be sending data and firing events to each other and after a while, it would become very messy and we would be lost in the woods of data requests and responses.
 
-Still, it's a good idea to add some additional set of rules over the basic data flow principles.
+With this kind of organization, we need to assure unidirectional data flow within our parent and child components. The main rule is that actions go up and data flows down. Every component will accept @Input() parameters to receive the data from their parent and be able to send the @Output() event to notify subscribers that something has happened.
+
+<img src="./assets/angular-project-architecture-diagram2.png" width="100%" style="background-color: #ffffff; padding: 2rem">
 
 In our application we've introduced the idea of "smart" and "dummy" components. The smart components are also called "Containers". The idea behind this division is to clearly define the parts of the application that contain some logic, communicate with services and cause side effects (like service calls, state updates etc.). Every such action is implemented only in Containers. On the contrary, "stupid" components have very little or no logic at all. All the data they need is passed by @Input parameters. If a component wants to communicate with the outside word, it has to emit an event (via @Output attribute).
 
