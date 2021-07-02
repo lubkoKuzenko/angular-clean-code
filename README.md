@@ -15,6 +15,16 @@
   - [Configuring Proxy for API Calls](#configuring-proxy-for-api-calls)
   - [Configuring Karma for CI/CD (bamboo example)](#karma-configuration-for-cicd-bamboo-example)
   - [Configuring Karma for CI/CD (azure example)](#karma-configuration-for-cicd-azure-example)
+- [Architectural principles](#Architectural-principles)
+  - [SOLID](#SOLID)
+    - [Single responsibility](#Single-responsibility)
+    - [Open closed](#Open-closed)
+    - [Liskov substitution](#Liskov-substitution)
+    - [Interface segregation](#Interface-segregation)
+    - [Dependency Inversion](#Dependency-Inversion)
+  - [Don't repeat yourself (DRY)](#Single-responsibility)
+  - [Bounded contexts](#Bounded-contexts)
+  - [Keep it short and simple (KISS)](#KISS)
 - [Angular Architecture](#angular-architecture)
   - [Project structure](#project-structure)
     - [AppModule](#AppModule)
@@ -518,6 +528,66 @@ module.exports = function(config) {
 
 <img src="https://miro.medium.com/max/700/0*Piks8Tu6xUYpF4DU" width="100%" height="17px" style="padding: 2px 1rem; background-color: #fff">
 
+## Design Principles
+
+### SOLID
+
+In object-oriented computer programming, `SOLID` is an acronym for five design principles intended to make software designs more understandable, flexible and maintainable.
+
+`S` — Single responsibility principle
+
+`O` — Open closed principle
+
+`L` — Liskov substitution principle
+
+`I` — Interface segregation principle
+
+`D` — Dependency Inversion principle
+
+#### Single responsibility
+
+`A class should have one and only one reason to change, meaning that a class should only have one job.`
+
+Following this principle helps to produce more loosely coupled and modular systems, since many kinds of new behavior can be implemented as new classes, rather than by adding additional responsibility to existing classes. Adding new classes is always safer than changing existing classes, since no code yet depends on the new classes.
+
+When this principle is applied to application architecture and taken to its logical endpoint, you get microservices. A given microservice should have a single responsibility. If you need to extend the behavior of a system, it's usually better to do it by adding additional microservices, rather than by adding responsibility to an existing one.
+
+#### Open closed
+
+`Objects or entities should be open for extension, but closed for modification.`
+
+`Open for extension` means that we should be able to add new features or components to the application without breaking existing code.
+
+`Closed for modification` means that we should not introduce breaking changes to existing functionality, because that would force you to refactor a lot of existing code
+
+#### Liskov substitution
+
+`Let q(x) be a property provable about objects of x of type T. Then q(y) should be provable for objects y of type S where S is a subtype of T.`
+
+Subclass should override the parent class methods in a way that does not break functionality from a client’s point of view.
+
+#### Interface segregation
+
+`A client should never be forced to implement an interface that it doesn’t use or clients shouldn’t be forced to depend on methods they do not use`
+
+#### Dependency Inversion
+
+`Entities must depend on abstractions not on concretions. It states that the high level module must not depend on the low level module, but they should depend on abstractions`
+
+### Don't repeat yourself (DRY)
+
+The application should avoid specifying behavior related to a particular concept in multiple places as this practice is a frequent source of errors. At some point, a change in requirements will require changing this behavior. It's likely that at least one instance of the behavior will fail to be updated, and the system will behave inconsistently.
+
+Rather than duplicating logic, encapsulate it in a programming construct. Make this construct the single authority over this behavior, and have any other part of the application that requires this behavior use the new construct.
+
+### Bounded contexts
+
+`Bounded contexts` are a central pattern in Domain-Driven Design. They provide a way of tackling complexity in large applications or organizations by breaking it up into separate conceptual modules. Each conceptual module then represents a context that is separated from other contexts, and can evolve independently. Each bounded context should ideally be free to choose its own names for concepts within it, and should have exclusive access to its own persistence store.
+
+### Keep it Short and Simple (KISS Principle)
+
+Keep it simple, stupid (KISS) is a design principle which states that designs and/or systems should be as simple as possible. Wherever possible, complexity should be avoided in a system—as simplicity guarantees the greatest levels of user acceptance and interaction.
+
 ## Angular Architecture
 
 **Resources**
@@ -586,6 +656,8 @@ export class AppModule {}
 #### CoreModule
 
 The `CoreModule` takes on the role of the app root module, but is not the module that gets bootstrapped by Angular at run-time. The common denominator between the files present here is that we only need to load them once, and that is at run-time, which makes them singleton. The module contains root-scoped services, static components like the navbar and footer, interceptors, guard, constants, enums, utils, and universal models. To prevent re-importing the module elsewhere, we should add a module-import-guard in it’s constructor method.
+
+`Core Module` is only going to be imported into our root module, so this module, normally, don’t have really any exports.
 
 Structure of Core module:
 
@@ -659,6 +731,8 @@ export class CoreModule {
 ```
 
 #### SharedModule
+
+`Shared Module` is the one that almost always will have some exports, because otherwise it wouldn’t be shareable, for sure.
 
 Usually a set of components or services that will be reused in other application modules, not applied globally. They can be imported by feature modules.
 
@@ -738,7 +812,11 @@ export class SharedComponentsModule {}
 
 All remaining modules (so-called feature modules) should be isolated and independent. Such a structure not only allows for clear concerns separation, but is also a convenient starting point for implementing lazy loading functionality, another crucial step in preparing a scalable application architecture.
 
+<img src="./assets/1_22skrCDLM6C3oRTuIecIng.png" width="100%" />
+
 #### The Feature Modules
+
+`Feature Module` is normally a standalone and it will be imported just into the root.
 
 The initial Angular application does only have one single module, which works great for small applications. But as the application grows, you’ll need to consider subdividing it into multiple feature modules, some which can be lazy loaded. These modules should only depend on the SharedModule, and their functionality should be scoped to the module.
 
