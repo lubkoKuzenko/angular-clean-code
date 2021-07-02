@@ -16,15 +16,15 @@
   - [Configuring Karma for CI/CD (bamboo example)](#karma-configuration-for-cicd-bamboo-example)
   - [Configuring Karma for CI/CD (azure example)](#karma-configuration-for-cicd-azure-example)
 - [Architectural principles](#Architectural-principles)
-  - [SOLID](#SOLID)
-    - [Single responsibility](#Single-responsibility)
-    - [Open closed](#Open-closed)
-    - [Liskov substitution](#Liskov-substitution)
-    - [Interface segregation](#Interface-segregation)
-    - [Dependency Inversion](#Dependency-Inversion)
-  - [Don't repeat yourself (DRY)](#Single-responsibility)
-  - [Bounded contexts](#Bounded-contexts)
-  - [Keep it short and simple (KISS)](#KISS)
+  - [SOLID](#solid)
+    - [Single responsibility](#single-responsibility)
+    - [Open closed](#open-closed)
+    - [Liskov substitution](#oiskov-substitution)
+    - [Interface segregation](#interface-segregation)
+    - [Dependency Inversion](#dependency-Inversion)
+  - [Don't repeat yourself (DRY)](#code#dont-repeat-yourself-dry)
+  - [Bounded contexts](#bounded-contexts)
+  - [Keep it short and simple (KISS)](#keep-it-short-and-simple-kiss-principle)
 - [Angular Architecture](#angular-architecture)
   - [Project structure](#project-structure)
     - [AppModule](#AppModule)
@@ -528,7 +528,7 @@ module.exports = function(config) {
 
 <img src="https://miro.medium.com/max/700/0*Piks8Tu6xUYpF4DU" width="100%" height="17px" style="padding: 2px 1rem; background-color: #fff">
 
-## Design Principles
+## Architectural principles
 
 ### SOLID
 
