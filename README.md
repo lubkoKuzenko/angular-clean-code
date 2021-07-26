@@ -35,6 +35,7 @@
       - [Presentational Components](#Presentational-Components)
       - [Page Components](#Page-Components)
   - [Data flow architecture](#data-flow-architecture)
+- [Mock API with miragejs](#mock-api-with-miragejs)
 - [Change Detection](#Change-Detection)
 - [State management](#state-management)
 - [Angular Features](#Angular-Features)
@@ -904,6 +905,65 @@ Such architectural approach is intended to keep the number of Containers as smal
 Such an approach to architecture is not only about readability of code and organized data flow. Dummy component are much easier to test. Their state is entirely induced by the Input they are provided with, they cause no side effect and the result of any component action is visible as a proper event being fired.
 
 What is more, such behavior nicely corresponds with performance optimization of Angular’s change detection process. The change detection strategy for dummy components can be set to "onPush" which will trigger the change detection process for the component only when the input properties have been modified. It's an easy and very efficient method of optimizing Angular applications.
+
+## Mock API with mirage.js
+
+<img src="./assets/805ebb91cb4e.jpeg" width="1280" height="720" />
+
+**Resources**
+
+- ["Mirage.js"](https://miragejs.com/)
+
+### Installation
+
+To add Mirage to your project, run
+
+```npm
+npm install --save-dev miragejs
+```
+
+### Usage
+
+Create folder where all mocks will stay. In my case it's `_be-mocks/`. Then inside it we need `index.ts` file with Server definition.
+
+```ts
+// index.ts
+import { Server } from "miragejs";
+import * as users from "./users.json";
+
+export default () => {
+  new Server({
+    seeds(server) {
+      server.db.loadData({
+        users: (users as any).default,
+      });
+    },
+    routes() {
+      this.namespace = "/api";
+
+      this.get("/users", (schema) => schema.db.users[0]);
+    },
+  });
+};
+
+```
+
+After server configurations we need to add it to `app.module.ts`
+
+```ts
+// app.module.ts
+import mockServer from "./_be-mocks";
+
+mockServer();
+```
+
+On service we are able to get data in this way:
+
+```ts
+getUsers() {
+  return this.http.get("/api/users");
+}
+```
 
 ## Change Detection
 
