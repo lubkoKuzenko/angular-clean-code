@@ -23,7 +23,6 @@
     - [Interface segregation](#interface-segregation)
     - [Dependency Inversion](#dependency-Inversion)
   - [Don't repeat yourself (DRY)](#code#dont-repeat-yourself-dry)
-  - [Bounded contexts](#bounded-contexts)
   - [Keep it short and simple (KISS)](#keep-it-short-and-simple-kiss-principle)
 - [Angular Architecture](#angular-architecture)
   - [Project structure](#project-structure)
@@ -580,10 +579,6 @@ Subclass should override the parent class methods in a way that does not break f
 The application should avoid specifying behavior related to a particular concept in multiple places as this practice is a frequent source of errors. At some point, a change in requirements will require changing this behavior. It's likely that at least one instance of the behavior will fail to be updated, and the system will behave inconsistently.
 
 Rather than duplicating logic, encapsulate it in a programming construct. Make this construct the single authority over this behavior, and have any other part of the application that requires this behavior use the new construct.
-
-### Bounded contexts
-
-`Bounded contexts` are a central pattern in Domain-Driven Design. They provide a way of tackling complexity in large applications or organizations by breaking it up into separate conceptual modules. Each conceptual module then represents a context that is separated from other contexts, and can evolve independently. Each bounded context should ideally be free to choose its own names for concepts within it, and should have exclusive access to its own persistence store.
 
 ### Keep it Short and Simple (KISS Principle)
 
