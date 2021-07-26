@@ -908,8 +908,6 @@ What is more, such behavior nicely corresponds with performance optimization of 
 
 ## Mock API with mirage.js
 
-<img src="./assets/805ebb91cb4e.jpeg" width="1280" height="720" />
-
 **Resources**
 
 - ["Mirage.js"](https://miragejs.com/)
