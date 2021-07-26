@@ -963,6 +963,13 @@ getUsers() {
 }
 ```
 
+To Allows importing modules with a ‘.json’ extension add to your tsconfig.json
+
+```ts
+"resolveJsonModule": true
+```
+
+
 ## Change Detection
 
 **Resources**
