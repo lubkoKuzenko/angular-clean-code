@@ -1513,23 +1513,25 @@ export const atLeastOneRequiredValidator = (): ValidatorFn => {
 
 ```ts
 // form.component.ts
-import { ValidatePhone } from "./validators.ts";
+import { PhoneNumberValidators } from "./validators.ts";
 
 public form = new FormGroup({
-  phone: ['', [ValidatePhone]]
+  phone: ['', [PhoneNumberValidators.phoneValidator()]]
 });
 ```
 
 ```ts
 // validators.ts
-export const ValidatePhone = (): ValidatorFn => {
-  return (control: AbstractControl): ValidationErrors => {
-    if (control.value && control.value.length != 10) {
-      return { phoneNumberInvalid: true };
-    }
+export class PhoneNumberValidators {
+  static phoneValidator(): ValidatorFn {
+    return (control: AbstractControl): ValidationErrors | null => {
+      if (control.value && control.value.length != 10) {
+        return { phoneNumberInvalid: true };
+      }
     return null;
-  };
-};
+    };
+  }
+}
 ```
 
 <img src="https://miro.medium.com/max/700/0*Piks8Tu6xUYpF4DU" width="100%" height="17px" style="padding: 2px 1rem; background-color: #fff">
