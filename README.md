@@ -2647,9 +2647,23 @@ docker stop $(docker ps –a –q)
 
 - ["Authoring schematics"](https://angular.io/guide/schematics-authoring/)
 
+- ["Use Angular Schematics to Simplify Your Life"](https://developer.okta.com/blog/2019/02/13/angular-schematics/)
+
+- ["Extend Angular Schematics to customize your development process"](https://indepth.dev/posts/1438/extend-angular-schematics-to-customize-your-development-process/)
+
 A schematic is a template-based code generator that supports complex logic. It is a set of instructions for transforming a software project by generating or modifying code. Schematics are packaged into collections and installed with npm.
 
 The schematic collection can be a powerful tool for creating, modifying, and maintaining any software project, but is particularly useful for customizing Angular projects to suit the particular needs of your own organization. You might use schematics, for example, to generate commonly-used UI patterns or specific components, using predefined templates or layouts. Use schematics to enforce architectural rules and conventions, making your projects consistent and inter-operative
+
+Here is a short list of steps to implement a custom schematic that overrides the default angular one:
+
+- create a blank schematic using the built-in command
+- implement schematic
+  -  factory function
+  -  template file
+  -  schema with input parameters definitions
+  -  collection, which defines exposed schematics
+- add schematic to Angular project
 
 ### Schematics CLI
 
@@ -2680,6 +2694,7 @@ CREATE my-component/src/my-component/index_spec.ts (503 bytes)
 
 `collections.json` - this is the main file, in which are defined all schematics that this project will expose
 
+```json
 {
   "$schema": "../node_modules/@angular-devkit/schematics/collection-schema.json",
   "schematics": {
@@ -2690,6 +2705,7 @@ CREATE my-component/src/my-component/index_spec.ts (503 bytes)
     }
   }
 }
+```
 
 You can see that the my-component schematic points to a factory function in `my-component/index.ts`. Crack that open and you’ll see the following
 
@@ -2710,6 +2726,55 @@ Let’s briefly understand the factory function’s critical elements, which we 
 `_options` - an object that keeps all input data from a caller. We will use it to get additional inputs as well as the name of the component
 `Rule` - it’s an object that defines the transformations of the Tree. All we need to know, for now, is that we will need to build that, and this will precisely define files generation with the rules applicable to them.
 
+### Copy and Manipulate Templates
+
+Writing a template is a relatively easy job because it should look the same as well known generated file, except for one difference - all dynamic content, for example, the name of a component, has to be written inside special tags (<%= , %>), to print the value.
+
+Template files are stored inside `/files` directory, and their names should be written using a specific format to allow dynamic naming of the files. For our case, we want to create a typescript file that will be in the form component-name.component.ts, assuming the "component-name" is our name provided as an input. To fulfill that, we need to create a template file with the name: `__name@dasherize__`.component.ts. Double underscore separates the dynamic content from the plain string, and the dasherize is an Angular function that will make a "kebab-case" string from the name. We have to use the same approach for naming a directory, so we need to place a template file within a folder called `__name@dasherize__`.
+
+Example 
+
+```typescript
+// __name@dasherize__.component.ts
+import { Component, OnInit } from '@angular/core';
+
+@Component({
+	selector: 'app-<%= dasherize(name) %>-component',
+	templateUrl: './<%= dasherize(name) %>.component.html',
+	styleUrls: ['./<%= dasherize(name) %>.component.scss'],
+})
+export class <%= classify(name) %>Component implements OnInit {
+	
+    constructor() { }
+	
+    ngOnInit(): void {
+    }
+}
+```
+
+### We are running a schematic!
+
+First things first, we need to build our library with a schematic. Use the command below in the library directory
+
+```npm
+npm run build
+```
+
+Run the following command from the my-component directory.
+
+```npm
+schematics .:my-component --dry-run=false
+```
+
+This looks like it creates a file, but it does not. This is because schematics runs in debug mode by default. You can bypass by adding `--dry-run=false` to the command. Run `schematics .:my-component --dry-run=false`. If you try running the command again, it’ll fail because the file already exists.
+
+```npm
+schematics .:my-component --dry-run=false
+An error occured:
+Error: Path "/hello.ts" already exist.
+```
+
+When using `Schematics`, it’s unlikely you’re going to want to create files and their contents manually. More than likely, you’ll want to copy templates, manipulate their contents, and put them in the project you’re modifying. Luckily, there’s an API for that!
 
 <img src="https://miro.medium.com/max/700/0*Piks8Tu6xUYpF4DU" width="100%" height="17px" style="padding: 2px 1rem; background-color: #fff">
 
