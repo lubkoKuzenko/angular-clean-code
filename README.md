@@ -62,6 +62,7 @@
 - [Dynamic Importing 3rd-party Libraries](#dynamic-importing-3rd-party-libraries)
 - [Unsubscribe from Observables](#Unsubscribe-from-Observables)
 - [Containerizing Angular using Docker](#Containerizing-Angular-using-Docker)
+- [Angular Schematics](#Angular-Schematics)
 - [Performance](#Performance)
   - [Webpack Bundle Analyzer](#Webpack-Bundle-Analyzer)
 
@@ -2637,6 +2638,78 @@ To stop all running containers, enter the following:
 ```ts
 docker stop $(docker ps –a –q)
 ```
+
+<img src="https://miro.medium.com/max/700/0*Piks8Tu6xUYpF4DU" width="100%" height="17px" style="padding: 2px 1rem; background-color: #fff">
+
+## Angular Schematics
+
+**Resources**
+
+- ["Authoring schematics"](https://angular.io/guide/schematics-authoring/)
+
+A schematic is a template-based code generator that supports complex logic. It is a set of instructions for transforming a software project by generating or modifying code. Schematics are packaged into collections and installed with npm.
+
+The schematic collection can be a powerful tool for creating, modifying, and maintaining any software project, but is particularly useful for customizing Angular projects to suit the particular needs of your own organization. You might use schematics, for example, to generate commonly-used UI patterns or specific components, using predefined templates or layouts. Use schematics to enforce architectural rules and conventions, making your projects consistent and inter-operative
+
+### Schematics CLI
+
+Schematics come with their own command-line tool. Using Node 6.9 or later, install the Schematics command line tool globally:
+
+```npm
+$ npm install -g @angular-devkit/schematics-cli
+```
+
+Then run schematics to create a new blank project:
+
+```npm
+$ schematics blank --name=my-component
+```
+
+The blank schematic command will create a project with configured typescript, package.json, and initial schematic. The structure of the project should look like this
+
+```npm
+CREATE my-component/README.md (639 bytes)
+CREATE my-component/.gitignore (191 bytes)
+CREATE my-component/.npmignore (64 bytes)
+CREATE my-component/package.json (569 bytes)
+CREATE my-component/tsconfig.json (656 bytes)
+CREATE my-component/src/collection.json (231 bytes)
+CREATE my-component/src/my-component/index.ts (318 bytes)
+CREATE my-component/src/my-component/index_spec.ts (503 bytes)
+```
+
+`collections.json` - this is the main file, in which are defined all schematics that this project will expose
+
+{
+  "$schema": "../node_modules/@angular-devkit/schematics/collection-schema.json",
+  "schematics": {
+    "my-component": {
+      "description": "A blank schematic.",
+      "factory": "./my-component/index#newModuleSchematics",
+      "schema": "./my-component/schema.json"
+    }
+  }
+}
+
+You can see that the my-component schematic points to a factory function in `my-component/index.ts`. Crack that open and you’ll see the following
+
+```typescript
+import { Rule, SchematicContext, Tree } from '@angular-devkit/schematics';
+
+export function myComponent(_options: any): Rule {
+  return (tree: Tree, _context: SchematicContext) => {
+    return tree;
+  };
+}
+```
+
+One cool thing about Schematics is they don’t perform any direct actions on your filesystem. Instead, you specify what you’d like to do to a Tree. The Tree is a data structure with a set of files that already exist and a staging area (of files that will contain new/updated code). You can see in the code above that nothing is really happening, the test even proves the tree is empty!
+
+Let’s briefly understand the factory function’s critical elements, which we will later use during the implementation.
+
+`_options` - an object that keeps all input data from a caller. We will use it to get additional inputs as well as the name of the component
+`Rule` - it’s an object that defines the transformations of the Tree. All we need to know, for now, is that we will need to build that, and this will precisely define files generation with the rules applicable to them.
+
 
 <img src="https://miro.medium.com/max/700/0*Piks8Tu6xUYpF4DU" width="100%" height="17px" style="padding: 2px 1rem; background-color: #fff">
 
