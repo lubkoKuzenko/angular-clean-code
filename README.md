@@ -1104,7 +1104,122 @@ The component store is a local, stand-alone, store-like implementation, similar 
 4) add dependency to constructor `constructor(private readonly store: *Store) {}`
 5) use available methods `this.store`
 
-#### CRUD example - https://github.com/lubkoKuzenko/ng-start/tree/master/src/app/unit-cards
+#### CRUD Example - https://github.com/lubkoKuzenko/ng-start/tree/master/src/app/unit-cards
+
+```typescript
+import { Injectable } from "@angular/core";
+import { ComponentStore, tapResponse } from "@ngrx/component-store";
+import { Observable } from "rxjs";
+import { switchMap } from "rxjs/operators";
+import { Card } from "../interfaces";
+import { CardsService } from "../services/cards.service";
+
+// The state model
+export interface CardsState {
+  cards: Card[];
+  loading: boolean;
+}
+
+const defaultState: CardsState = {
+  cards: [],
+  loading: false,
+};
+
+@Injectable()
+export class CardsStore extends ComponentStore<CardsState> {
+  constructor(public cardsService: CardsService) {
+    super(defaultState);
+  }
+
+  // SELECTORS
+  readonly cards$: Observable<Card[]> = this.select((state) => state.cards);
+  readonly loading$: Observable<boolean> = this.select((state) => state.loading);
+
+  // EFFECTS
+  public readonly loadCards = this.effect((trigger$: Observable<void>) =>
+    trigger$.pipe(
+      switchMap(() => {
+        this.patchState({ loading: true });
+
+        return this.cardsService.getCards().pipe(
+          tapResponse(
+            (cards) => this.patchState((state) => ({ ...state, cards: cards || [], loading: false })),
+            (_) => this.patchState({ cards: [] }),
+          ),
+        );
+      }),
+    ),
+  );
+
+  public readonly addCard = this.effect((trigger$: Observable<Card>) =>
+    trigger$.pipe(
+      switchMap((card: Card) => {
+        this.patchState({ loading: true });
+
+        return this.cardsService.addCard(card).pipe(
+          tapResponse(
+            (newCard: Card) =>
+              this.patchState((state) => ({
+                ...state,
+                cards: [...state.cards, newCard],
+                loading: false,
+              })),
+            (_) => this.patchState((state) => ({ cards: state.cards })),
+          ),
+        );
+      }),
+    ),
+  );
+
+  public readonly updateCard = this.effect((trigger$: Observable<Card>) =>
+    trigger$.pipe(
+      switchMap((card: Card) => {
+        this.patchState({ loading: true });
+
+        return this.cardsService.updateCard(card).pipe(
+          tapResponse(
+            () =>
+              this.patchState((state) => {
+                const updatedCards = state.cards.map((c: Card) => (c.id === card.id ? { ...c, ...card } : c));
+
+                return {
+                  ...state,
+                  cards: [...updatedCards],
+                  loading: false,
+                };
+              }),
+            (_) => this.patchState((state) => ({ cards: state.cards })),
+          ),
+        );
+      }),
+    ),
+  );
+
+  public readonly removeCard = this.effect((trigger$: Observable<string>) =>
+    trigger$.pipe(
+      switchMap((cardId: string) => {
+        this.patchState({ loading: true });
+
+        return this.cardsService.deleteCard(cardId).pipe(
+          tapResponse(
+            () =>
+              this.patchState((state) => {
+                const updatedCards = state.cards.filter((card) => card.id !== cardId);
+
+                return {
+                  ...state,
+                  cards: [...updatedCards],
+                  loading: false,
+                };
+              }),
+            (_) => this.patchState((state) => ({ cards: state.cards })),
+          ),
+        );
+      }),
+    ),
+  );
+}
+```
 
 <img src="https://miro.medium.com/max/700/0*Piks8Tu6xUYpF4DU" width="100%" height="17px" style="padding: 2px 1rem; background-color: #fff">
 
