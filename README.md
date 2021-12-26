@@ -1104,6 +1104,7 @@ The component store is a local, stand-alone, store-like implementation, similar 
 4) add dependency to constructor `constructor(private readonly store: *Store) {}`
 5) use available methods `this.store`
 
+#### CRUD example - https://github.com/lubkoKuzenko/ng-start/tree/master/src/app/unit-cards
 
 <img src="https://miro.medium.com/max/700/0*Piks8Tu6xUYpF4DU" width="100%" height="17px" style="padding: 2px 1rem; background-color: #fff">
 
