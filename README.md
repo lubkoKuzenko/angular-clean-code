@@ -38,7 +38,7 @@
 - [Change Detection](#Change-Detection)
 - [State management](#state-management)
   - [Facade Design Pattern](#facade-design-pattern)
-  - [@ngrx/component-store](#@ngrx/component-store)
+  - [@ngrx/component-store](#ngrxcomponent-store)
 - [Angular Features](#Angular-Features)
   - [Directive](#Directive)
   - [Pipe](#Pipe)
