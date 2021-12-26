@@ -37,6 +37,8 @@
 - [Mock API with miragejs](#mock-api-with-miragejs)
 - [Change Detection](#Change-Detection)
 - [State management](#state-management)
+  - [Facade Design Pattern](#facade-design-pattern)
+  - [@ngrx/component-store](#@ngrx/component-store)
 - [Angular Features](#Angular-Features)
   - [Directive](#Directive)
   - [Pipe](#Pipe)
@@ -1002,6 +1004,11 @@ Angular provides two strategies to run change detections:
 
 ## State management
 
+
+**Resources**
+
+- ["An Angular Architect's First Experiences"](https://www.thinktecture.com/en/angular/should-i-use-ngrx-an-agular-achitects-experiences/)
+
 ### Facade Design Pattern
 
 Facade discusses encapsulating a complex subsystem within a single interface object. This reduces the learning curve necessary to successfully leverage the subsystem. It also promotes decoupling the subsystem from its potentially many clients.
@@ -1076,6 +1083,27 @@ export class UsersComponent implements OnInit {
 })
 export class FeatureModule {}
 ```
+
+### @ngrx/component-store
+
+The component store is a local, stand-alone, store-like implementation, similar to the "Subject in a Service" pattern, offering a standardized store-like API for you.
+
+#### It has only three very simple concepts that you have to learn:
+
+`Selectors`: You select and subscribe to the state, either all or parts of it.
+
+`Updater`: To update the state. It can be parts or in whole.
+
+`Effects`: It is also to update the state but do some other necessary task beforehand. For example, an HTTP request to an API.
+
+#### Adding the @ngrx/component-store
+
+1) `npm install @ngrx/component-store --save`
+2) create `*.store.ts` file in `store` folder
+3) provide store service in component where it will be used `providers: [*Store]`
+4) add dependency to constructor `constructor(private readonly store: *Store) {}`
+5) use available methods `this.store`
+
 
 <img src="https://miro.medium.com/max/700/0*Piks8Tu6xUYpF4DU" width="100%" height="17px" style="padding: 2px 1rem; background-color: #fff">
 
