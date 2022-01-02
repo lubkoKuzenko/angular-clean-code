@@ -42,6 +42,7 @@
 - [Angular Features](#Angular-Features)
   - [Directive](#Directive)
   - [Pipe](#Pipe)
+  - [NgTemplateOutlet](#NgTemplateOutlet)
 - [Angular Forms](#angular-forms)
   - [Basic setup](#Basic-setup)
   - [Nested Forms](#Nested-Forms)
@@ -1311,6 +1312,94 @@ export class ReverseStrPipe implements PipeTransform {
   }
 }
 ```
+
+<img src="https://miro.medium.com/max/700/0*Piks8Tu6xUYpF4DU" width="100%" height="17px" style="padding: 2px 1rem; background-color: #fff">
+
+## NgTemplateOutlet
+
+### What is ngTemplateOutlet?
+
+`ngTemplateOutlet` is a structural directive. We use it to insert a template (created by `ngTemplate`) in various sections of our DOM. For example, you can define a few templates to display an item and use them display at several places in the View and also swap that template as per the user’s choice.
+
+### How to use ngTemplateOutlet?
+
+In the following code, we have a template defined using the `ng-template`. The Template reference variable holds the reference the template.
+
+The template does not render itself. We must use a structural directive to render it. That is what `ngTemplateOutlet` does
+
+We pass the Template Reference to the `ngTemplateOutlet` directive. It renders the template. 
+
+```html
+  <ng-template #listTemplate>
+    <span>list</span>
+  </ng-template>
+
+
+  <!-- The following code does not render the span -->
+  <div *ngTemplateOutlet="listTemplate"></div>
+```
+
+### Passing data to ngTemplateOutlet
+
+We can also pass data to the using its second property `ngTemplateOutletContext`
+
+The following code creates a template. We name it as `listTemplate`. The `let-value` creates a local variable with the name `value`
+
+```html
+<ng-template let-value="value" #listTemplate>  
+    <p>Value Received from the Parent is  {{value}}</p>
+</ng-template>
+
+<!-- We can pass any value to the value using the ngTemplateOutletContextproperty -->
+<ng-container [ngTemplateOutlet]="listTemplate" [ngTemplateOutletContext] ="{value:'1000'}">
+</ng-container>  
+```
+
+If you use the key `$implicit` in the context object will set its value as default for all the local variables.
+
+```html
+<ng-template let-name let-message="message" #listTemplate>  
+  <p>Dear {{name}} , {{message}} </p>
+</ng-template>
+ 
+<ng-container [ngTemplateOutlet]="listTemplate" 
+              [ngTemplateOutletContext] ="{$implicit:'Guest',message:'Welcome to our site'}">
+</ng-container> 
+```
+
+We have not assigned anything to the `let-name` so it will take the value from the `$implicit`, which is Guest
+
+```html
+<ng-template #parentTemplate>  
+  <p>
+    This Template is defined in Parent. 
+  </p>
+</ng-template>
+
+<child [customTemplate]="parentTemplate"></child>
+```
+
+In the Child, component receive the `parentTemplate` using the `@Input`(). And then pass it to `ngTemplateOutlet`
+
+```ts
+@Input() customTemplate: TemplateRef<HTMLElement>;
+```
+
+Use the `ViewChild` to get the access to the `parentTemplate` in the component
+```ts
+@ViewChild("listTemplate", { static: false }) listTemplate: TemplateRef<HTMLElement>;
+
+public get template() {
+  return this.isCard ? this.cardTemplate : this.listTemplate;
+}
+```
+```html
+<users-view [userTemplate]="template"></users-view>
+```
+
+### Passing Template to a Child Component
+
+We can pass the entire template to a child component from the parent component. The technique is similar to passing data from parent to child component
 
 <img src="https://miro.medium.com/max/700/0*Piks8Tu6xUYpF4DU" width="100%" height="17px" style="padding: 2px 1rem; background-color: #fff">
 
