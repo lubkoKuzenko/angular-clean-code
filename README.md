@@ -1226,6 +1226,12 @@ export class CardsStore extends ComponentStore<CardsState> {
 
 ## Angular Features
 
+**Resources**
+
+- ["How to Use ngTemplateOutlet"](https://www.tektutorialshub.com/angular/ngtemplateoutlet-in-angular/)
+
+- ["ngTemplateOutlet: The secret to customisation"](https://indepth.dev/posts/1405/ngtemplateoutlet/)
+
 ### Directive
 
 Directive should be stored in Directives folder of Shared Module.
