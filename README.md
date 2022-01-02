@@ -1330,13 +1330,13 @@ The template does not render itself. We must use a structural directive to rende
 We pass the Template Reference to the `ngTemplateOutlet` directive. It renders the template. 
 
 ```html
-  <ng-template #listTemplate>
-    <span>list</span>
-  </ng-template>
+<ng-template #listTemplate>
+  <span>list</span>
+</ng-template>
 
 
-  <!-- The following code does not render the span -->
-  <div *ngTemplateOutlet="listTemplate"></div>
+<!-- The following code does not render the span -->
+<div *ngTemplateOutlet="listTemplate"></div>
 ```
 
 ### Passing data to ngTemplateOutlet
@@ -1369,6 +1369,10 @@ If you use the key `$implicit` in the context object will set its value as defau
 
 We have not assigned anything to the `let-name` so it will take the value from the `$implicit`, which is Guest
 
+### Passing Template to a Child Component
+
+We can pass the entire template to a child component from the parent component. The technique is similar to passing data from parent to child component
+
 ```html
 <ng-template #parentTemplate>  
   <p>
@@ -1396,10 +1400,6 @@ public get template() {
 ```html
 <users-view [userTemplate]="template"></users-view>
 ```
-
-### Passing Template to a Child Component
-
-We can pass the entire template to a child component from the parent component. The technique is similar to passing data from parent to child component
 
 <img src="https://miro.medium.com/max/700/0*Piks8Tu6xUYpF4DU" width="100%" height="17px" style="padding: 2px 1rem; background-color: #fff">
 
