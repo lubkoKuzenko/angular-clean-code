@@ -1311,7 +1311,7 @@ Angular provides built-in pipes for typical data transformations
 | DecimalPipe  | Used to transform the decimal numbers  | `{{ 3.141265 \| number: '1.4-4' }}`
 | I18nPluralPipe  | Converts a value to a string that pluralizes the value according to locale rules  | `{{ todo }}`
 | I18nSelectPipe  | Used to display values according to the selection criteria  | `{{ todo }}`
-| KeyValuePipe  | Converts an Object or Map into an array of key value pairs  | `<div *ngFor="let row of rows \| keyvalue"></div>`
+| KeyValuePipe  | Converts an Object or Map into an array of key value pairs  | `*ngFor="let row of rows \| keyvalue"`
 | JsonPipe  | Converts an object into a JSON string  | `{{ jsonVal \| json }}`
 | LowerCasePipe  | Converts a string or text to lowercase  | `{{ 'TEST' \| lowercase }}`
 | PercentPipe  | Used to display percentage numbers  | `{{ 0.1236 \| percent: '2.1-2' }}`
