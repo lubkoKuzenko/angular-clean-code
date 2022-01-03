@@ -1308,7 +1308,7 @@ Angular provides built-in pipes for typical data transformations
 | AsyncPipe     | Used to read the object from an asynchronous source  | `{{data \| async}}`
 | CurrencyPipe  | Used to format the currencies  | `{{ 1234.56 \| currency:'USD' }}`
 | DatePipe  | Used to format the dates  | `{{ dateVal \| date: 'fullDate' }}`
-| DecimalPipe  | Used to transform the decimal numbers  | `{{ 3.14159265 \| number: '1.4-4' }}`
+| DecimalPipe  | Used to transform the decimal numbers  | `{{ 3.141265 \| number: '1.4-4' }}`
 | I18nPluralPipe  | Converts a value to a string that pluralizes the value according to locale rules  | `{{ todo }}`
 | I18nSelectPipe  | Used to display values according to the selection criteria  | `{{ todo }}`
 | KeyValuePipe  | Converts an Object or Map into an array of key value pairs  | `<div *ngFor="let row of rows \| keyvalue"></div>`
