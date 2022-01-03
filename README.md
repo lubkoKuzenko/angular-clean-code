@@ -1294,9 +1294,30 @@ export class UnderlineDirective {
 
 A pipe takes in data as input and transforms it to a desired output.
 
+<img src="./assets/147465973-deccba45-bf93-41f0-961a-d5f86bcadb3b.png" width="100%">
+
 A `pure pipe` is only called when Angular detects a change in the value or the parameters passed to a pipe. For example, any changes to a primitive input value (String, Number, Boolean, Symbol) or a changed object reference (Date, Array, Function, Object). 
 
 An `impure pipe` is called for every change detection cycle no matter whether the value or parameters changes. i.e, An impure pipe is called often, as often as every keystroke or mouse-move.
+
+#### Built-in Pipes
+Angular provides built-in pipes for typical data transformations
+
+| Pipe          | Description   | Example |
+| ------------- | ------------- | ------------- |
+| AsyncPipe     | Used to read the object from an asynchronous source  | `{{data \| async}}`
+| CurrencyPipe  | Used to format the currencies  | `{{ 1234.56 \| currency:'USD' }}`
+| DatePipe  | Used to format the dates  | `{{ dateVal \| date: 'fullDate' }}`
+| DecimalPipe  | Used to transform the decimal numbers  | `{{ 3.14159265 \| number: '1.4-4' }}`
+| I18nPluralPipe  | Converts a value to a string that pluralizes the value according to locale rules  | `{{ todo }}`
+| I18nSelectPipe  | Used to display values according to the selection criteria  | `{{ todo }}`
+| KeyValuePipe  | Converts an Object or Map into an array of key value pairs  | `<div *ngFor="let row of rows \| keyvalue"></div>`
+| JsonPipe  | Converts an object into a JSON string  | `{{ jsonVal \| json }}`
+| LowerCasePipe  | Converts a string or text to lowercase  | `{{ 'TEST' \| lowercase }}`
+| PercentPipe  | Used to display percentage numbers  | `{{ 0.123456 \| percent: '2.1-2' }}`
+| SlicePipe  | Used to slice an array  | `{{ [1,2,3,4,5,6] \| slice:2 }}`
+| TitleCasePipe  | Converts a string or text to title case  | `{{ 'test' | titlecase }}`
+| UpperCasePipe  | Converts a string or text to uppercase  | `{{ 'test' | uppercase }}`
 
 ```ts
 // reverse.pipe.ts
