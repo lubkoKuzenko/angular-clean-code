@@ -1314,7 +1314,7 @@ Angular provides built-in pipes for typical data transformations
 | KeyValuePipe  | Converts an Object or Map into an array of key value pairs  | `<div *ngFor="let row of rows \| keyvalue"></div>`
 | JsonPipe  | Converts an object into a JSON string  | `{{ jsonVal \| json }}`
 | LowerCasePipe  | Converts a string or text to lowercase  | `{{ 'TEST' \| lowercase }}`
-| PercentPipe  | Used to display percentage numbers  | `{{ 0.123456 \| percent: '2.1-2' }}`
+| PercentPipe  | Used to display percentage numbers  | `{{ 0.1236 \| percent: '2.1-2' }}`
 | SlicePipe  | Used to slice an array  | `{{ [1,2,3,4,5,6] \| slice:2 }}`
 | TitleCasePipe  | Converts a string or text to title case  | `{{ 'test' \| titlecase }}`
 | UpperCasePipe  | Converts a string or text to uppercase  | `{{ 'test' \| uppercase }}`
