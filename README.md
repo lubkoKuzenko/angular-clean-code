@@ -1319,6 +1319,9 @@ Angular provides built-in pipes for typical data transformations
 | TitleCasePipe  | Converts a string or text to title case  | `{{ 'test' \| titlecase }}`
 | UpperCasePipe  | Converts a string or text to uppercase  | `{{ 'test' \| uppercase }}`
 
+#### Custom Pipes
+Angular gives us the freedom to create custom pipes to encapsulate transformations that are not provided with the built-in pipes and to use them the same way as the built-in pipes.
+
 ```ts
 // reverse.pipe.ts
 // how to use {{text | reverseStr}}
