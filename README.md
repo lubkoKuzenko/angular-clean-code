@@ -1309,8 +1309,8 @@ Angular provides built-in pipes for typical data transformations
 | CurrencyPipe  | Used to format the currencies  | `{{ 1234.56 \| currency:'USD' }}`
 | DatePipe  | Used to format the dates  | `{{ dateVal \| date: 'fullDate' }}`
 | DecimalPipe  | Used to transform the decimal numbers  | `{{ 3.141265 \| number: '1.4-4' }}`
-| I18nPluralPipe  | Converts a value to a string that pluralizes the value according to locale rules  | `{{ todo }}`
-| I18nSelectPipe  | Used to display values according to the selection criteria  | `{{ todo }}`
+| I18nPluralPipe  | Converts a value to a string that pluralizes the value according to locale rules  | ` `
+| I18nSelectPipe  | Used to display values according to the selection criteria  | ` `
 | KeyValuePipe  | Converts an Object or Map into an array of key value pairs  | `*ngFor="let row of rows \| keyvalue"`
 | JsonPipe  | Converts an object into a JSON string  | `{{ jsonVal \| json }}`
 | LowerCasePipe  | Converts a string or text to lowercase  | `{{ 'TEST' \| lowercase }}`
