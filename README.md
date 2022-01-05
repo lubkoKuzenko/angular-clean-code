@@ -1450,7 +1450,6 @@ public get template() {
 <!-- Expression -->
 <div [ngClass]="val + val">
 <div [ngClass]="[val]">
-<div [ngClass]="func()">
 ```
 
 ```html
