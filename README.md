@@ -44,6 +44,7 @@
   - [Pipe](#Pipe)
   - [NgTemplateOutlet](#NgTemplateOutlet)
   - [ngClass](#ngClass)
+  - [Structural Directives](#Structural-Directives)
 - [Angular Forms](#angular-forms)
   - [Basic setup](#Basic-setup)
   - [Nested Forms](#Nested-Forms)
@@ -1512,6 +1513,9 @@ export class AppComponent {
   val: Val = 1;
 } 
 ```
+
+## Structural Directives
+In progress
 
 <img src="https://miro.medium.com/max/700/0*Piks8Tu6xUYpF4DU" width="100%" height="17px" style="padding: 2px 1rem; background-color: #fff">
 
