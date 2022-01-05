@@ -1233,6 +1233,8 @@ export class CardsStore extends ComponentStore<CardsState> {
 
 - ["ngTemplateOutlet: The secret to customisation"](https://indepth.dev/posts/1405/ngtemplateoutlet/)
 
+- ["Angular NgClass Example – How to Add Conditional CSS Classes"](https://www.freecodecamp.org/news/angular-ngclass-example/)
+
 ### Directive
 
 Directive should be stored in Directives folder of Shared Module.
