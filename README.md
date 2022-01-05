@@ -1460,14 +1460,15 @@ public get template() {
 <span [class.error]="control.isInvalid"></span>
 ```
 
-```html
-<!-- ngClass as function -->
-<span [ngClass]="getClassOf(val)">{{ val }}</span>
-```
-
 ``` ts
-class MyComponent {
-  getClassOf(val) {
+// ngClass as function
+import { Component } from '@angular/core';
+
+@Component({
+   template: '<span [ngClass]="getClassOf(val)">{{ val }}</span>'
+})
+export class AppComponent { 
+   getClassOf(val) {
     if (val >= 0 && val <= 5) {
       return 'low';
     } else if (val > 5 && val <= 10) {
@@ -1476,39 +1477,41 @@ class MyComponent {
       return 'high'
     }
   }
-}
-```
-
-```html
-<!-- ngClass with values in Array -->
-<span [ngClass]="classArr[val - 1]">{{ val }}</span>
+} 
 ```
 
 ```ts
+// ngClass with values in Array
+import { Component } from '@angular/core';
+
 type Val = 1 | 2 | 3;
 
-class MyComponent {
-  classArr = ['first-element', 'second-element', 'third-element'];
+@Component({
+   template: '<span [ngClass]="classArr[val - 1]">{{ val }}</span>'
+})
+export class AppComponent { 
+   classArr = ['first-element', 'second-element', 'third-element'];
   val: Val = 1;
-}
-```
-
-```html
-<!-- ngClass with values in Object -->
-<span [ngClass]="classMap[val]">{{ val }}</span>
+} 
 ```
 
 ```ts
+// ngClass with values in Object
+import { Component } from '@angular/core';
+
 type Val = 1 | 2 | 3;
 
-class MyComponent {
-  classMap = {
+@Component({
+   template: '<span [ngClass]="classMap[val]">{{ val }}</span>'
+})
+export class AppComponent { 
+    classMap = {
     1: 'first-element',
     2: 'second-element',
     3: 'third-element',
   }
   val: Val = 1;
-}
+} 
 ```
 
 <img src="https://miro.medium.com/max/700/0*Piks8Tu6xUYpF4DU" width="100%" height="17px" style="padding: 2px 1rem; background-color: #fff">
