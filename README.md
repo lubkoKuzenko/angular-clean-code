@@ -1236,8 +1236,11 @@ export class CardsStore extends ComponentStore<CardsState> {
 
 - ["Angular NgClass Example – How to Add Conditional CSS Classes"](https://www.freecodecamp.org/news/angular-ngclass-example/)
 
-### Directive
+### Directives
 
+<img src="./assets/1_OhepgWassGUMkQ6v8VtK3g.png" width="100%" />
+
+### Attribute Directive
 Directive should be stored in Directives folder of Shared Module.
 
 ```ts
@@ -1293,6 +1296,13 @@ export class UnderlineDirective {
   }
 }
 ```
+
+### Structural Directives
+`Structural Directive` in Angular are responsible for manipulating, modifying and removing elements inside a template of a component. A structural directive is applied on a main element and according to the behavior of structural directive, it modifies and updates the main elements and its child elements. We have some inbuilt structural directives in Angular like `ngFor`, `ngSwitch` and `ngIf`
+
+### Creating a custom structural directive
+
+In progress
 
 ### Pipe
 
@@ -1513,13 +1523,6 @@ export class AppComponent {
   val: Val = 1;
 } 
 ```
-
-## Structural Directives
-`Structural Directive` in Angular are responsible for manipulating, modifying and removing elements inside a template of a component. A structural directive is applied on a main element and according to the behavior of structural directive, it modifies and updates the main elements and its child elements. We have some inbuilt structural directives in Angular like `ngFor`, `ngSwitch` and `ngIf`
-
-### Creating a custom structural directive
-
-In progress
 
 <img src="https://miro.medium.com/max/700/0*Piks8Tu6xUYpF4DU" width="100%" height="17px" style="padding: 2px 1rem; background-color: #fff">
 
