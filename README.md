@@ -1434,6 +1434,8 @@ public get template() {
 
 ## ngClass
 
+`ngClass` is a directive in Angular that adds and removes CSS classes on an HTML element
+
 ```html
 <!-- Basic -->
 <div [ngClass]="'first second'">
