@@ -1236,6 +1236,8 @@ export class CardsStore extends ComponentStore<CardsState> {
 
 - ["Angular NgClass Example – How to Add Conditional CSS Classes"](https://www.freecodecamp.org/news/angular-ngclass-example/)
 
+- ["Writing your own structural directives with context variables"](https://github.com/JanMalch/ngx-code-dump/tree/master/custom%20directives/)
+
 ### Directives
 
 <img src="./assets/1_OhepgWassGUMkQ6v8VtK3g.png" width="100%" />
@@ -1302,7 +1304,79 @@ export class UnderlineDirective {
 
 ### Creating a custom structural directive
 
-In progress
+```ts
+@Directive({
+  selector: '[delayRendering]'
+})
+export class DelayRenderingDirective {
+  constructor(
+    private template: TemplateRef<any>,
+    private container: ViewContainerRef
+  ) { }
+
+  @Input()
+  set delayRendering(delayTime: number): void { }
+
+  // Rendering
+  ngOnInit() {
+    this.createView();
+  }
+
+  private createView() {
+    this.container.clear();
+    this.container.createEmbeddedView(this.template);
+  }
+}
+```
+
+`TemplateRef`: Reference to content enclosed within the container
+`ViewContainerRef`: Refers to the Container to which directive is applied
+
+### Applying Directive to the Element
+```html
+<div *delayRendering="1000">
+  <h1>This is the Template area</h1>
+</div>
+```
+
+To create the default input, you add a @Input() and give it the same name as the directive selector
+```ts
+@Input() set delayRendering(delayTime: number): void { }
+```
+
+Lets add `test` input you add another @Input(). The name has to start with the directive selector and then the actual variable name, but with the first letter capitalized.
+
+```ts
+@Input() set delayRenderingTest(test: number): void { }
+```
+
+### Using variables in the template
+
+You cannot use the delayRendering or delayRenderingTest variables in your HTML just yet. To do this you have to provide a context object. A context object can be any plain object literal
+
+First define an interface for our directive:
+```ts
+export interface DirectiveContext {
+  $implicit: number;
+  delayRendering: number;
+  delayRenderingTest: number;
+}
+```
+These variables will be availabe in your directive / HTML. To get these values you have to use the `let x = ...` syntax. Where x can be any variable name you want. To connect `x` with the value of delayRendering you would write `let x = delayRendering`. Then you can use your `x` variable in the template like this:
+
+```html
+<div *delayRendering="10; test: 3; let x = test;">
+    testValue = {{ x }}
+</div>
+```
+
+The `$implicit` variable is sugared syntax as you can omit it when connecting to a variable. So `let input = $implicit`; is the same as `let input`. With this we can already get all our variables in the template
+
+```html
+<div *delayRendering="10; test: 3; let input;">
+    testValue = {{ x }}
+</div>
+```
 
 ### Pipe
 
