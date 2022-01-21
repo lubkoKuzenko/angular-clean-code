@@ -60,6 +60,7 @@
 - [Unit testing](#Unit-testing)
   - [How to test OnPush components](#how-to-test-onpush-components)
   - [How to test Custom Form Control Validator](#how-to-test-Custom-Form-Control-Validator)
+  - [How to test Pipes](#how-to-test-Pipes)
 - [Error Handling](#Error-Handling)
   - [Errors, Exceptions & CallStack](#errors-exceptions--callstack)
   - [Global Error Handler](#Global-Error-Handler)
@@ -2526,10 +2527,10 @@ TestBed.overrideComponent(TestComponent, {
 // password-control.validator.ts
 import { AbstractControl, ValidationErrors, ValidatorFn } from "@angular/forms";
 
-const pattern = "^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{8,}";
+const pattern = "^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{7,}";
 
 export class PasswordValidators {
-  static isValueSatisfyFormatValidator(): ValidatorFn {
+  static isPasswordInCorrectFormatValidator(): ValidatorFn {
     return (control: AbstractControl): ValidationErrors | null => {
       const reg = new RegExp(pattern);
       if (control.value && !reg.test(String(control.value))) {
@@ -2542,47 +2543,87 @@ export class PasswordValidators {
 }
 ```
 
-#### test cases
+#### Unit tests
 
 ```ts
 // password-control.validator.spec.ts
-import { FormControl } from "@angular/forms";
-import { PasswordValidators } from "./password-control.validator";
+import { FormControl } from '@angular/forms';
+import { PasswordValidators } from './password-control.validator';
 
 /*
-A minimum of 8 characters
+A minimum of 7 characters
 At least one UPPERCASE letter
 At least one lowercase letter
 At least one number
 */
 
-describe("PasswordValidators", () => {
-  const isValueValidValidator = PasswordValidators.isValueValidValidator();
-  const control = new FormControl("input");
+const TEST_CASES = [
+  { test_case: 'string length is less than 7 characters', value: '12345', result: { error: true } },
+  { test_case: 'string do not have UPPERCASE letter', value: '12345qwe', result: { error: true } },
+  { test_case: 'string do not have lowercase letter', value: '12345WWW', result: { error: true } },
+  { test_case: 'string do not have one number', value: 'qweqweWWW', result: { error: true } },
+  { test_case: 'string has correct value', value: '123qweQW', result: null },
+];
 
-  it('should return "error: true" if input string length is less than 8 characters', () => {
-    control.setValue("1215");
-    expect(isValueValidValidator(control)).toEqual({ error: true });
+describe('PasswordValidators', () => {
+  const isPasswordInCorrectFormatValidator = PasswordValidators.isPasswordInCorrectFormatValidator();
+  const control = new FormControl('input');
+
+  TEST_CASES.forEach(({ test_case, value, result }) => {
+    it(`should return ${result} if input ${test_case}`, () => {
+      control.setValue(value);
+      expect(isPasswordInCorrectFormatValidator(control)).toEqual(result);
+    });
   });
+});
 
-  it('should return "error: true" if input string do not have UPPERCASE letter', () => {
-    control.setValue("12225qwe");
-    expect(isValueValidValidator(control)).toEqual({ error: true });
-  });
+```
 
-  it('should return "error: true" if input string do not have lowercase letter', () => {
-    control.setValue("12345QQQ");
-    expect(isValueValidValidator(control)).toEqual({ error: true });
-  });
+### How to test Pipes
 
-  it('should return "error: true" if input string do not have lowercase letter', () => {
-    control.setValue("qweqweQQQ");
-    expect(isValueSatisfyFormatValidator(control)).toEqual({ error: true });
-  });
+#### Pipe
 
-  it("should return null if input string is satisfying all rules", () => {
-    control.setValue("123qweQQ");
-    expect(isValueSatisfyFormatValidator(control)).toBeNull();
+```ts
+// string-to-number.pipe.ts
+import { Pipe, PipeTransform } from '@angular/core';
+
+@Pipe({ name: 'toNumber' })
+export class ToNumberPipe implements PipeTransform {
+  transform(value: string | number): number {
+    if (!value) return NaN;
+
+    if (typeof value === 'string' && value.trim().length === 0) {
+      return NaN;
+    }
+    return Number(value);
+  }
+}
+```
+
+#### Unit tests
+
+```ts
+// string-to-number.pipe.spec.ts
+import { ToNumberPipe } from './string-to-number.pipe';
+
+const TEST_CASES = [
+  { value: 12, result: 12 },
+  { value: 12.2, result: 12.2 },
+  { value: '12', result: 12 },
+  { value: '', result: NaN },
+  { value: ' ', result: NaN },
+  { value: '12a', result: NaN },
+  { value: 'vv12', result: NaN },
+];
+
+describe('ToNumberPipe', () => {
+  const pipe = new ToNumberPipe();
+  it('should create a pipe instance', () => expect(pipe).toBeTruthy());
+
+  TEST_CASES.forEach(({ value, result }) => {
+    it(`should match the ${value} with to ${result}`, () => {
+      expect(pipe.transform(value)).toEqual(result);
+    });
   });
 });
 ```
