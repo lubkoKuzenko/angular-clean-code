@@ -59,6 +59,7 @@
   - [Custom RouteReuseStrategy](#Custom-RouteReuseStrategy)
 - [Unit testing](#Unit-testing)
   - [How to test OnPush components](#how-to-test-onpush-components)
+  - [How to test Custom Form Control Validator](#how-to-test-Custom-Form-Control-Validator)
 - [Error Handling](#Error-Handling)
   - [Errors, Exceptions & CallStack](#errors-exceptions--callstack)
   - [Global Error Handler](#Global-Error-Handler)
@@ -2514,6 +2515,75 @@ TestBed.overrideComponent(TestComponent, {
     template: `test id = <span>{{id}}</span>`,
     changeDetection: ChangeDetectionStrategy.Default
   })
+});
+```
+
+### How to test Custom Form Control Validator
+
+#### Validator
+
+```ts
+// password-control.validator.ts
+import { AbstractControl, ValidationErrors, ValidatorFn } from "@angular/forms";
+
+const pattern = "^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{8,}";
+
+export class PasswordValidators {
+  static isValueSatisfyFormatValidator(): ValidatorFn {
+    return (control: AbstractControl): ValidationErrors | null => {
+      const reg = new RegExp(pattern);
+      if (control.value && !reg.test(String(control.value))) {
+        return { wrongPasswordFormat: true };
+      }
+
+      return null;
+    };
+  }
+}
+```
+
+#### test cases
+
+```ts
+// password-control.validator.spec.ts
+import { FormControl } from "@angular/forms";
+import { PasswordValidators } from "./password-control.validator";
+
+/*
+A minimum of 8 characters
+At least one UPPERCASE letter
+At least one lowercase letter
+At least one number
+*/
+
+describe("[rbs-user-identity-security-center-widget-extended]: PasswordValidators", () => {
+  const isValueSatisfyFormatValidator = PasswordValidators.isValueSatisfyFormatValidator();
+  const control = new FormControl("input");
+
+  it('should return "wrongPasswordFormat: true" if input string length is less than 8 characters', () => {
+    control.setValue("12345");
+    expect(isValueSatisfyFormatValidator(control)).toEqual({ wrongPasswordFormat: true });
+  });
+
+  it('should return "wrongPasswordFormat: true" if input string do not have UPPERCASE letter', () => {
+    control.setValue("12345qwe");
+    expect(isValueSatisfyFormatValidator(control)).toEqual({ wrongPasswordFormat: true });
+  });
+
+  it('should return "wrongPasswordFormat: true" if input string do not have lowercase letter', () => {
+    control.setValue("12345WWW");
+    expect(isValueSatisfyFormatValidator(control)).toEqual({ wrongPasswordFormat: true });
+  });
+
+  it('should return "wrongPasswordFormat: true" if input string do not have lowercase letter', () => {
+    control.setValue("qweqweWWW");
+    expect(isValueSatisfyFormatValidator(control)).toEqual({ wrongPasswordFormat: true });
+  });
+
+  it("should return null if input string is satisfying all rules", () => {
+    control.setValue("123qweQW");
+    expect(isValueSatisfyFormatValidator(control)).toBeNull();
+  });
 });
 ```
 
