@@ -2754,7 +2754,6 @@ import { catchError } from "rxjs/operators";
 export interface Post {
   id: string;
   title: string;
-  body: string;
 }
 
 @Injectable({
@@ -2813,7 +2812,17 @@ export class PostsService {
 import { TestBed } from "@angular/core/testing";
 import { Post, PostsService } from "./post.service";
 import { HttpClientTestingModule, HttpTestingController } from "@angular/common/http/testing";
-import { postsMock } from "../mocks/posts.mock";
+
+const postsMock: Post[] = [
+  {
+    id: "3",
+    title: "sit aut",
+  },
+  {
+    id: "4",
+    title: "eum et est occaecati",
+  },
+];
 
 describe("[SERVICES]: PostsService", () => {
   let service: PostsService;
