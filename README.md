@@ -40,6 +40,7 @@
   - [Facade Design Pattern](#facade-design-pattern)
   - [@ngrx/component-store](#ngrxcomponent-store)
 - [Angular Features](#Angular-Features)
+  - [Component life cycles](#Component-life-cycles)
   - [Attribute Directive](#Attribute-Directive)
   - [Structural Directives](#Structural-Directives)
   - [Pipe](#Pipe)
@@ -1241,6 +1242,19 @@ export class CardsStore extends ComponentStore<CardsState> {
 - ["Angular NgClass Example – How to Add Conditional CSS Classes"](https://www.freecodecamp.org/news/angular-ngclass-example/)
 
 - ["Writing your own structural directives with context variables"](https://github.com/JanMalch/ngx-code-dump/tree/master/custom%20directives/)
+
+### Component life cycles
+
+| Life cycle  | Description |
+| ------------- | ------------- |
+| ngOnInit  | Called once, after the first ngOnChanges()   |
+| ngOnChanges  | Called before ngOnInit() and whenever one of input properties change.   |
+| ngOnDestroy  | Called just before Angular destroys the directive/component  |
+| ngDoCheck  | Called during every change detection run  |
+| ngAfterContentChecked  | Called after the ngAfterContentInit() and every subsequent ngDoCheck()  |
+| ngAfterViewChecked  | Called after the ngAfterViewInit() and every subsequent ngAfterContentChecked().  |
+| ngAfterContentInit  | Called once after the first ngDoCheck().  |
+| ngAfterViewInit  | Called once after the first ngAfterContentChecked().   |
 
 ### Directives
 
