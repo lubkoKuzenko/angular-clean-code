@@ -46,6 +46,7 @@
   - [Pipe](#Pipe)
   - [NgTemplateOutlet](#NgTemplateOutlet)
   - [ngClass](#ngClass)
+  - [*ngFor](#*ngFor)
 - [Angular Forms](#angular-forms)
   - [Basic setup](#Basic-setup)
   - [Nested Forms](#Nested-Forms)
@@ -1616,6 +1617,41 @@ export class AppComponent {
   }
   val: Val = 1;
 } 
+```
+
+## *ngFor:TrackBy
+
+####  Why do we need to use ngFor trackBy in the angular application?
+
+- The trackBy used to improve the performance of the angular project.
+- It is usually not needed only when your application running into performance issues.
+- The angular ngFor directive may perform poorly with large applications.
+- A little change to the collection is adding a new item or removing an existing item from the collection may trigger a cascade of DOM manipulations.
+- Assume, we have some data coming from some back-end API and we are storing data into some type of collection like an array and then we need to update these data over the webpage using ngFor directive.
+- By default, what the angular framework will do is, it will remove all the DOM elements that are associated with the data and will create them again in the DOM tree even if the equal data is coming.
+- A lot of DOM Manipulation will occur in the background if a large amount of data coming from the back-end API repeatedly.
+
+```ts
+import { Component } from '@angular/core';
+ 
+@Component({
+  selector: 'app-tasks-list',
+  template: `
+    <ul> 
+      <li *ngFor="let task of tasks; trackBy: identify">{{task.title}}</li> 
+    </ul>
+  `
+})
+export class MoviesListComponent  {
+  tasks: any[] = [
+    { "id": 1, "title": "Working" },
+    { "id": 2, "title": "Pending" },
+  ];
+
+  public identify(index: number, el: any) {
+    return item.id; // unique identifier from element
+  }
+}
 ```
 
 <img src="https://miro.medium.com/max/700/0*Piks8Tu6xUYpF4DU" width="100%" height="17px" style="padding: 2px 1rem; background-color: #fff">
