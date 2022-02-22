@@ -46,7 +46,7 @@
   - [Pipe](#Pipe)
   - [NgTemplateOutlet](#NgTemplateOutlet)
   - [ngClass](#ngClass)
-  - [*ngFor](#*ngFor)
+  - [*ngFor](#ngfortrackby)
 - [Angular Forms](#angular-forms)
   - [Basic setup](#Basic-setup)
   - [Nested Forms](#Nested-Forms)
