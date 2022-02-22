@@ -1648,8 +1648,8 @@ export class MoviesListComponent  {
     { "id": 2, "title": "Pending" },
   ];
 
-  public identify(index: number, el: any) {
-    return item.id; // unique identifier from element
+  public identify(index: number, task: any) {
+    return task.id; // unique identifier from element
   }
 }
 ```
