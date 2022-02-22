@@ -1245,6 +1245,8 @@ export class CardsStore extends ComponentStore<CardsState> {
 
 ### Component life cycles
 
+<img src="./assets/lifecycle-hooks.webp" width="100%" />
+
 | Life cycle  | Description |
 | ------------- | ------------- |
 | ngOnInit  | Called once, after the first ngOnChanges()   |
