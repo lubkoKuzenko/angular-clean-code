@@ -1,6 +1,6 @@
 # Angular Clean Code
 
-<img src="https://webref.ru/assets/images/angular-cookbook/angular.png" width="960">
+<img src="./assets/the-seo-guide-to-angular.png" width="960">
 
 ## Table of Content
 
