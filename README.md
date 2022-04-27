@@ -982,7 +982,7 @@ To Allows importing modules with a ‘.json’ extension add to your tsconfig.js
 **Resources**
 
 - ["Change Detection in Angular"](https://vsavkin.com/change-detection-in-angular-2-4f216b855d4c)
-- ["Everything you need to know about change detection in Angular"](https://blog.angularindepth.com/everything-you-need-to-know-about-change-detection-in-angular-8006c51d206f)
+- ["Everything you need to know about change detection in Angular"](https://indepth.dev/posts/1053/everything-you-need-to-know-about-change-detection-in-angular)
 - ["The Last Guide For Angular Change Detection You'll Ever Need"](https://www.mokkapps.de/blog/the-last-guide-for-angular-change-detection-you-will-ever-need/)
 
 This mechanism of syncing the HTML with our data is called `Change Detection`
