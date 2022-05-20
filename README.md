@@ -46,7 +46,7 @@
   - [Pipe](#Pipe)
   - [NgTemplateOutlet](#NgTemplateOutlet)
   - [ngClass](#ngClass)
-  - [*ngFor](#ngfortrackby)
+  - [\*ngFor](#ngfortrackby)
 - [Angular Forms](#angular-forms)
   - [Basic setup](#Basic-setup)
   - [Nested Forms](#Nested-Forms)
@@ -177,6 +177,7 @@ The presence of a tsconfig.json file in a directory indicates that the directory
 ### Configuring Angular ESLint
 
 Create file `.eslintrc` in root folder
+
 ```ts
 {
   "env": {
@@ -320,13 +321,13 @@ Add command to script section of `package.json`
 
 ### Configuring HTMLHint
 
-1) Install htmlhint
+1. Install htmlhint
 
 ```npm
 npm install --save-dev htmlhint
 ```
 
-2) Create a .htmlhintrc configuration file in the root of your project:
+2. Create a .htmlhintrc configuration file in the root of your project:
 
 ```.htmlhintrc
 {
@@ -334,22 +335,23 @@ npm install --save-dev htmlhint
 }
 ```
 
-3) Run HTMLHint on, for example, all the HTML files in your project:
+3. Run HTMLHint on, for example, all the HTML files in your project:
 
-```npm 
+```npm
 "lint:html": "npx htmlhint \"src\" --config .htmlhintrc",
 ```
-4) Configure rules based on rules list: https://github.com/htmlhint/HTMLHint/blob/master/docs/user-guide/list-rules.md
+
+4. Configure rules based on rules list: https://github.com/htmlhint/HTMLHint/blob/master/docs/user-guide/list-rules.md
 
 ### Configuring stylelint
 
-1) Install stylelint
+1. Install stylelint
 
 ```npm
 npm install --save-dev stylelint stylelint-config-standard
 ```
 
-2) Create a .htmlhintrc configuration file in the root of your project:
+2. Create a .htmlhintrc configuration file in the root of your project:
 
 ```.stylelintrc
 {
@@ -357,13 +359,13 @@ npm install --save-dev stylelint stylelint-config-standard
 }
 ```
 
-3) Run HTMLHint on, for example, all the HTML files in your project:
+3. Run HTMLHint on, for example, all the HTML files in your project:
 
-```npm 
+```npm
  "lint:scss": "npx stylelint \"src/**/*.scss\" --syntax scss",
 ```
-4) Configure rules based on rules list: https://github.com/stylelint/stylelint/blob/master/docs/user-guide/rules/list.md
 
+4. Configure rules based on rules list: https://github.com/stylelint/stylelint/blob/master/docs/user-guide/rules/list.md
 
 ### Configuring Prettier
 
@@ -387,33 +389,35 @@ Angular CLI uses `webpack-dev-server` as the development server. The `webpack-de
 
 <img src="./assets/ngdevserver-proxy.png" width="100%" />
 
-1) Create a file called `proxy.conf.json` next to our project’s `package.json`
+1. Create a file called `proxy.conf.json` next to our project’s `package.json`
 
-2) Add the following contents to the newly created `proxy.conf.json` file:
+2. Add the following contents to the newly created `proxy.conf.json` file:
 
-  ```json
-  {
-    "/folder/sub-folder/*": {
-      "target": "http://localhost:1100",
-      "secure": false,
-      "pathRewrite": {
-        "^/folder/sub-folder/": "/new-folder/"
-      },
-      "changeOrigin": true,
-      "logLevel": "debug"
-    }
+```json
+{
+  "/folder/sub-folder/*": {
+    "target": "http://localhost:1100",
+    "secure": false,
+    "pathRewrite": {
+      "^/folder/sub-folder/": "/new-folder/"
+    },
+    "changeOrigin": true,
+    "logLevel": "debug"
   }
-  ```
+}
+```
 
-3) Edit the `package.json` file’s start script to be:
-  ```npm 
-  "start": "ng serve --proxy-config proxy.conf.json",
-  ```
-4) Relaunch the `npm start` process to make our changes effective
+3. Edit the `package.json` file’s start script to be:
 
-#### Options: 
+```npm
+"start": "ng serve --proxy-config proxy.conf.json",
+```
 
-`/folder/sub-folder/*` - path says: When I see this path inside my angular app I want to do something with it. The * character indicates that everything that follows the sub-folder will be included.
+4. Relaunch the `npm start` process to make our changes effective
+
+#### Options:
+
+`/folder/sub-folder/*` - path says: When I see this path inside my angular app I want to do something with it. The \* character indicates that everything that follows the sub-folder will be included.
 
 `target` - "http://localhost:1100" for the path above make target URL the host/source, therefore in the background we will have.
 
@@ -428,7 +432,7 @@ Angular CLI uses `webpack-dev-server` as the development server. The `webpack-de
 ### Karma configuration for CI/CD (bamboo example)
 
 ```js
-module.exports = function(config) {
+module.exports = function (config) {
   config.set({
     basePath: "",
     frameworks: ["jasmine", "@angular-devkit/build-angular"],
@@ -438,10 +442,10 @@ module.exports = function(config) {
       require("karma-bamboo-reporter"),
       require("karma-jasmine-html-reporter"),
       require("karma-coverage-istanbul-reporter"),
-      require("@angular-devkit/build-angular/plugins/karma")
+      require("@angular-devkit/build-angular/plugins/karma"),
     ],
     client: {
-      clearContext: false // leave Jasmine Spec Runner output visible in browser
+      clearContext: false, // leave Jasmine Spec Runner output visible in browser
     },
     coverageIstanbulReporter: {
       dir: require("path").join(__dirname, "../../coverage/"),
@@ -449,15 +453,15 @@ module.exports = function(config) {
       fixWebpackSourcePaths: true,
       "report-config": {
         html: {
-          subdir: "html"
+          subdir: "html",
         },
         clover: {
-          subdir: "clover"
-        }
-      }
+          subdir: "clover",
+        },
+      },
     },
     bambooReporter: {
-      filename: "coverage/mocha.json"
+      filename: "coverage/mocha.json",
     },
     reporters: ["progress", "kjhtml", "bamboo"],
     port: 9876,
@@ -473,67 +477,68 @@ module.exports = function(config) {
         options: {
           viewportSize: {
             width: 1280,
-            height: 1024
-          }
-        }
-      }
+            height: 1024,
+          },
+        },
+      },
     },
     singleRun: false,
-    restartOnFileChange: true
+    restartOnFileChange: true,
   });
 };
 ```
 
 ### Configuring Karma for CI/CD (azure example)
+
 ```ts
-module.exports = function(config) {
+module.exports = function (config) {
   config.set({
-    basePath: '',
-    frameworks: ['jasmine', '@angular-devkit/build-angular'],
+    basePath: "",
+    frameworks: ["jasmine", "@angular-devkit/build-angular"],
     plugins: [
-      require('karma-jasmine'),
-      require('karma-chrome-launcher'),
-      require('karma-trx-reporter'),
-      require('karma-jasmine-html-reporter'),
-      require('karma-coverage-istanbul-reporter'),
-      require('@angular-devkit/build-angular/plugins/karma'),
-      require('karma-spec-reporter')
+      require("karma-jasmine"),
+      require("karma-chrome-launcher"),
+      require("karma-trx-reporter"),
+      require("karma-jasmine-html-reporter"),
+      require("karma-coverage-istanbul-reporter"),
+      require("@angular-devkit/build-angular/plugins/karma"),
+      require("karma-spec-reporter"),
     ],
     client: {
-      clearContext: false // leave Jasmine Spec Runner output visible in browser
+      clearContext: false, // leave Jasmine Spec Runner output visible in browser
     },
     coverageIstanbulReporter: {
-      dir: 'test-results/coverage',
-      reports: ['html', 'lcovonly', 'text-summary', 'cobertura'],
-      fixWebpackSourcePaths: true
+      dir: "test-results/coverage",
+      reports: ["html", "lcovonly", "text-summary", "cobertura"],
+      fixWebpackSourcePaths: true,
     },
-    reporters: ['progress', 'kjhtml', 'trx', 'spec', 'coverage-istanbul'],
+    reporters: ["progress", "kjhtml", "trx", "spec", "coverage-istanbul"],
     port: 9876,
     colors: true,
     logLevel: config.LOG_INFO,
     autoWatch: true,
-    browsers: ['Chrome'],
+    browsers: ["Chrome"],
     customLaunchers: {
       ChromeDebugging: {
-        base: 'Chrome',
-        flags: ['--remote-debugging-port=9222']
+        base: "Chrome",
+        flags: ["--remote-debugging-port=9222"],
       },
       ChromeHeadlessNoSandbox: {
-        base: 'Chrome',
+        base: "Chrome",
         flags: [
-          '--no-sandbox',
-          '--disable-setuid-sandbox',
-          '--headless',
-          '--disable-gpu',
-          '--remote-debugging-port=9222'
-        ]
-      }
+          "--no-sandbox",
+          "--disable-setuid-sandbox",
+          "--headless",
+          "--disable-gpu",
+          "--remote-debugging-port=9222",
+        ],
+      },
     },
     singleRun: false,
     trxReporter: {
-      outputFile: 'test-results/test-results.trx',
-      shortTestName: false
-    }
+      outputFile: "test-results/test-results.trx",
+      shortTestName: false,
+    },
   });
 };
 ```
@@ -653,10 +658,10 @@ import { DashboardModule } from "./dashboard/dashboard.module";
     DashboardModule,
 
     // app
-    AppRoutingModule
+    AppRoutingModule,
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
 export class AppModule {}
 ```
@@ -710,20 +715,20 @@ export function initializerFactory(appConfig: AppInitService) {
     {
       provide: HTTP_INTERCEPTORS,
       useClass: TokenInterceptor,
-      multi: true
+      multi: true,
     },
     {
       provide: APP_INITIALIZER,
       useFactory: initializerFactory,
       deps: [AppInitService],
-      multi: true
+      multi: true,
     },
     {
       provide: ErrorHandler,
-      useClass: AppErrorInterceptor
-    }
+      useClass: AppErrorInterceptor,
+    },
   ],
-  exports: [HttpClientModule]
+  exports: [HttpClientModule],
 })
 export class CoreModule {
   constructor(
@@ -788,14 +793,14 @@ const SHARED_MODULES = [
 
   SharedDirectivesModule,
   SharedPipesModule,
-  SharedComponentsModule
+  SharedComponentsModule,
 ];
 
 @NgModule({
   providers: [],
   declarations: [],
   imports: [...SHARED_MODULES],
-  exports: [...SHARED_MODULES]
+  exports: [...SHARED_MODULES],
 })
 export class SharedModule {}
 ```
@@ -813,7 +818,7 @@ export const SHARED_COMPONENTS: Array<Type<any>> = [];
 @NgModule({
   imports: [CommonModule, ReactiveFormsModule],
   declarations: [...SHARED_COMPONENTS],
-  exports: [...SHARED_COMPONENTS]
+  exports: [...SHARED_COMPONENTS],
 })
 export class SharedComponentsModule {}
 ```
@@ -950,7 +955,6 @@ export default () => {
     },
   });
 };
-
 ```
 
 After server configurations we need to add it to `app.module.ts`
@@ -976,7 +980,6 @@ To Allows importing modules with a ‘.json’ extension add to your tsconfig.js
 "resolveJsonModule": true
 ```
 
-
 ## Change Detection
 
 **Resources**
@@ -999,6 +1002,7 @@ By default, Angular `Change Detection` checks for all components from top to bot
 #### Change Detection Strategies
 
 Angular provides two strategies to run change detections:
+
 - Default
   By default, Angular uses the `ChangeDetectionStrategy.Default` change detection strategy. This default strategy checks every component in the component tree from top to bottom every time an event triggers change detection (like user event, timer, XHR, promise and so on). This conservative way of checking without making any assumption on the component’s dependencies is called dirty checking. It can negatively influence your application’s performance in large applications which consists of many components
 
@@ -1012,7 +1016,6 @@ Angular provides two strategies to run change detections:
   The `OnPush` change detection strategy allows us to disable the change detection mechanism for subtrees of the component tree. By setting the change detection strategy to any component to the value `ChangeDetectionStrategy.OnPush` will make the change detection perform **only** when the component has received different inputs. Angular will consider inputs as different when it compares them with the previous inputs by reference, and the result of the reference check is `false`. In combination with [immutable data structures](https://facebook.github.io/immutable-js/), `OnPush` can bring great performance implications for such "pure" components.
 
 ## State management
-
 
 **Resources**
 
@@ -1065,7 +1068,7 @@ export class FacadeService {
 // ./containers/users.component.ts
 @Component({
   templateUrl: "./users.html",
-  styleUrls: ["./users.scss"]
+  styleUrls: ["./users.scss"],
 })
 export class UsersComponent implements OnInit {
   public users$ = this.facadeService.users$;
@@ -1088,7 +1091,7 @@ export class UsersComponent implements OnInit {
 @NgModule({
   imports: [CommonModule],
   declarations: [],
-  providers: [UserService, FacadeService]
+  providers: [UserService, FacadeService],
 })
 export class FeatureModule {}
 ```
@@ -1107,11 +1110,11 @@ The component store is a local, stand-alone, store-like implementation, similar 
 
 #### Adding the @ngrx/component-store
 
-1) `npm install @ngrx/component-store --save`
-2) create `*.store.ts` file in `store` folder
-3) provide store service in component where it will be used `providers: [*Store]`
-4) add dependency to constructor `constructor(private readonly store: *Store) {}`
-5) use available methods `this.store`
+1. `npm install @ngrx/component-store --save`
+2. create `*.store.ts` file in `store` folder
+3. provide store service in component where it will be used `providers: [*Store]`
+4. add dependency to constructor `constructor(private readonly store: *Store) {}`
+5. use available methods `this.store`
 
 #### CRUD Example - https://github.com/lubkoKuzenko/ng-start/tree/master/src/app/unit-cards
 
@@ -1142,7 +1145,9 @@ export class CardsStore extends ComponentStore<CardsState> {
 
   // SELECTORS
   readonly cards$: Observable<Card[]> = this.select((state) => state.cards);
-  readonly loading$: Observable<boolean> = this.select((state) => state.loading);
+  readonly loading$: Observable<boolean> = this.select(
+    (state) => state.loading
+  );
 
   // EFFECTS
   public readonly loadCards = this.effect((trigger$: Observable<void>) =>
@@ -1152,12 +1157,17 @@ export class CardsStore extends ComponentStore<CardsState> {
 
         return this.cardsService.getCards().pipe(
           tapResponse(
-            (cards) => this.patchState((state) => ({ ...state, cards: cards || [], loading: false })),
-            (_) => this.patchState({ cards: [] }),
-          ),
+            (cards) =>
+              this.patchState((state) => ({
+                ...state,
+                cards: cards || [],
+                loading: false,
+              })),
+            (_) => this.patchState({ cards: [] })
+          )
         );
-      }),
-    ),
+      })
+    )
   );
 
   public readonly addCard = this.effect((trigger$: Observable<Card>) =>
@@ -1173,11 +1183,11 @@ export class CardsStore extends ComponentStore<CardsState> {
                 cards: [...state.cards, newCard],
                 loading: false,
               })),
-            (_) => this.patchState((state) => ({ cards: state.cards })),
-          ),
+            (_) => this.patchState((state) => ({ cards: state.cards }))
+          )
         );
-      }),
-    ),
+      })
+    )
   );
 
   public readonly updateCard = this.effect((trigger$: Observable<Card>) =>
@@ -1189,7 +1199,9 @@ export class CardsStore extends ComponentStore<CardsState> {
           tapResponse(
             () =>
               this.patchState((state) => {
-                const updatedCards = state.cards.map((c: Card) => (c.id === card.id ? { ...c, ...card } : c));
+                const updatedCards = state.cards.map((c: Card) =>
+                  c.id === card.id ? { ...c, ...card } : c
+                );
 
                 return {
                   ...state,
@@ -1197,11 +1209,11 @@ export class CardsStore extends ComponentStore<CardsState> {
                   loading: false,
                 };
               }),
-            (_) => this.patchState((state) => ({ cards: state.cards })),
-          ),
+            (_) => this.patchState((state) => ({ cards: state.cards }))
+          )
         );
-      }),
-    ),
+      })
+    )
   );
 
   public readonly removeCard = this.effect((trigger$: Observable<string>) =>
@@ -1213,7 +1225,9 @@ export class CardsStore extends ComponentStore<CardsState> {
           tapResponse(
             () =>
               this.patchState((state) => {
-                const updatedCards = state.cards.filter((card) => card.id !== cardId);
+                const updatedCards = state.cards.filter(
+                  (card) => card.id !== cardId
+                );
 
                 return {
                   ...state,
@@ -1221,11 +1235,11 @@ export class CardsStore extends ComponentStore<CardsState> {
                   loading: false,
                 };
               }),
-            (_) => this.patchState((state) => ({ cards: state.cards })),
-          ),
+            (_) => this.patchState((state) => ({ cards: state.cards }))
+          )
         );
-      }),
-    ),
+      })
+    )
   );
 }
 ```
@@ -1248,22 +1262,23 @@ export class CardsStore extends ComponentStore<CardsState> {
 
 <img src="./assets/lifecycle-hooks.webp" width="100%" />
 
-| Life cycle  | Description |
-| ------------- | ------------- |
-| ngOnInit  | Called once, after the first ngOnChanges()   |
-| ngOnChanges  | Called before ngOnInit() and whenever one of input properties change.   |
-| ngOnDestroy  | Called just before Angular destroys the directive/component  |
-| ngDoCheck  | Called during every change detection run  |
-| ngAfterContentChecked  | Called after the ngAfterContentInit() and every subsequent ngDoCheck()  |
-| ngAfterViewChecked  | Called after the ngAfterViewInit() and every subsequent ngAfterContentChecked().  |
-| ngAfterContentInit  | Called once after the first ngDoCheck().  |
-| ngAfterViewInit  | Called once after the first ngAfterContentChecked().   |
+| Life cycle            | Description                                                                      |
+| --------------------- | -------------------------------------------------------------------------------- |
+| ngOnInit              | Called once, after the first ngOnChanges()                                       |
+| ngOnChanges           | Called before ngOnInit() and whenever one of input properties change.            |
+| ngOnDestroy           | Called just before Angular destroys the directive/component                      |
+| ngDoCheck             | Called during every change detection run                                         |
+| ngAfterContentChecked | Called after the ngAfterContentInit() and every subsequent ngDoCheck()           |
+| ngAfterViewChecked    | Called after the ngAfterViewInit() and every subsequent ngAfterContentChecked(). |
+| ngAfterContentInit    | Called once after the first ngDoCheck().                                         |
+| ngAfterViewInit       | Called once after the first ngAfterContentChecked().                             |
 
 ### Directives
 
 <img src="./assets/1_OhepgWassGUMkQ6v8VtK3g.png" width="100%" />
 
 ### Attribute Directive
+
 Directive should be stored in Directives folder of Shared Module.
 
 ```ts
@@ -1273,7 +1288,7 @@ import {
   ElementRef,
   HostListener,
   HostBinding,
-  Renderer2
+  Renderer2,
 } from "@angular/core";
 
 // Annotation section
@@ -1321,22 +1336,23 @@ export class UnderlineDirective {
 ```
 
 ### Structural Directives
+
 `Structural Directive` in Angular are responsible for manipulating, modifying and removing elements inside a template of a component. A structural directive is applied on a main element and according to the behavior of structural directive, it modifies and updates the main elements and its child elements. We have some inbuilt structural directives in Angular like `ngFor`, `ngSwitch` and `ngIf`
 
 ### Creating a custom structural directive
 
 ```ts
 @Directive({
-  selector: '[delayRendering]'
+  selector: "[delayRendering]",
 })
 export class DelayRenderingDirective {
   constructor(
     private template: TemplateRef<any>,
     private container: ViewContainerRef
-  ) { }
+  ) {}
 
   @Input()
-  set delayRendering(delayTime: number): void { }
+  set delayRendering(delayTime: number): void {}
 
   // Rendering
   ngOnInit() {
@@ -1354,6 +1370,7 @@ export class DelayRenderingDirective {
 `ViewContainerRef`: Refers to the Container to which directive is applied
 
 ### Applying Directive to the Element
+
 ```html
 <div *delayRendering="1000">
   <h1>This is the Template area</h1>
@@ -1361,6 +1378,7 @@ export class DelayRenderingDirective {
 ```
 
 To create the default input, you add a @Input() and give it the same name as the directive selector
+
 ```ts
 @Input() set delayRendering(delayTime: number): void { }
 ```
@@ -1376,6 +1394,7 @@ Lets add `test` input you add another @Input(). The name has to start with the d
 You cannot use the delayRendering or delayRenderingTest variables in your HTML just yet. To do this you have to provide a context object. A context object can be any plain object literal
 
 First define an interface for our directive:
+
 ```ts
 export interface DirectiveContext {
   $implicit: number;
@@ -1383,20 +1402,17 @@ export interface DirectiveContext {
   delayRenderingTest: number;
 }
 ```
+
 These variables will be availabe in your directive / HTML. To get these values you have to use the `let x = ...` syntax. Where x can be any variable name you want. To connect `x` with the value of delayRendering you would write `let x = delayRendering`. Then you can use your `x` variable in the template like this:
 
 ```html
-<div *delayRendering="10; test: 3; let x = test;">
-    testValue = {{ x }}
-</div>
+<div *delayRendering="10; test: 3; let x = test;">testValue = {{ x }}</div>
 ```
 
 The `$implicit` variable is sugared syntax as you can omit it when connecting to a variable. So `let input = $implicit`; is the same as `let input`. With this we can already get all our variables in the template
 
 ```html
-<div *delayRendering="10; test: 3; let input;">
-    testValue = {{ x }}
-</div>
+<div *delayRendering="10; test: 3; let input;">testValue = {{ x }}</div>
 ```
 
 ### Pipe
@@ -1405,30 +1421,32 @@ A pipe takes in data as input and transforms it to a desired output.
 
 <img src="./assets/147465973-deccba45-bf93-41f0-961a-d5f86bcadb3b.png" width="100%">
 
-A `pure pipe` is only called when Angular detects a change in the value or the parameters passed to a pipe. For example, any changes to a primitive input value (String, Number, Boolean, Symbol) or a changed object reference (Date, Array, Function, Object). 
+A `pure pipe` is only called when Angular detects a change in the value or the parameters passed to a pipe. For example, any changes to a primitive input value (String, Number, Boolean, Symbol) or a changed object reference (Date, Array, Function, Object).
 
 An `impure pipe` is called for every change detection cycle no matter whether the value or parameters changes. i.e, An impure pipe is called often, as often as every keystroke or mouse-move.
 
 #### Built-in Pipes
+
 Angular provides built-in pipes for typical data transformations
 
-| Pipe          | Description   | Example |
-| ------------- | ------------- | ------------- |
-| AsyncPipe     | Used to read the object from an asynchronous source  | `{{data \| async}}`
-| CurrencyPipe  | Used to format the currencies  | `{{ 1234.56 \| currency:'USD' }}`
-| DatePipe  | Used to format the dates  | `{{ dateVal \| date: 'fullDate' }}`
-| DecimalPipe  | Used to transform the decimal numbers  | `{{ 3.141265 \| number: '1.4-4' }}`
-| I18nPluralPipe  | Converts a value to a string that pluralizes the value according to locale rules  |
-| I18nSelectPipe  | Used to display values according to the selection criteria  |
-| KeyValuePipe  | Converts an Object or Map into an array of key value pairs  | `*ngFor="let row of rows \| keyvalue"`
-| JsonPipe  | Converts an object into a JSON string  | `{{ jsonVal \| json }}`
-| LowerCasePipe  | Converts a string or text to lowercase  | `{{ 'TEST' \| lowercase }}`
-| PercentPipe  | Used to display percentage numbers  | `{{ 0.1236 \| percent: '2.1-2' }}`
-| SlicePipe  | Used to slice an array  | `{{ [1,2,3,4,5,6] \| slice:2 }}`
-| TitleCasePipe  | Converts a string or text to title case  | `{{ 'test' \| titlecase }}`
-| UpperCasePipe  | Converts a string or text to uppercase  | `{{ 'test' \| uppercase }}`
+| Pipe           | Description                                                                      | Example                                |
+| -------------- | -------------------------------------------------------------------------------- | -------------------------------------- |
+| AsyncPipe      | Used to read the object from an asynchronous source                              | `{{data \| async}}`                    |
+| CurrencyPipe   | Used to format the currencies                                                    | `{{ 1234.56 \| currency:'USD' }}`      |
+| DatePipe       | Used to format the dates                                                         | `{{ dateVal \| date: 'fullDate' }}`    |
+| DecimalPipe    | Used to transform the decimal numbers                                            | `{{ 3.141265 \| number: '1.4-4' }}`    |
+| I18nPluralPipe | Converts a value to a string that pluralizes the value according to locale rules |
+| I18nSelectPipe | Used to display values according to the selection criteria                       |
+| KeyValuePipe   | Converts an Object or Map into an array of key value pairs                       | `*ngFor="let row of rows \| keyvalue"` |
+| JsonPipe       | Converts an object into a JSON string                                            | `{{ jsonVal \| json }}`                |
+| LowerCasePipe  | Converts a string or text to lowercase                                           | `{{ 'TEST' \| lowercase }}`            |
+| PercentPipe    | Used to display percentage numbers                                               | `{{ 0.1236 \| percent: '2.1-2' }}`     |
+| SlicePipe      | Used to slice an array                                                           | `{{ [1,2,3,4,5,6] \| slice:2 }}`       |
+| TitleCasePipe  | Converts a string or text to title case                                          | `{{ 'test' \| titlecase }}`            |
+| UpperCasePipe  | Converts a string or text to uppercase                                           | `{{ 'test' \| uppercase }}`            |
 
 #### Custom Pipes
+
 Angular gives us the freedom to create custom pipes to encapsulate transformations that are not provided with the built-in pipes and to use them the same way as the built-in pipes.
 
 ```ts
@@ -1437,7 +1455,7 @@ Angular gives us the freedom to create custom pipes to encapsulate transformatio
 import { Pipe, PipeTransform } from "@angular/core";
 
 @Pipe({
-  name: "reverseStr"
+  name: "reverseStr",
 })
 export class ReverseStrPipe implements PipeTransform {
   transform(value: string): string {
@@ -1466,13 +1484,12 @@ In the following code, we have a template defined using the `ng-template`. The T
 
 The template does not render itself. We must use a structural directive to render it. That is what `ngTemplateOutlet` does
 
-We pass the Template Reference to the `ngTemplateOutlet` directive. It renders the template. 
+We pass the Template Reference to the `ngTemplateOutlet` directive. It renders the template.
 
 ```html
 <ng-template #listTemplate>
   <span>list</span>
 </ng-template>
-
 
 <!-- The following code does not render the span -->
 <div *ngTemplateOutlet="listTemplate"></div>
@@ -1485,25 +1502,30 @@ We can also pass data to the using its second property `ngTemplateOutletContext`
 The following code creates a template. We name it as `listTemplate`. The `let-value` creates a local variable with the name `value`
 
 ```html
-<ng-template let-value="value" #listTemplate>  
-    <p>Value Received from the Parent is  {{value}}</p>
+<ng-template let-value="value" #listTemplate>
+  <p>Value Received from the Parent is {{value}}</p>
 </ng-template>
 
 <!-- We can pass any value to the value using the ngTemplateOutletContextproperty -->
-<ng-container [ngTemplateOutlet]="listTemplate" [ngTemplateOutletContext] ="{value:'1000'}">
-</ng-container>  
+<ng-container
+  [ngTemplateOutlet]="listTemplate"
+  [ngTemplateOutletContext]="{value:'1000'}"
+>
+</ng-container>
 ```
 
 If you use the key `$implicit` in the context object will set its value as default for all the local variables.
 
 ```html
-<ng-template let-name let-message="message" #listTemplate>  
-  <p>Dear {{name}} , {{message}} </p>
+<ng-template let-name let-message="message" #listTemplate>
+  <p>Dear {{name}} , {{message}}</p>
 </ng-template>
- 
-<ng-container [ngTemplateOutlet]="listTemplate" 
-              [ngTemplateOutletContext] ="{$implicit:'Guest',message:'Welcome to our site'}">
-</ng-container> 
+
+<ng-container
+  [ngTemplateOutlet]="listTemplate"
+  [ngTemplateOutletContext]="{$implicit:'Guest',message:'Welcome to our site'}"
+>
+</ng-container>
 ```
 
 We have not assigned anything to the `let-name` so it will take the value from the `$implicit`, which is Guest
@@ -1513,10 +1535,8 @@ We have not assigned anything to the `let-name` so it will take the value from t
 We can pass the entire template to a child component from the parent component. The technique is similar to passing data from parent to child component
 
 ```html
-<ng-template #parentTemplate>  
-  <p>
-    This Template is defined in Parent. 
-  </p>
+<ng-template #parentTemplate>
+  <p>This Template is defined in Parent.</p>
 </ng-template>
 
 <child [customTemplate]="parentTemplate"></child>
@@ -1529,6 +1549,7 @@ In the Child, component receive the `parentTemplate` using the `@Input`(). And t
 ```
 
 Use the `ViewChild` to get the access to the `parentTemplate` in the component
+
 ```ts
 @ViewChild("listTemplate", { static: false }) listTemplate: TemplateRef<HTMLElement>;
 
@@ -1536,6 +1557,7 @@ public get template() {
   return this.isCard ? this.cardTemplate : this.listTemplate;
 }
 ```
+
 ```html
 <users-view [userTemplate]="template"></users-view>
 ```
@@ -1547,15 +1569,19 @@ public get template() {
 ```html
 <!-- Basic -->
 <div [ngClass]="'first second'">
-<div [ngClass]="['first', 'second']">
-<div [ngClass]="{first: true, second: true, third: true}">
-<div [ngClass]="{'first second': true}">
+  <div [ngClass]="['first', 'second']">
+    <div [ngClass]="{first: true, second: true, third: true}">
+      <div [ngClass]="{'first second': true}"></div>
+    </div>
+  </div>
+</div>
 ```
 
 ```html
 <!-- Expression -->
 <div [ngClass]="val + val">
-<div [ngClass]="[val]">
+  <div [ngClass]="[val]"></div>
+</div>
 ```
 
 ```html
@@ -1565,63 +1591,63 @@ public get template() {
 <span [class.error]="control.isInvalid"></span>
 ```
 
-``` ts
+```ts
 // ngClass as function
-import { Component } from '@angular/core';
+import { Component } from "@angular/core";
 
 @Component({
-   template: '<span [ngClass]="getClassOf(val)">{{ val }}</span>'
+  template: '<span [ngClass]="getClassOf(val)">{{ val }}</span>',
 })
-export class AppComponent { 
-   getClassOf(val) {
+export class AppComponent {
+  getClassOf(val) {
     if (val >= 0 && val <= 5) {
-      return 'low';
+      return "low";
     } else if (val > 5 && val <= 10) {
-      return 'medium';
+      return "medium";
     } else {
-      return 'high'
+      return "high";
     }
   }
-} 
+}
 ```
 
 ```ts
 // ngClass with values in Array
-import { Component } from '@angular/core';
+import { Component } from "@angular/core";
 
 type Val = 1 | 2 | 3;
 
 @Component({
-   template: '<span [ngClass]="classArr[val - 1]">{{ val }}</span>'
+  template: '<span [ngClass]="classArr[val - 1]">{{ val }}</span>',
 })
-export class AppComponent { 
-   classArr = ['first-element', 'second-element', 'third-element'];
+export class AppComponent {
+  classArr = ["first-element", "second-element", "third-element"];
   val: Val = 1;
-} 
+}
 ```
 
 ```ts
 // ngClass with values in Object
-import { Component } from '@angular/core';
+import { Component } from "@angular/core";
 
 type Val = 1 | 2 | 3;
 
 @Component({
-   template: '<span [ngClass]="classMap[val]">{{ val }}</span>'
+  template: '<span [ngClass]="classMap[val]">{{ val }}</span>',
 })
-export class AppComponent { 
-    classMap = {
-    1: 'first-element',
-    2: 'second-element',
-    3: 'third-element',
-  }
+export class AppComponent {
+  classMap = {
+    1: "first-element",
+    2: "second-element",
+    3: "third-element",
+  };
   val: Val = 1;
-} 
+}
 ```
 
-## *ngFor:TrackBy
+## \*ngFor:TrackBy
 
-####  Why do we need to use ngFor trackBy in the angular application?
+#### Why do we need to use ngFor trackBy in the angular application?
 
 - The trackBy used to improve the performance of the angular project.
 - It is usually not needed only when your application running into performance issues.
@@ -1632,20 +1658,20 @@ export class AppComponent {
 - A lot of DOM Manipulation will occur in the background if a large amount of data coming from the back-end API repeatedly.
 
 ```ts
-import { Component } from '@angular/core';
- 
+import { Component } from "@angular/core";
+
 @Component({
-  selector: 'app-tasks-list',
+  selector: "app-tasks-list",
   template: `
-    <ul> 
-      <li *ngFor="let task of tasks; trackBy: identify">{{task.title}}</li> 
+    <ul>
+      <li *ngFor="let task of tasks; trackBy: identify">{{ task.title }}</li>
     </ul>
-  `
+  `,
 })
-export class MoviesListComponent  {
+export class MoviesListComponent {
   tasks: any[] = [
-    { "id": 1, "title": "Working" },
-    { "id": 2, "title": "Pending" },
+    { id: 1, title: "Working" },
+    { id: 2, title: "Pending" },
   ];
 
   public identify(index: number, task: any) {
@@ -1653,6 +1679,10 @@ export class MoviesListComponent  {
   }
 }
 ```
+
+Also generic npm package is available
+
+https://github.com/nigrosimone/ng-for-track-by-property
 
 <img src="https://miro.medium.com/max/700/0*Piks8Tu6xUYpF4DU" width="100%" height="17px" style="padding: 2px 1rem; background-color: #fff">
 
@@ -1678,7 +1708,7 @@ import {
   ChangeDetectionStrategy,
   Component,
   Input,
-  OnInit
+  OnInit,
 } from "@angular/core";
 import { FormControl, FormGroup, Validators } from "@angular/forms";
 
@@ -1686,13 +1716,13 @@ import { FormControl, FormGroup, Validators } from "@angular/forms";
   selector: "lib-form",
   templateUrl: "./form.component.html",
   styleUrls: ["./form.component.scss"],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FormGeneralComponent implements OnInit {
   public form = new FormGroup({
     name: new FormControl("", [Validators.required]),
     description: new FormControl(undefined, [Validators.required]),
-    status: new FormControl(1, [Validators.required])
+    status: new FormControl(1, [Validators.required]),
   });
 
   get controls() {
@@ -1713,7 +1743,7 @@ export class FormGeneralComponent implements OnInit {
     this.form.patchValue({
       name: "name",
       description: "description",
-      status: 2
+      status: 2,
     });
   }
 
@@ -1756,11 +1786,11 @@ import { FormGroup } from "@angular/forms";
   selector: "bb-nested-form",
   templateUrl: "./nested-form.component.html",
   styleUrls: ["./nested-form.component.scss"],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class NestedFormComponent {
   public form = new FormGroup({
-    general: new FormGroup({})
+    general: new FormGroup({}),
   });
 
   get controls() {
@@ -1796,7 +1826,7 @@ import {
   Component,
   OnInit,
   Input,
-  ChangeDetectionStrategy
+  ChangeDetectionStrategy,
 } from "@angular/core";
 import { FormGroup, FormControl, Validators } from "@angular/forms";
 import { FormsService } from "../../../services/forms.service";
@@ -1805,14 +1835,14 @@ import { FormsService } from "../../../services/forms.service";
   selector: "bb-form-general",
   templateUrl: "./form-general.component.html",
   styleUrls: ["./form-general.component.scss"],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FormGeneralComponent implements OnInit {
   @Input() public parentForm!: FormGroup;
 
   public form = new FormGroup({
     name: new FormControl("", [Validators.required]),
-    description: new FormControl(undefined, [Validators.required])
+    description: new FormControl(undefined, [Validators.required]),
   });
 
   get controls() {
@@ -1914,26 +1944,35 @@ export class DynamicFormComponent {
     <div class="col-12">
       <label>User Name</label>
       <input type="text" formControlName="userName" />
-      <l9-validation-message [control]="controls.userName"></l9-validation-message>
+      <l9-validation-message
+        [control]="controls.userName"
+      ></l9-validation-message>
     </div>
 
     <div class="col-12">
       <h4>Time Ranges</h4>
       <ng-container formArrayName="timeRanges">
-        <div *ngFor="let _ of timeRangeControls.controls; let i = index" class="row">
+        <div
+          *ngFor="let _ of timeRangeControls.controls; let i = index"
+          class="row"
+        >
           <ng-container [formGroupName]="i">
             <!-- Start Date -->
             <div class="col-5">
               <label>Start Date</label>
               <input type="date" formControlName="startDate" />
-              <l9-validation-message [control]="timeRangeControls.at(i).get('startDate')"></l9-validation-message>
+              <l9-validation-message
+                [control]="timeRangeControls.at(i).get('startDate')"
+              ></l9-validation-message>
             </div>
 
             <!-- End Date -->
             <div class="col-5">
               <label>End Date</label>
               <input type="date" formControlName="endDate" />
-              <l9-validation-message [control]="timeRangeControls.at(i).get('endDate')"></l9-validation-message>
+              <l9-validation-message
+                [control]="timeRangeControls.at(i).get('endDate')"
+              ></l9-validation-message>
             </div>
 
             <div class="col-2">
@@ -2015,7 +2054,7 @@ export class PhoneNumberValidators {
       if (control.value && control.value.length != 10) {
         return { phoneNumberInvalid: true };
       }
-    return null;
+      return null;
     };
   }
 }
@@ -2117,52 +2156,51 @@ export class CustomFormComponent implements ControlValueAccessor {
 }
 ```
 
-
 ### Testing Forms
 
 The first step is to set up the test bed for the component. Angular already provides a boilerplate for testing the component, and we’ll simply extend that:
 
 ```ts
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-    import { ReactiveFormsModule } from '@angular/forms';
-    import { DynamicFormComponent } from './dynamic-form.component';
-    
-    describe('DynamicFormComponent', () => {
-      let component: DynamicFormComponent;
-      let fixture: ComponentFixture<DynamicFormComponent>;
-    
-      beforeEach(async(() => {
-        TestBed.configureTestingModule({
-          declarations: [ DynamicFormComponent ],
-          imports: [ ReactiveFormsModule ],
-        })
-        .compileComponents();
-      }));
-    
-      beforeEach(() => {
-        fixture = TestBed.createComponent(DynamicFormComponent);
-        component = fixture.componentInstance;
-        fixture.detectChanges();
-      });
-    
-      it('should create', () => {
-        expect(component).toBeTruthy();
-      });
-    });
+import { async, ComponentFixture, TestBed } from "@angular/core/testing";
+import { ReactiveFormsModule } from "@angular/forms";
+import { DynamicFormComponent } from "./dynamic-form.component";
+
+describe("DynamicFormComponent", () => {
+  let component: DynamicFormComponent;
+  let fixture: ComponentFixture<DynamicFormComponent>;
+
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      declarations: [DynamicFormComponent],
+      imports: [ReactiveFormsModule],
+    }).compileComponents();
+  }));
+
+  beforeEach(() => {
+    fixture = TestBed.createComponent(DynamicFormComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
+  });
+
+  it("should create", () => {
+    expect(component).toBeTruthy();
+  });
+});
 ```
 
 #### We’ll be testing our form using the following cases:
 
-1) `Form rendering`: here, we’ll check if the component generates the correct input elements when provided a formConfig array.
-2) `Form validity`: we’ll check that the form returns the correct validity state
-3) `Input validity`: we’ll check if the component responds to input in the view template
-4) `Input errors`: we’ll test for errors on the required input elements.
+1. `Form rendering`: here, we’ll check if the component generates the correct input elements when provided a formConfig array.
+2. `Form validity`: we’ll check that the form returns the correct validity state
+3. `Input validity`: we’ll check if the component responds to input in the view template
+4. `Input errors`: we’ll test for errors on the required input elements.
 
 #### Form Rendering
+
 For this test, we’ll we’ll test that the component renders the correct elements.
 
 ```ts
-it('should render input elements', () => {
+it("should render input elements", () => {
   const compiled = fixture.debugElement.nativeElement;
   const addressInput = compiled.querySelector('input[id="address"]');
   const nameInput = compiled.querySelector('input[id="name"]');
@@ -2171,19 +2209,21 @@ it('should render input elements', () => {
   expect(nameInput).toBeTruthy();
 });
 ```
+
 #### Form validity
+
 For this test, we’ll check for the validity state of the form after updating the values of the input elements. For this test, we’ll update the values of the form property directly without accessing the view.
 
 ```ts
-it('should test form validity', () => {
+it("should test form validity", () => {
   const form = component.form;
   expect(form.valid).toBeFalsy();
 
   const nameInput = form.controls.name;
-  nameInput.setValue('John Peter');
+  nameInput.setValue("John Peter");
 
   expect(form.valid).toBeTruthy();
-})
+});
 ```
 
 For this test, we’re checking if the form responds to the changes in the control elements. When creating the elements, we specified that the name element is required. This means the initial validity state of the form should be `INVALID`, and the valid property of the form should be false.
@@ -2191,19 +2231,20 @@ For this test, we’re checking if the form responds to the changes in the contr
 Next, we update the value of the name input using the `setValue` method of the form control, and then we check the validity state of the form. After providing the required input of the form, we expect the form should be valid.
 
 #### Input validity
+
 Next we’ll check the validity of the input elements. The name input is required, and we should test that the input acts accordingly. Open the spec file and add the spec below to the test suite:
 
 ```ts
-it('should test input validity', () => {
+it("should test input validity", () => {
   const nameInput = component.form.controls.name;
   const addressInput = component.form.controls.address;
 
   expect(nameInput.valid).toBeFalsy();
   expect(addressInput.valid).toBeTruthy();
 
-  nameInput.setValue('John Peter');
+  nameInput.setValue("John Peter");
   expect(nameInput.valid).toBeTruthy();
-})
+});
 ```
 
 In this spec, we are checking the validity state of each control and also checking for updates after a value is provided.
@@ -2215,17 +2256,18 @@ Since the name input is required, we expect its initial state to be invalid. The
 In this spec, we’ll be testing that the form controls contain the appropriate errors; the name control has been set as a required input. We used the `Validators` class to validate the input. The form control has an errors property which contains details about the errors on the input using key-value pairs.
 
 ```ts
-it('should test input errors', () => {
+it("should test input errors", () => {
   const nameInput = component.form.controls.name;
   expect(nameInput.errors.required).toBeTruthy();
 
-  nameInput.setValue('John Peter');
+  nameInput.setValue("John Peter");
   expect(nameInput.errors).toBeNull();
 });
 ```
+
 First, we get the name form control from the form form group property. We expect the initial errors object to contain a required property, as the input’s value is empty. Next, we update the value of the input, which means the input shouldn’t contain any errors, which means the errors property should be null.
 
-If all tests are passing, it means we’ve successfully created a form. 
+If all tests are passing, it means we’ve successfully created a form.
 
 <img src="https://miro.medium.com/max/700/0*Piks8Tu6xUYpF4DU" width="100%" height="17px" style="padding: 2px 1rem; background-color: #fff">
 
@@ -2246,53 +2288,53 @@ For example guards, resolvers, params, etc.,
 ```ts
 const routes: Routes = [
   {
-    path: '',
+    path: "",
     component: HomeComponent,
   },
   {
-    path: '',
+    path: "",
     canActivateChild: [AuthGuard],
     resolve: {
-      token: TokenNeededForBothMessagsAndContacts
+      token: TokenNeededForBothMessagsAndContacts,
     },
     children: [
       {
-        path: 'todos',
-        component: TodosComponent
+        path: "todos",
+        component: TodosComponent,
       },
       {
-        path: 'blog',
-        component: BlogComponent
-      }
-    ]
-  }
-]
+        path: "blog",
+        component: BlogComponent,
+      },
+    ],
+  },
+];
 ```
 
 And that’s how it looks with lazy-load routes:
 
 ```ts
-const routes : Routes = [
+const routes: Routes = [
   {
-    path: '',
-    pathMatch: 'full',
-    loadChildren: './home/home.module#HomeModule'
+    path: "",
+    pathMatch: "full",
+    loadChildren: "./home/home.module#HomeModule",
   },
   {
-    path: '',
+    path: "",
     canActivateChild: [AuthGuard],
     children: [
       {
-        path: 'about',
-        loadChildren: './about/about.module#AboutModule'
+        path: "about",
+        loadChildren: "./about/about.module#AboutModule",
       },
       {
-        path: 'posts',
-        loadChildren: './posts-page/posts-page.module#PostsPageModule'
+        path: "posts",
+        loadChildren: "./posts-page/posts-page.module#PostsPageModule",
       },
-    ]
-  }
-]
+    ],
+  },
+];
 ```
 
 ### Route Resolvers
@@ -2302,18 +2344,18 @@ const routes : Routes = [
 ### Basic Implementation
 
 ```ts
-import { Injectable } from '@angular/core';
-import { Resolve } from '@angular/router';
+import { Injectable } from "@angular/core";
+import { Resolve } from "@angular/router";
 
-import { Observable, of } from 'rxjs';
-import { delay } from 'rxjs/operators';
+import { Observable, of } from "rxjs";
+import { delay } from "rxjs/operators";
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: "root",
 })
 export class NewsResolver implements Resolve<Observable<string>> {
   resolve(): Observable<string> {
-    return of('Resolver').pipe(delay(1000));
+    return of("Resolver").pipe(delay(1000));
   }
 }
 ```
@@ -2329,6 +2371,7 @@ export class NewsResolver implements Resolve<Observable<string>> {
 ```
 
 ### Accessing the Resolved Data in the Component
+
 In the component, you can access the resolved `data` using the data property of `ActivatedRoute’s` snapshot object
 
 ```ts
@@ -2342,6 +2385,7 @@ ngOnInit(): void {
   console.log(this.route.snapshot.data);
 }
 ```
+
 ### Resolving Data from an API
 
 First, add the `HttpClientModule` to `app.module.ts`
@@ -2349,17 +2393,19 @@ First, add the `HttpClientModule` to `app.module.ts`
 Then, create a new service:
 
 ```ts
-import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { Injectable } from "@angular/core";
+import { HttpClient } from "@angular/common/http";
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: "root",
 })
 export class NewsService {
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
 
   getTopPosts() {
-    return this.http.get("https://hacker-news.firebaseio.com/v0/topstories.json");
+    return this.http.get(
+      "https://hacker-news.firebaseio.com/v0/topstories.json"
+    );
   }
 }
 ```
@@ -2367,11 +2413,11 @@ export class NewsService {
 And now you can replace the string code in `NewsResolver` with `NewsService`
 
 ```ts
-import { Injectable } from '@angular/core';
-import { Resolve } from '@angular/router';
-import { Observable } from 'rxjs';
+import { Injectable } from "@angular/core";
+import { Resolve } from "@angular/router";
+import { Observable } from "rxjs";
 
-import { NewsService } from './news.service';
+import { NewsService } from "./news.service";
 
 export class NewsResolver implements Resolve<any> {
   constructor(private newsService: NewsService) {}
@@ -2381,23 +2427,24 @@ export class NewsResolver implements Resolve<any> {
   }
 }
 ```
+
 #### Accessing Route Parameters
 
 ```ts
-import { Injectable } from '@angular/core';
-import { Resolve, ActivatedRouteSnapshot } from '@angular/router';
-import { Observable } from 'rxjs';
+import { Injectable } from "@angular/core";
+import { Resolve, ActivatedRouteSnapshot } from "@angular/router";
+import { Observable } from "rxjs";
 
-import { NewsService } from './news.service';
+import { NewsService } from "./news.service";
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: "root",
 })
 export class PostResolver implements Resolve<any> {
   constructor(private newsService: NewsService) {}
 
   resolve(route: ActivatedRouteSnapshot): Observable<any> {
-    return this.newsService.getPost(route.paramMap.get('id'));
+    return this.newsService.getPost(route.paramMap.get("id"));
   }
 }
 ```
@@ -2405,22 +2452,24 @@ export class PostResolver implements Resolve<any> {
 #### Handling Errors
 
 ```ts
-import { Injectable } from '@angular/core';
-import { Resolve } from '@angular/router';
+import { Injectable } from "@angular/core";
+import { Resolve } from "@angular/router";
 
-import { Observable, of } from 'rxjs';
-import { catchError } from 'rxjs/operators';
+import { Observable, of } from "rxjs";
+import { catchError } from "rxjs/operators";
 
-import { NewsService } from './news.service';
+import { NewsService } from "./news.service";
 
 @Injectable()
 export class NewsResolver implements Resolve<any> {
   constructor(private newsService: NewsService) {}
 
   resolve(): Observable<any> {
-    return this.newsService.getTopPosts().pipe(catchError(() => {
-      return of('data not available at this time');
-    }));
+    return this.newsService.getTopPosts().pipe(
+      catchError(() => {
+        return of("data not available at this time");
+      })
+    );
   }
 }
 ```
@@ -2438,7 +2487,7 @@ import { CustomReuseStrategy } from "./router-reuse.strategy.ts";
   declarations: [],
   imports: [],
   providers: [{ provide: RouteReuseStrategy, useClass: CustomReuseStrategy }],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
 export class AppModule {}
 ```
@@ -2449,7 +2498,7 @@ import { Injectable } from "@angular/core";
 import {
   RouteReuseStrategy,
   ActivatedRouteSnapshot,
-  DetachedRouteHandle
+  DetachedRouteHandle,
 } from "@angular/router";
 /**
  * Based on Angular `DefaultRouteReuseStrategy`.
@@ -2511,13 +2560,14 @@ Tests are vital when programming because they help detect issues within your cod
 Angular `ChangeDetectionStrategy.OnPush` is a suggested way to improve the performance of Angular applications. When a component’s `changeDetection` is `OnPush` only input ref change and output’s call will trigger the change detection mechanism for the component and all its children. However, Angular has a defect that affects testing of such components. This post shows how `TestBed.overrideComponent` helps to overcome this defect.
 
 #### Component code
+
 Here is a simple component with ChangeDetectionStrategy.OnPush
 
 ```ts
 @Component({
-  selector: 'test',
-  template: `test id = <span>{{id}}</span>`,
-  changeDetection: ChangeDetectionStrategy.OnPush
+  selector: "test",
+  template: `test id = <span>{{ id }}</span>`,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TestComponent {
   @Input() id: number;
@@ -2525,16 +2575,18 @@ export class TestComponent {
 ```
 
 ```ts
-import {Component} from '@angular/core';
-import {TestBed, ComponentFixture, async} from '@angular/core/testing';
-import {TestComponent} from 'app/app.component';
+import { Component } from "@angular/core";
+import { TestBed, ComponentFixture, async } from "@angular/core/testing";
+import { TestComponent } from "app/app.component";
 
-describe('TestComponent', () => {
-  let fixture: ComponentFixture<TestComponent>, comp: TestComponent, element: HTMLElement;
+describe("TestComponent", () => {
+  let fixture: ComponentFixture<TestComponent>,
+    comp: TestComponent,
+    element: HTMLElement;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [TestComponent]
+      declarations: [TestComponent],
     });
   }));
 
@@ -2544,15 +2596,16 @@ describe('TestComponent', () => {
     element = fixture.debugElement.nativeElement;
   });
 
-  it('can modify the id option', async(() => {
+  it("can modify the id option", async(() => {
     comp.id = 1;
     fixture.detectChanges();
 
     comp.id = 2;
     fixture.detectChanges();
 
-    expect(fixture.nativeElement
-      .querySelector('span').textContent).toContain(2);
+    expect(fixture.nativeElement.querySelector("span").textContent).toContain(
+      2
+    );
   }));
 });
 ```
@@ -2566,10 +2619,10 @@ Angular `TestBed` provides a way to override a component metadata with `override
 ```ts
 TestBed.overrideComponent(TestComponent, {
   set: new Component({
-    selector: 'test',
+    selector: "test",
     template: `test id = <span>{{id}}</span>`,
-    changeDetection: ChangeDetectionStrategy.Default
-  })
+    changeDetection: ChangeDetectionStrategy.Default,
+  }),
 });
 ```
 
@@ -2601,8 +2654,8 @@ export class PasswordValidators {
 
 ```ts
 // password-control.validator.spec.ts
-import { FormControl } from '@angular/forms';
-import { PasswordValidators } from './password-control.validator';
+import { FormControl } from "@angular/forms";
+import { PasswordValidators } from "./password-control.validator";
 
 /*
 A minimum of 7 characters
@@ -2612,16 +2665,33 @@ At least one number
 */
 
 const TEST_CASES = [
-  { test_case: 'string length is less than 7 characters', value: '12345', result: { error: true } },
-  { test_case: 'string do not have UPPERCASE letter', value: '12345qwe', result: { error: true } },
-  { test_case: 'string do not have lowercase letter', value: '12345WWW', result: { error: true } },
-  { test_case: 'string do not have one number', value: 'qweqweWWW', result: { error: true } },
-  { test_case: 'string has correct value', value: '123qweQW', result: null },
+  {
+    test_case: "string length is less than 7 characters",
+    value: "12345",
+    result: { error: true },
+  },
+  {
+    test_case: "string do not have UPPERCASE letter",
+    value: "12345qwe",
+    result: { error: true },
+  },
+  {
+    test_case: "string do not have lowercase letter",
+    value: "12345WWW",
+    result: { error: true },
+  },
+  {
+    test_case: "string do not have one number",
+    value: "qweqweWWW",
+    result: { error: true },
+  },
+  { test_case: "string has correct value", value: "123qweQW", result: null },
 ];
 
-describe('PasswordValidators', () => {
-  const isPasswordInCorrectFormatValidator = PasswordValidators.isPasswordInCorrectFormatValidator();
-  const control = new FormControl('input');
+describe("PasswordValidators", () => {
+  const isPasswordInCorrectFormatValidator =
+    PasswordValidators.isPasswordInCorrectFormatValidator();
+  const control = new FormControl("input");
 
   TEST_CASES.forEach(({ test_case, value, result }) => {
     it(`should return ${result} if input ${test_case}`, () => {
@@ -2630,7 +2700,6 @@ describe('PasswordValidators', () => {
     });
   });
 });
-
 ```
 
 ### How to test Pipes
@@ -2639,14 +2708,14 @@ describe('PasswordValidators', () => {
 
 ```ts
 // string-to-number.pipe.ts
-import { Pipe, PipeTransform } from '@angular/core';
+import { Pipe, PipeTransform } from "@angular/core";
 
-@Pipe({ name: 'toNumber' })
+@Pipe({ name: "toNumber" })
 export class ToNumberPipe implements PipeTransform {
   transform(value: string | number): number {
     if (!value) return NaN;
 
-    if (typeof value === 'string' && value.trim().length === 0) {
+    if (typeof value === "string" && value.trim().length === 0) {
       return NaN;
     }
     return Number(value);
@@ -2658,21 +2727,21 @@ export class ToNumberPipe implements PipeTransform {
 
 ```ts
 // string-to-number.pipe.spec.ts
-import { ToNumberPipe } from './string-to-number.pipe';
+import { ToNumberPipe } from "./string-to-number.pipe";
 
 const TEST_CASES = [
   { value: 12, result: 12 },
   { value: 12.2, result: 12.2 },
-  { value: '12', result: 12 },
-  { value: '', result: NaN },
-  { value: ' ', result: NaN },
-  { value: '12a', result: NaN },
-  { value: 'vv12', result: NaN },
+  { value: "12", result: 12 },
+  { value: "", result: NaN },
+  { value: " ", result: NaN },
+  { value: "12a", result: NaN },
+  { value: "vv12", result: NaN },
 ];
 
-describe('ToNumberPipe', () => {
+describe("ToNumberPipe", () => {
   const pipe = new ToNumberPipe();
-  it('should create a pipe instance', () => expect(pipe).toBeTruthy());
+  it("should create a pipe instance", () => expect(pipe).toBeTruthy());
 
   TEST_CASES.forEach(({ value, result }) => {
     it(`should match the ${value} with to ${result}`, () => {
@@ -2683,16 +2752,20 @@ describe('ToNumberPipe', () => {
 ```
 
 ### How to test Presentational components
+
 ```ts
-import { Component, EventEmitter, Input, Output } from '@angular/core';
- 
+import { Component, EventEmitter, Input, Output } from "@angular/core";
+
 @Component({
-  selector: 'test-example',
+  selector: "test-example",
   template: `
     <h1 class="title">Test Components</h1>
     <span *ngIf="isSubTitleVisible" class="sub-title"> sub title </span>
     <button data-role="test-action-button" (click)="onClick()">click me</button>
-    <button data-role="test-action-with-param-button" (click)="onClickWithParam('string param')">
+    <button
+      data-role="test-action-with-param-button"
+      (click)="onClickWithParam('string param')"
+    >
       click me with data
     </button>
   `,
@@ -2701,25 +2774,26 @@ export class TestComponent {
   @Input() public isSubTitleVisible = false;
   @Output() public click = new EventEmitter<{ someData: string }>();
   @Output() public clickWithParam = new EventEmitter<string>();
- 
+
   public onClick() {
-    this.click.emit({ someData: 'test string' });
+    this.click.emit({ someData: "test string" });
   }
- 
+
   public onClickWithParam(event: string) {
     this.clickWithParam.emit(event);
   }
 }
 ```
+
 #### Unit tests
 
 ```ts
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { By } from '@angular/platform-browser';
+import { ComponentFixture, TestBed } from "@angular/core/testing";
+import { By } from "@angular/platform-browser";
 
-import { TestComponent } from './test.component';
+import { TestComponent } from "./test.component";
 
-describe('TestComponent', () => {
+describe("TestComponent", () => {
   let component: TestComponent;
   let fixture: ComponentFixture<TestComponent>;
   let title: HTMLElement;
@@ -2739,57 +2813,64 @@ describe('TestComponent', () => {
 
     fixture.detectChanges();
 
-    title = fixture.debugElement.query(By.css('.title')).nativeElement as HTMLElement;
-    actionButton = fixture.debugElement.query(By.css("button[data-role='test-action-button']"))
-      .nativeElement as HTMLButtonElement;
-    actionButtonWithParam = fixture.debugElement.query(By.css("button[data-role='test-action-with-param-button']"))
-      .nativeElement as HTMLButtonElement;
+    title = fixture.debugElement.query(By.css(".title"))
+      .nativeElement as HTMLElement;
+    actionButton = fixture.debugElement.query(
+      By.css("button[data-role='test-action-button']")
+    ).nativeElement as HTMLButtonElement;
+    actionButtonWithParam = fixture.debugElement.query(
+      By.css("button[data-role='test-action-with-param-button']")
+    ).nativeElement as HTMLButtonElement;
   });
 
-  it('should create', () => {
+  it("should create", () => {
     expect(component).toBeTruthy();
   });
 
-  it('should contain title and sub_title', () => {
+  it("should contain title and sub_title", () => {
     component.isSubTitleVisible = true;
     fixture.detectChanges();
-    const sub_title = fixture.debugElement.query(By.css('.sub-title')).nativeElement as HTMLElement;
+    const sub_title = fixture.debugElement.query(By.css(".sub-title"))
+      .nativeElement as HTMLElement;
 
     expect(title).toBeTruthy();
     expect(sub_title).toBeTruthy();
 
-    expect(title.textContent?.trim()).toEqual('Test Components');
-    expect(sub_title.textContent?.trim()).toMatch('sub title');
+    expect(title.textContent?.trim()).toEqual("Test Components");
+    expect(sub_title.textContent?.trim()).toMatch("sub title");
   });
 
-  it('should emit when button is clicked', () => {
-    spyOn(component.click, 'emit');
+  it("should emit when button is clicked", () => {
+    spyOn(component.click, "emit");
     actionButton.click();
     expect(component.click.emit).toHaveBeenCalled();
-    expect(component.click.emit).toHaveBeenCalledWith({ someData: 'test string' });
+    expect(component.click.emit).toHaveBeenCalledWith({
+      someData: "test string",
+    });
   });
 
-  it('should emit when button with param is clicked', () => {
-    spyOn(component.clickWithParam, 'emit');
+  it("should emit when button with param is clicked", () => {
+    spyOn(component.clickWithParam, "emit");
     actionButtonWithParam.click();
     expect(component.clickWithParam.emit).toHaveBeenCalled();
-    expect(component.clickWithParam.emit).toHaveBeenCalledWith('string param');
+    expect(component.clickWithParam.emit).toHaveBeenCalledWith("string param");
   });
 
-  it('should check visibility of subTitle based on isSubTitleVisible property', () => {
+  it("should check visibility of subTitle based on isSubTitleVisible property", () => {
     component.isSubTitleVisible = false;
     fixture.detectChanges();
-    const subTitleHidden = fixture.debugElement.query(By.css('.sub-title'));
+    const subTitleHidden = fixture.debugElement.query(By.css(".sub-title"));
 
     expect(subTitleHidden).toBeNull();
 
     component.isSubTitleVisible = true;
     fixture.detectChanges();
 
-    const subTitleVisible = fixture.debugElement.query(By.css('.sub-title')).nativeElement as HTMLElement;
+    const subTitleVisible = fixture.debugElement.query(By.css(".sub-title"))
+      .nativeElement as HTMLElement;
 
     expect(subTitleVisible).toBeTruthy();
-    expect(subTitleVisible.textContent?.trim()).toMatch('sub title');
+    expect(subTitleVisible.textContent?.trim()).toMatch("sub title");
   });
 });
 ```
@@ -2821,7 +2902,9 @@ export class PostsService {
   constructor(private http: HttpClient) {}
 
   getAllPosts(): Observable<Post[]> {
-    return this.http.get<Post[]>(`${this.url}/posts`).pipe(catchError(this.handleError<Post[]>("getAllPosts", [])));
+    return this.http
+      .get<Post[]>(`${this.url}/posts`)
+      .pipe(catchError(this.handleError<Post[]>("getAllPosts", [])));
   }
 
   getPostById(id: string): Observable<Post> {
@@ -2859,11 +2942,15 @@ export class PostsService {
 ```
 
 #### Unit tests
+
 ```ts
 // post.service.spec.ts
 import { TestBed } from "@angular/core/testing";
 import { Post, PostsService } from "./post.service";
-import { HttpClientTestingModule, HttpTestingController } from "@angular/common/http/testing";
+import {
+  HttpClientTestingModule,
+  HttpTestingController,
+} from "@angular/common/http/testing";
 
 const postsMock: Post[] = [
   {
@@ -2900,7 +2987,10 @@ describe("[SERVICES]: PostsService", () => {
       expect(res).toEqual(postsMock);
     });
 
-    const req = httpController.expectOne({ method: "GET", url: `${url}/posts` });
+    const req = httpController.expectOne({
+      method: "GET",
+      url: `${url}/posts`,
+    });
 
     req.flush(postsMock);
   });
@@ -2912,7 +3002,10 @@ describe("[SERVICES]: PostsService", () => {
       expect(data).toEqual(postsMock[0]);
     });
 
-    const req = httpController.expectOne({ method: "GET", url: `${url}/posts/${id}` });
+    const req = httpController.expectOne({
+      method: "GET",
+      url: `${url}/posts/${id}`,
+    });
 
     req.flush(postsMock[0]);
   });
@@ -2924,7 +3017,10 @@ describe("[SERVICES]: PostsService", () => {
       expect(data).toEqual(updatedPost);
     });
 
-    const req = httpController.expectOne({ method: "PUT", url: `${url}/posts` });
+    const req = httpController.expectOne({
+      method: "PUT",
+      url: `${url}/posts`,
+    });
 
     req.flush(updatedPost);
   });
@@ -2934,7 +3030,10 @@ describe("[SERVICES]: PostsService", () => {
       expect(data).toEqual(postsMock[0]);
     });
 
-    const req = httpController.expectOne({ method: "POST", url: `${url}/posts` });
+    const req = httpController.expectOne({
+      method: "POST",
+      url: `${url}/posts`,
+    });
 
     req.flush(postsMock[0]);
   });
@@ -2944,7 +3043,10 @@ describe("[SERVICES]: PostsService", () => {
       expect(data).toEqual(postsMock[1]);
     });
 
-    const req = httpController.expectOne({ method: "DELETE", url: `${url}/posts/4` });
+    const req = httpController.expectOne({
+      method: "DELETE",
+      url: `${url}/posts/4`,
+    });
 
     req.flush(postsMock[1]);
   });
@@ -2993,6 +3095,7 @@ As you can see in the code, the try/catch block prevents the app from crashing a
 Since we as the developers don’t know where and when such an error could occur, it is important to catch all occurring errors at a central location
 
 A client error should contain:
+
 - name (ie: `ReferenceError`).
 - message (ie: `X is not defined`).
 
@@ -3003,10 +3106,10 @@ And in most modern browsers: `fileName`, `lineNumber` and `columnNumber` where t
 It is clear that the error is coming from the back end, there is a need to take care of the error handling for every single request to the back end. Again, it is better to handle these errors in a centralized location so that the user is presented with consistent error messages and also to avoid forgetting to intercept errors.
 
 A server error might contain:
+
 - `status` (or code): Code status starting with 4 (4xx…).
 - `name`: The name of the error (ie: `HttpErrorResponse`).
 - `message`: Explanation message (ie: Http failure response for…).
-
 
 ### Global Error Handler
 
@@ -3060,7 +3163,12 @@ Because the best Error is the one that never happens, we could improve our error
 ```ts
 // http-error.interceptor.ts
 import { Injectable } from "@angular/core";
-import { HttpEvent, HttpInterceptor, HttpHandler, HttpRequest } from "@angular/common/http";
+import {
+  HttpEvent,
+  HttpInterceptor,
+  HttpHandler,
+  HttpRequest,
+} from "@angular/common/http";
 import { Observable } from "rxjs";
 import { finalize, retry } from "rxjs/operators";
 
@@ -3072,14 +3180,17 @@ import { LoaderService } from "@core/services/loader.service";
 export class HttpErrorInterceptor implements HttpInterceptor {
   constructor(public loaderService: LoaderService) {}
 
-  intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+  intercept(
+    request: HttpRequest<any>,
+    next: HttpHandler
+  ): Observable<HttpEvent<any>> {
     this.loaderService.display(true);
     // If the call fails, retry until 2 times before throwing an error
     return next.handle(request).pipe(
       retry(2),
       finalize(() => {
         this.loaderService.display(false);
-      }),
+      })
     );
   }
 }
@@ -3106,7 +3217,6 @@ For Error Handling we need to register two `providers`. The first one is respons
 })
 ```
 
-
 <img src="https://miro.medium.com/max/700/0*Piks8Tu6xUYpF4DU" width="100%" height="17px" style="padding: 2px 1rem; background-color: #fff">
 
 ## JWT Token Interceptor
@@ -3119,7 +3229,7 @@ import {
   HttpHandler,
   HttpResponse,
   HttpRequest,
-  HttpErrorResponse
+  HttpErrorResponse,
 } from "@angular/common/http";
 import { Observable, of } from "rxjs";
 import { tap } from "rxjs/operators";
@@ -3134,8 +3244,8 @@ export class TokenInterceptor implements HttpInterceptor {
   ): Observable<HttpEvent<any>> {
     request = request.clone({
       setHeaders: {
-        Authorization: `Bearer token`
-      }
+        Authorization: `Bearer token`,
+      },
     });
 
     return next.handle(request);
@@ -3214,11 +3324,13 @@ public ngOnDestroy() {
 - ["Angular: Dynamic Importing Large Libraries"](https://medium.com/lacolaco-blog/angular-dynamic-importing-large-libraries-8ec079603d0/)
 
 #### Use import()
+
 `import()` is a new feature of `ECMAScript`. It loads a script dynamically in runtime. In the future, all modern browsers support it natively. But today, its support is not enough.
 
 ### Preparation: Edit tsconfig.json
 
 Also, `TypeScript` has support for dynamic `import()`, but it is enabled only in some module types
+
 ```json
 {
   "compileOnSave": false,
@@ -3233,13 +3345,8 @@ Also, `TypeScript` has support for dynamic `import()`, but it is enabled only in
     "experimentalDecorators": true,
     "importHelpers": true,
     "target": "es5",
-    "typeRoots": [
-      "node_modules/@types"
-    ],
-    "lib": [
-      "es2018",
-      "dom"
-    ]
+    "typeRoots": ["node_modules/@types"],
+    "lib": ["es2018", "dom"]
   }
 }
 ```
@@ -3247,14 +3354,19 @@ Also, `TypeScript` has support for dynamic `import()`, but it is enabled only in
 #### Migrate to dynamic import()
 
 Call import() in the TypeScript code simply like following:
+
 ```ts
-const importChart = normalizeCommonJSImport(import(/* webpackChunkName: "chart" */ "chart.js"));
+const importChart = normalizeCommonJSImport(
+  import(/* webpackChunkName: "chart" */ "chart.js")
+);
 ```
 
 `normalizeCommonJSImport` is a utility function for compatibility between `CommonJS` module and `ES modules` and for strict-typing.
 
 ```ts
-export function normalizeCommonJSImport<T>(importPromise: Promise<T>): Promise<T> {
+export function normalizeCommonJSImport<T>(
+  importPromise: Promise<T>
+): Promise<T> {
   // CommonJS's `module.exports` is wrapped as `default` in ESModule.
   return importPromise.then((m: any) => (m.default || m) as T);
 }
@@ -3265,7 +3377,6 @@ In this case, TypeScript’s `import()` returns `Promise<typeof Chart>` as well 
 As the result, you can see separated bundles like below. `chart.<hash>.js` is not marked as `[initial]`; it means this bundle is loaded lazily and doesn’t affect initial bootstrapping.
 
 <img src="./assets/1_FY_MPUG_xp4BXeWVfZaTXg.png" width="100%" />
-
 
 <img src="https://miro.medium.com/max/700/0*Piks8Tu6xUYpF4DU" width="100%" height="17px" style="padding: 2px 1rem; background-color: #fff">
 
@@ -3335,7 +3446,6 @@ Note that Using an operator like takeUntil instead of manually unsubscribing wil
 
 <img src="https://miro.medium.com/max/700/0*Piks8Tu6xUYpF4DU" width="100%" height="17px" style="padding: 2px 1rem; background-color: #fff">
 
-
 ## Containerizing Angular using Docker
 
 `Docker` is a popular virtualization tool that replicates a specific operating environment on top of a host OS. Each environment is called a container
@@ -3349,7 +3459,8 @@ A `container` uses an image of a preconfigured operating system optimized for a 
 - [" To List / Start / Stop Docker Containers"](https://phoenixnap.com/kb/how-to-list-start-stop-docker-containers/)
 
 **Pre-requisites**
- - ["Install Docker for Desktop"](https://www.docker.com/products/docker-desktop)
+
+- ["Install Docker for Desktop"](https://www.docker.com/products/docker-desktop)
 
 ### Creating Docker file
 
@@ -3376,31 +3487,37 @@ COPY --from=build /app/dist/ngx-levi9 /usr/share/nginx/html
 ```ts
 FROM node:12.20-alpine3.10 As build
 ```
+
 This line will tell the docker to pull the node image with tag `12.20-alpine3.10` if the images don't exist. We are also giving a friendly name `build` to this image so we can refer it later.
 
 ```ts
-WORKDIR /app
+WORKDIR / app;
 ```
+
 This `WORKDIR` command will create the working directory in our docker image. going forward any command will be run in the context of this directory.
 
 ```ts
 COPY package.json package-lock.json ./
 ```
+
 This `COPY` command will copy `package.json` and `package-lock.json` from our current directory to the root of our working directory inside a container which is `/app`.
 
 ```ts
 RUN npm install
 ```
+
 This RUN command will restore node_modules define in our package.json
 
 ```ts
 COPY . .
 ```
+
 This `COPY` command copies all the files from our current directory to the container working directory. this will copy all our source files
 
 ```ts
 RUN npm run build:prod
 ```
+
 This command will build our angular project in production mode and create production ready files in dist/appName folder
 
 #### STAGE 2: Run
@@ -3408,6 +3525,7 @@ This command will build our angular project in production mode and create produc
 ```ts
 FROM nginx:1.17.1-alpine
 ```
+
 This line will create a second stage `nginx` container where we will copy the compiled output from our build stage
 
 ```ts
@@ -3417,18 +3535,22 @@ COPY --from=build /app/dist/ngx-levi9 /usr/share/nginx/html
 This is the final command of our docker file. This will copy the compiled angular app from builder stage path `/app/dist/ngx-levi9` to `nginx` container
 
 ### Creating docker ignore file
+
 When `COPY . .` command execute it will copy all the files in the host directory to the container working directory. if we want to ignore some folder like `.git` or `node_modules` we can define these folders in `.dockerignore` file
-  ```ts
-  .git
-  node_modules
-  ```
+
+```ts
+.git
+node_modules
+```
 
 ### Building a docker image
+
 Navigate the project folder in command prompt and run the below command to build the image
 
 ```npm
 docker build . -t dockerngstart .
 ```
+
 This command will look for a docker file in the current directory and create the image with tag `dockerngstart`. with `-t` command you can specify the tag for the image the default convention is `<DockerHubUsername>/<ImageName>`.
 
 ### Running a container
@@ -3444,11 +3566,13 @@ A container may be running, but you may not be able to interact with it. To star
 Navigate to your browser with `http://localhost:8000`
 
 ### Review docker images
+
 Run `docker images` command to list all the docker images in your machine
 
 ```ts
 docker images
 ```
+
 <img src="./assets/docker images.png" width="100%" />
 
 ### Remove docker image
@@ -3458,28 +3582,31 @@ docker rmi <IMAGE ID>
 ```
 
 ### List Docker Containers
+
 To list all running Docker containers, enter the following into a terminal window
 
 ```ts
 docker ps
 ```
-To list all containers, both running and stopped, add `–a` 
+
+To list all containers, both running and stopped, add `–a`
 
 ```ts
 docker ps -a
 ```
 
 ### Start Docker Container
+
 The main command to launch or start a single or multiple stopped Docker containers is docker start:
 
 ```ts
-docker start [options] container_id 
+docker start [options] container_id
 ```
 
 To create a new container from an image and start it, use `docker run`
 
 ```ts
-docker run [options] image [command] [argument] 
+docker run [options] image [command] [argument]
 ```
 
 ### Stop Docker Container
@@ -3499,6 +3626,7 @@ docker kill [option] container_id
 ```
 
 To stop all running containers, enter the following:
+
 ```ts
 docker stop $(docker ps –a –q)
 ```
@@ -3523,10 +3651,10 @@ Here is a short list of steps to implement a custom schematic that overrides the
 
 - create a blank schematic using the built-in command
 - implement schematic
-  -  factory function
-  -  template file
-  -  schema with input parameters definitions
-  -  collection, which defines exposed schematics
+  - factory function
+  - template file
+  - schema with input parameters definitions
+  - collection, which defines exposed schematics
 - add schematic to Angular project
 
 ### Schematics CLI
@@ -3574,7 +3702,7 @@ CREATE my-component/src/my-component/index_spec.ts (503 bytes)
 You can see that the my-component schematic points to a factory function in `my-component/index.ts`. Crack that open and you’ll see the following
 
 ```typescript
-import { Rule, SchematicContext, Tree } from '@angular-devkit/schematics';
+import { Rule, SchematicContext, Tree } from "@angular-devkit/schematics";
 
 export function myComponent(_options: any): Rule {
   return (tree: Tree, _context: SchematicContext) => {
@@ -3596,7 +3724,7 @@ Writing a template is a relatively easy job because it should look the same as w
 
 Template files are stored inside `/files` directory, and their names should be written using a specific format to allow dynamic naming of the files. For our case, we want to create a typescript file that will be in the form component-name.component.ts, assuming the "component-name" is our name provided as an input. To fulfill that, we need to create a template file with the name: `__name@dasherize__`.component.ts. Double underscore separates the dynamic content from the plain string, and the dasherize is an Angular function that will make a "kebab-case" string from the name. We have to use the same approach for naming a directory, so we need to place a template file within a folder called `__name@dasherize__`.
 
-Example 
+Example
 
 ```typescript
 // __name@dasherize__.component.ts
@@ -3608,9 +3736,9 @@ import { Component, OnInit } from '@angular/core';
 	styleUrls: ['./<%= dasherize(name) %>.component.scss'],
 })
 export class <%= classify(name) %>Component implements OnInit {
-	
+
     constructor() { }
-	
+
     ngOnInit(): void {
     }
 }
