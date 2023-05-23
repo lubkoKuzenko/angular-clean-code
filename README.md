@@ -9,7 +9,6 @@
 - [Configuration](#Configuration)
   - [Configuring tsconfig.json](#Configuring-tsconfigjson)
   - [Configuring Angular ESLint](#Configuring-Angular-ESLint)
-  - [Configuring HTMLHint](#Configuring-HTMLHint)
   - [Configuring stylelint](#Configuring-stylelint)
   - [Configuring Prettier](#Configuring-Prettier)
   - [Configuring Proxy for API Calls](#configuring-proxy-for-api-calls)
@@ -97,10 +96,6 @@ Repo with Code: https://github.com/lubkoKuzenko/ng-start
 - ["tsconfig.json с комментариями"](https://gist.github.com/lubkoKuzenko/b0dfc526a8be2a00f007542960206260)
 
 - ["Angular ESLint"](https://github.com/angular-eslint/angular-eslint#migrating-from-codelyzer-and-tslint/)
-
-- ["Configuring HTMLHint"](https://github.com/htmlhint/HTMLHint/)
-
-- ["List of HTMLHint rules"](https://github.com/htmlhint/HTMLHint/blob/master/docs/user-guide/list-rules.md/)
 
 - ["Configuring stylelint"](https://github.com/stylelint/stylelint/)
 
@@ -319,30 +314,6 @@ Add command to script section of `package.json`
  "lint:ts": "eslint --color -c .eslintrc --ext .ts .",
 ```
 
-### Configuring HTMLHint
-
-1. Install htmlhint
-
-```npm
-npm install --save-dev htmlhint
-```
-
-2. Create a .htmlhintrc configuration file in the root of your project:
-
-```.htmlhintrc
-{
-  "attr-value-not-empty": false
-}
-```
-
-3. Run HTMLHint on, for example, all the HTML files in your project:
-
-```npm
-"lint:html": "npx htmlhint \"src\" --config .htmlhintrc",
-```
-
-4. Configure rules based on rules list: https://github.com/htmlhint/HTMLHint/blob/master/docs/user-guide/list-rules.md
-
 ### Configuring stylelint
 
 1. Install stylelint
@@ -351,7 +322,7 @@ npm install --save-dev htmlhint
 npm install --save-dev stylelint stylelint-config-standard
 ```
 
-2. Create a .htmlhintrc configuration file in the root of your project:
+2. Create a .stylelintrc configuration file in the root of your project:
 
 ```.stylelintrc
 {
@@ -359,7 +330,7 @@ npm install --save-dev stylelint stylelint-config-standard
 }
 ```
 
-3. Run HTMLHint on, for example, all the HTML files in your project:
+3. Run stylelint on, for example, all the HTML files in your project:
 
 ```npm
  "lint:scss": "npx stylelint \"src/**/*.scss\" --syntax scss",
